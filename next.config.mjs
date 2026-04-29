@@ -1,7 +1,5 @@
 /**
- * Where Next.js should proxy `/upload/*` (foodcity-back static files).
- * Use an internal URL on the server (e.g. http://127.0.0.1:4000) so public nginx
- * does not need a separate `/upload` rule — the browser requests same-origin `/upload/...`.
+ * Where Next.js should proxy `/upload/*` (zev-back static files).
  */
 function uploadProxyOrigin() {
   const explicit =
@@ -14,7 +12,7 @@ function uploadProxyOrigin() {
       .replace(/\/$/, "")
       .replace(/\/api(?:\/v\d+)?$/, "");
   }
-  return "http://127.0.0.1:4000";
+  return "http://127.0.0.1:5000";
 }
 
 /** @type {import('next').NextConfig} */
@@ -30,26 +28,19 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
-      { protocol: "http", hostname: "bukhbatllc.mn", pathname: "/upload/**" },
-      { protocol: "https", hostname: "bukhbatllc.mn", pathname: "/upload/**" },
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "4000",
-        pathname: "/upload/**",
-      },
-      {
-        protocol: "http",
-        hostname: "127.0.0.1",
-        port: "4000",
-        pathname: "/upload/**",
-      },
+      // Remote production server
+      { protocol: "http",  hostname: "103.236.194.106", pathname: "/upload/**" },
+      // Local dev
+      { protocol: "http",  hostname: "localhost",   port: "5000", pathname: "/upload/**" },
+      { protocol: "http",  hostname: "127.0.0.1",   port: "5000", pathname: "/upload/**" },
+      // Legacy 4000 port
+      { protocol: "http",  hostname: "localhost",   port: "4000", pathname: "/upload/**" },
+      { protocol: "http",  hostname: "127.0.0.1",   port: "4000", pathname: "/upload/**" },
     ],
     formats: ["image/webp", "image/avif"],
     minimumCacheTTL: 60,
   },
   experimental: {
-    optimizeCss: true,
     optimizePackageImports: ["lucide-react"],
   },
   compiler: {

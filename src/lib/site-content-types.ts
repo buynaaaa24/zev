@@ -35,6 +35,7 @@ export type AboutSections = {
     yearsBadgeValue: string;
     yearsLabel: string;
     stats: StatItem[];
+    partners?: PartnerLogo[];
   };
 };
 
@@ -63,6 +64,11 @@ export type ContactSections = {
     telLabel: string;
   };
   formTitle: string;
+  formLabels?: {
+    name: string;
+    email: string;
+    message: string;
+  };
 };
 
 export type ServicesSections = {

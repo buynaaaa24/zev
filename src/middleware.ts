@@ -1,12 +1,13 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const SITES = ['zevtaps', 'parkease', 'posease', 'amarhome', 'rently'];
+const SITES = ['zevtabs', 'parkease', 'posease', 'amarhome', 'rently'];
+const DEFAULT_SITE = 'zevtabs';
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
-  // Skip api, _next, and files with extensions (images, etc)
+  // Skip api, _next, and static files
   if (
     pathname.startsWith('/api') ||
     pathname.startsWith('/_next') ||
@@ -15,24 +16,23 @@ export function middleware(request: NextRequest) {
     return NextResponse.next();
   }
 
-  // Handle root
+  // Root → default site
   if (pathname === '/') {
     const url = request.nextUrl.clone();
-    url.pathname = '/zevtaps';
+    url.pathname = `/${DEFAULT_SITE}`;
     return NextResponse.rewrite(url);
   }
 
-  // Check if the first segment is a site ID
+  // If first segment is a known site ID, pass through
   const segments = pathname.split('/').filter(Boolean);
   const firstSegment = segments[0]?.toLowerCase();
-
   if (firstSegment && SITES.includes(firstSegment)) {
     return NextResponse.next();
   }
 
-  // If not a site ID, assume it's a page in zevtaps
+  // Otherwise prefix with the default site
   const url = request.nextUrl.clone();
-  url.pathname = `/zevtaps${pathname}`;
+  url.pathname = `/${DEFAULT_SITE}${pathname}`;
   return NextResponse.rewrite(url);
 }
 

@@ -1,103 +1,109 @@
-import type { ServicesSections } from "@/lib/site-content-types";
+"use client";
 
-const FEATURE_ICONS = [
-  (
-    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.8}
-        d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-2 10v-5a1 1 0 00-1-1h-2a1 1 0 00-1 1v5m4 0H9"
-      />
-    </svg>
-  ),
-  (
-    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.8}
-        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-      />
-    </svg>
-  ),
-  (
-    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.8}
-        d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"
-      />
-    </svg>
-  ),
-  (
-    <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.8}
-        d="M13 10V3L4 14h7v7l9-11h-7z"
-      />
-    </svg>
-  ),
+import { useRef, useEffect } from "react";
+
+const SERVICES = [
+  {
+    number: "01",
+    title: "Digital Platform",
+    desc: "End-to-end platform design and development. From architecture to deployment, we build the digital backbone your business runs on.",
+    tags: ["Architecture", "APIs", "Cloud"],
+  },
+  {
+    number: "02",
+    title: "Product Design",
+    desc: "User experience research, interface design, and interactive prototyping. We craft experiences people love using.",
+    tags: ["UX Research", "UI Design", "Prototyping"],
+  },
+  {
+    number: "03",
+    title: "Data & Analytics",
+    desc: "Real-time dashboards, business intelligence, and predictive analytics. Turn your data into your competitive edge.",
+    tags: ["Dashboards", "BI", "ML"],
+  },
+  {
+    number: "04",
+    title: "Content Management",
+    desc: "Headless CMS, multi-site management, and content workflows. Put your team in control without touching code.",
+    tags: ["CMS", "Workflows", "Multi-site"],
+  },
 ];
 
-export default function Services({ content }: { content: ServicesSections }) {
-  const { header, features, banner } = content;
+export default function Services() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const el = sectionRef.current;
+    if (!el) return;
+    const items = el.querySelectorAll<HTMLElement>(".reveal");
+    const obs = new IntersectionObserver(
+      (entries) => entries.forEach((e) => e.isIntersecting && e.target.classList.add("visible")),
+      { threshold: 0.08, rootMargin: "0px 0px -40px 0px" }
+    );
+    items.forEach((i) => obs.observe(i));
+    return () => obs.disconnect();
+  }, []);
 
   return (
-    <section id="services" className="py-16 sm:py-20 lg:py-24 bg-brand-50">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center max-w-2xl mx-auto mb-10 sm:mb-16">
-          <span
-            className="hero-reveal inline-block text-accent-500 font-semibold text-xs uppercase tracking-widest mb-4"
-            style={{ animationDelay: "0.1s" }}
-          >
-            {header.badge}
-          </span>
-          <h2
-            className="hero-reveal text-3xl sm:text-4xl lg:text-5xl font-black text-brand-900 mb-4"
-            style={{ animationDelay: "0.25s" }}
-          >
-            {header.h2Line1}{" "}
-            <span className="text-accent-500">{header.h2Accent}</span>
-          </h2>
-          <p
-            className="hero-reveal text-gray-500 text-base sm:text-lg"
-            style={{ animationDelay: "0.4s" }}
-          >
-            {header.intro}
+    <section ref={sectionRef} id="services" className="bg-neutral-0 section-pad">
+      <div className="max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16">
+        {/* Header */}
+        <div className="flex flex-col lg:flex-row lg:items-end justify-between gap-8 mb-16">
+          <div className="max-w-xl">
+            <div className="reveal inline-flex items-center gap-2 mb-6 px-3 py-1 rounded-full bg-neutral-900 border border-neutral-700">
+              <span className="w-1.5 h-1.5 rounded-full bg-accent-500 animate-pulse" />
+              <span className="text-neutral-400 text-xs font-semibold uppercase tracking-widest">Our Services</span>
+            </div>
+            <h2 className="reveal reveal-delay-1 display-md text-neutral-800">
+              Everything you need.<br />
+              <span className="gradient-text-blue">Nothing you don&apos;t.</span>
+            </h2>
+          </div>
+          <p className="reveal reveal-delay-2 body-lg text-neutral-400 max-w-sm lg:text-right">
+            Focused, opinionated solutions built to move fast and last long.
           </p>
         </div>
 
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 sm:gap-6">
-          {features.map((f, i) => (
+        {/* Service list */}
+        <div className="divide-y divide-neutral-100">
+          {SERVICES.map((s, i) => (
             <div
-              key={i}
-              className="hero-reveal group bg-white border border-gray-100 hover:border-accent-200 rounded p-6 sm:p-8 hover:shadow-xl transition-all duration-300 hover:-translate-y-1"
-              style={{ animationDelay: `${0.5 + i * 0.1}s` }}
+              key={s.number}
+              className={`reveal reveal-delay-${i + 1} group flex flex-col md:flex-row md:items-center gap-6 md:gap-12 py-10 hover:bg-neutral-50 -mx-6 px-6 rounded-2xl transition-colors duration-300 cursor-default`}
             >
-              <div className="w-12 h-12 bg-accent-50 group-hover:bg-accent-500 text-accent-500 group-hover:text-white rounded flex items-center justify-center mb-5 transition-all duration-300">
-                {FEATURE_ICONS[i % FEATURE_ICONS.length]}
-              </div>
-              <h3 className="font-bold text-brand-900 text-base sm:text-lg mb-2 sm:mb-3">{f.title}</h3>
-              <p className="text-gray-400 text-sm leading-relaxed">{f.desc}</p>
-            </div>
-          ))}
-        </div>
+              {/* Number */}
+              <span className="text-neutral-200 font-black text-4xl md:text-5xl shrink-0 w-16 group-hover:text-accent-500 transition-colors duration-500">
+                {s.number}
+              </span>
 
-        <div
-          className="hero-reveal mt-10 sm:mt-16 bg-brand-900 rounded p-6 sm:p-10 grid grid-cols-2 lg:grid-cols-4 gap-0 divide-brand-700 divide-y-2 lg:divide-y-0 lg:divide-x"
-          style={{ animationDelay: "0.9s" }}
-        >
-          {banner.map((item) => (
-            <div key={item.label} className="py-6 lg:py-0 lg:px-8 text-center">
-              <div className="text-3xl sm:text-4xl font-black text-white">
-                {item.value}
-                <span className="text-accent-500">{item.suffix}</span>
+              {/* Content */}
+              <div className="flex-1 min-w-0">
+                <h3 className="text-neutral-800 font-bold text-xl mb-2 group-hover:text-accent-600 transition-colors duration-300">
+                  {s.title}
+                </h3>
+                <p className="text-neutral-500 text-sm leading-relaxed max-w-lg">
+                  {s.desc}
+                </p>
               </div>
-              <div className="text-gray-500 text-xs sm:text-sm mt-2 uppercase tracking-wide">{item.label}</div>
+
+              {/* Tags */}
+              <div className="flex flex-wrap gap-2 shrink-0">
+                {s.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="px-3 py-1 text-xs font-medium rounded-full bg-neutral-100 text-neutral-600 group-hover:bg-accent-50 group-hover:text-accent-600 transition-colors duration-300"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Arrow */}
+              <div className="shrink-0 w-10 h-10 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-400 group-hover:border-accent-500 group-hover:text-accent-500 group-hover:translate-x-1 transition-all duration-300">
+                <svg className="w-4 h-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                </svg>
+              </div>
             </div>
           ))}
         </div>

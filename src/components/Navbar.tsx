@@ -1,361 +1,237 @@
 "use client";
 
-import { useState, useEffect } from "react";
-import { ChevronDown } from "lucide-react";
-import Image from "next/image";
+import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
 
-export default function Navbar({ siteId = "zevtaps" }: { siteId?: string }) {
+const SECTIONS = [
+  { id: "home",     label: { en: "Home",     mn: "Нүүр" } },
+  { id: "about",    label: { en: "About",    mn: "Тухай" } },
+  { id: "services", label: { en: "Services", mn: "Үйлчилгээ" } },
+  { id: "showcase", label: { en: "Work",     mn: "Төсөл" } },
+  { id: "contact",  label: { en: "Contact",  mn: "Холбоо" } },
+];
+
+function scrollToSection(id: string) {
+  const el = document.getElementById(id);
+  if (el) {
+    el.scrollIntoView({ behavior: "smooth", block: "start" });
+  }
+}
+
+export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
   const [scrolled, setScrolled] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
-  const [zarmedeeOpen, setZarmedeeOpen] = useState(false);
-  /** Desktop “Зар мэдээ” — CSS-only hover stayed open after client navigation while cursor remained over the bar */
-  const [desktopZarmedeeOpen, setDesktopZarmedeeOpen] = useState(false);
+  const [activeSection, setActiveSection] = useState("home");
   const pathname = usePathname();
-  const { lang, t, toggle } = useLanguage();
+  const { lang, toggle } = useLanguage();
+  const base = siteId === "zevtabs" ? "" : `/${siteId}`;
+  const isHome = pathname === `${base}/` || pathname === base || pathname === "/";
 
-  const base = siteId === "zevtaps" ? "" : `/${siteId}`;
-
-  const mainNavLinks = [{ label: t.nav.home, href: `${base}/` }];
-
-  const zarmedeeLinks = [
-    { label: t.nav.order, href: `${base}/order` },
-    { label: t.nav.sales, href: `${base}/sales` },
-    { label: t.nav.jobs, href: `${base}/jobs` },
-    { label: t.nav.team, href: `${base}/team` },
-  ];
-
-  const restNavLinks = [
-    { label: t.nav.about, href: `${base}/about` },
-    { label: t.nav.services, href: `${base}/services` },
-    { label: t.nav.properties, href: `${base}/properties` },
-    { label: t.nav.contact, href: `${base}/contact` },
-  ];
-
-  const isZarmedeeActive = zarmedeeLinks.some((l) => l.href === pathname);
-
+  // Track scroll depth + active section
   useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 40);
-    window.addEventListener("scroll", onScroll);
+    const onScroll = () => {
+      setScrolled(window.scrollY > 30);
+
+      // Find which section is currently in view
+      const sectionIds = SECTIONS.map((s) => s.id);
+      for (let i = sectionIds.length - 1; i >= 0; i--) {
+        const el = document.getElementById(sectionIds[i]);
+        if (el) {
+          const rect = el.getBoundingClientRect();
+          if (rect.top <= window.innerHeight * 0.4) {
+            setActiveSection(sectionIds[i]);
+            break;
+          }
+        }
+      }
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
   useEffect(() => {
-    const onResize = () => {
-      if (window.innerWidth >= 1024) setMenuOpen(false);
-    };
-    window.addEventListener("resize", onResize);
-    return () => window.removeEventListener("resize", onResize);
-  }, []);
-
-  useEffect(() => {
     setMenuOpen(false);
-    setZarmedeeOpen(false);
-    setDesktopZarmedeeOpen(false);
   }, [pathname]);
 
   useEffect(() => {
-    if (!menuOpen) setZarmedeeOpen(false);
+    document.body.style.overflow = menuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  useEffect(() => {
-    if (menuOpen && isZarmedeeActive) setZarmedeeOpen(true);
-  }, [menuOpen, isZarmedeeActive]);
+  const isTransparent = !scrolled && isHome;
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[200] isolate transition-all duration-300 ${
-        scrolled ? "bg-brand-900 shadow-xl" : "bg-brand-900/85 backdrop-blur-sm"
+      className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${
+        isTransparent
+          ? "bg-transparent"
+          : "bg-white/80 backdrop-blur-xl border-b border-neutral-100/60 shadow-sm"
       }`}
     >
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 flex items-center justify-between gap-3 min-h-[4.25rem] sm:min-h-[5.25rem] py-2 sm:py-2.5">
-        {/* Logo — min-w-0 so it never squeezes the mobile controls off-screen */}
-        <Link
-          href={`${base}/`}
-          className="flex min-w-0 flex-1 items-center lg:flex-initial lg:shrink-0"
+      <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between h-[60px] md:h-[68px]">
+
+        {/* Logo */}
+        <button
+          onClick={() => isHome ? scrollToSection("home") : undefined}
+          className="flex items-center gap-2 group"
+          aria-label="Zevtabs – scroll to top"
         >
-          <span className="inline-flex shrink-0 items-center">
-            <Image
-              src="/fclogo.png"
-              alt="Food City"
-              width={320}
-              height={114}
-              className="h-11 w-auto object-contain object-left sm:h-12 lg:h-14"
-              priority
-              unoptimized
-            />
-          </span>
-        </Link>
+          {!isHome ? (
+            <Link href={`${base}/`} className="flex items-center gap-2">
+              <LogoMark />
+              <WordMark dark={!isTransparent} />
+            </Link>
+          ) : (
+            <>
+              <LogoMark />
+              <WordMark dark={!isTransparent} />
+            </>
+          )}
+        </button>
 
         {/* Desktop Nav */}
-        <nav className="hidden lg:flex items-center gap-5 xl:gap-7">
-          {mainNavLinks.map((link) => {
-            const isActive = pathname === link.href;
+        <nav className="hidden md:flex items-center gap-1">
+          {SECTIONS.map((s) => {
+            const label = lang === "mn" ? s.label.mn : s.label.en;
+            const isActive = isHome && activeSection === s.id;
+
+            if (isHome) {
+              return (
+                <button
+                  key={s.id}
+                  onClick={() => scrollToSection(s.id)}
+                  className={`relative px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ${
+                    isActive
+                      ? isTransparent
+                        ? "text-white bg-white/10"
+                        : "text-neutral-800 bg-neutral-100"
+                      : isTransparent
+                        ? "text-white/70 hover:text-white hover:bg-white/10"
+                        : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100"
+                  }`}
+                >
+                  {label}
+                  {isActive && (
+                    <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent-500" />
+                  )}
+                </button>
+              );
+            }
+
             return (
               <Link
-                key={link.href}
-                href={link.href}
-                className={`text-xs xl:text-sm font-medium uppercase tracking-wider transition-colors duration-200 whitespace-nowrap ${
-                  isActive
-                    ? "text-accent-500"
-                    : "text-gray-300 hover:text-accent-500"
+                key={s.id}
+                href={`${base}/#${s.id}`}
+                className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ${
+                  isTransparent
+                    ? "text-white/70 hover:text-white hover:bg-white/10"
+                    : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100"
                 }`}
               >
-                {link.label}
-              </Link>
-            );
-          })}
-
-          {/* Controlled dropdown so it closes after navigation (hover-only stayed open with client-side routing) */}
-          <div
-            className="relative"
-            onMouseEnter={() => setDesktopZarmedeeOpen(true)}
-            onMouseLeave={() => setDesktopZarmedeeOpen(false)}
-          >
-            <button
-              type="button"
-              className={`flex items-center gap-1 text-xs xl:text-sm font-medium uppercase tracking-wider transition-colors duration-200 whitespace-nowrap ${
-                isZarmedeeActive || desktopZarmedeeOpen
-                  ? "text-accent-500"
-                  : "text-gray-300 hover:text-accent-500"
-              }`}
-              aria-haspopup="menu"
-              aria-expanded={desktopZarmedeeOpen}
-            >
-              {t.nav.newsAds}
-              <ChevronDown
-                className={`opacity-80 transition-transform ${desktopZarmedeeOpen ? "translate-y-px" : ""}`}
-              />
-            </button>
-            <div
-              className={`absolute left-0 top-full z-[100] -mt-2 min-w-[220px] pt-2 transition-opacity duration-150 ${
-                desktopZarmedeeOpen
-                  ? "pointer-events-auto visible opacity-100"
-                  : "pointer-events-none invisible opacity-0"
-              }`}
-              role="menu"
-              aria-label={t.nav.newsAds}
-              aria-hidden={!desktopZarmedeeOpen}
-            >
-              <div className="rounded-lg border border-brand-700 bg-brand-800/95 py-2 shadow-xl backdrop-blur-sm">
-                {zarmedeeLinks.map((item) => {
-                  const active = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      role="menuitem"
-                      onClick={() => setDesktopZarmedeeOpen(false)}
-                      className={`block px-4 py-2.5 text-sm font-medium tracking-wide transition-colors ${
-                        active
-                          ? "bg-brand-900/80 text-accent-500"
-                          : "text-gray-200 hover:bg-brand-900/60 hover:text-accent-400"
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-
-          {restNavLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                className={`text-xs xl:text-sm font-medium uppercase tracking-wider transition-colors duration-200 whitespace-nowrap ${
-                  isActive
-                    ? "text-accent-500"
-                    : "text-gray-300 hover:text-accent-500"
-                }`}
-              >
-                {link.label}
+                {label}
               </Link>
             );
           })}
         </nav>
 
-        {/* Phone — desktop only */}
-        <div className="hidden lg:flex items-center gap-4 xl:gap-6 shrink-0">
-          <a
-            href="tel:+97611000000"
-            className="flex items-center gap-2 text-gray-300 hover:text-white text-sm transition-colors whitespace-nowrap"
-          >
-            <svg
-              className="w-4 h-4 text-accent-500 shrink-0"
-              fill="currentColor"
-              viewBox="0 0 24 24"
-            >
-              <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.58.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.01L6.6 10.8z" />
-            </svg>
-            +976 1100-0000
-          </a>
+        {/* Actions */}
+        <div className="hidden md:flex items-center gap-3">
           <button
             onClick={toggle}
-            className="text-xs xl:text-sm font-bold uppercase tracking-wider text-gray-300 hover:text-white transition-colors"
+            className={`text-[13px] font-medium px-3 py-1.5 rounded-full transition-all duration-300 ${
+              isTransparent
+                ? "text-white/60 hover:text-white hover:bg-white/10"
+                : "text-neutral-400 hover:text-neutral-700 hover:bg-neutral-100"
+            }`}
           >
-            {lang === "mn" ? "EN" : "MN"}
+            {lang === "mn" ? "EN" : "МН"}
+          </button>
+          <button
+            onClick={() => isHome ? scrollToSection("contact") : undefined}
+            className="text-[13px] font-semibold px-5 py-2.5 rounded-full bg-accent-500 text-white hover:bg-accent-600 active:scale-95 transition-all duration-200 shadow-sm shadow-accent-500/25"
+          >
+            {lang === "mn" ? "Холбоо барих" : "Get Started"}
           </button>
         </div>
 
-        {/* Mobile: phone icon + hamburger — shrink-0 keeps tap targets reachable */}
-        <div className="flex shrink-0 items-center gap-2 sm:gap-3 lg:hidden">
-          <button
-            onClick={toggle}
-            className="flex h-11 w-11 shrink-0 items-center justify-center text-sm font-bold text-gray-300 hover:text-white"
-          >
-            {lang === "mn" ? "EN" : "MN"}
-          </button>
-          <a
-            href="tel:+97611000000"
-            className="flex h-11 w-11 shrink-0 items-center justify-center text-accent-500 touch-manipulation"
-            aria-label="Утас"
-          >
-            <svg className="w-5 h-5" fill="currentColor" viewBox="0 0 24 24">
-              <path d="M6.6 10.8c1.4 2.8 3.8 5.1 6.6 6.6l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.58.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.24 1.01L6.6 10.8z" />
-            </svg>
-          </a>
-          <button
-            type="button"
-            className="flex h-11 w-11 shrink-0 items-center justify-center rounded-md text-white touch-manipulation [-webkit-tap-highlight-color:transparent]"
-            onClick={() => setMenuOpen((o) => !o)}
-            aria-expanded={menuOpen}
-            aria-label={menuOpen ? t.nav.closeMenu : t.nav.openMenu}
-          >
-            <svg
-              className="w-6 h-6"
-              fill="none"
-              stroke="currentColor"
-              viewBox="0 0 24 24"
-            >
-              {menuOpen ? (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M6 18L18 6M6 6l12 12"
-                />
-              ) : (
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              )}
-            </svg>
-          </button>
-        </div>
+        {/* Mobile hamburger */}
+        <button
+          type="button"
+          className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-[5px]"
+          onClick={() => setMenuOpen((o) => !o)}
+          aria-label={menuOpen ? "Close menu" : "Open menu"}
+        >
+          {[
+            menuOpen ? "translate-y-[6.5px] rotate-45" : "",
+            menuOpen ? "opacity-0" : "",
+            menuOpen ? "-translate-y-[6.5px] -rotate-45" : "",
+          ].map((cls, i) => (
+            <span
+              key={i}
+              className={`block h-[1.5px] w-6 rounded-full transition-all duration-300 ${
+                isTransparent ? "bg-white" : "bg-neutral-800"
+              } ${cls}`}
+            />
+          ))}
+        </button>
       </div>
 
-      {/* Mobile / Tablet Menu — closed: pointer-events-none so nothing blocks the bar */}
+      {/* Mobile Menu */}
       <div
-        className={`lg:hidden transition-all duration-300 ease-in-out ${
-          menuOpen
-            ? "max-h-[min(100vh,100dvh)] overflow-y-auto overflow-x-hidden opacity-100 pointer-events-auto"
-            : "max-h-0 overflow-hidden opacity-0 pointer-events-none"
+        className={`md:hidden fixed inset-0 top-[60px] bg-black/90 backdrop-blur-xl flex flex-col transition-all duration-500 ${
+          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
         }`}
       >
-        <div className="bg-brand-900 border-t border-brand-700 px-4 sm:px-6 pb-4">
-          {mainNavLinks.map((link) => {
-            const isActive = pathname === link.href;
+        <div className="flex flex-col px-8 pt-10 gap-2">
+          {SECTIONS.map((s, i) => {
+            const label = lang === "mn" ? s.label.mn : s.label.en;
             return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => {
-                  setMenuOpen(false);
-                  setZarmedeeOpen(false);
-                }}
-                className={`flex items-center py-3.5 text-sm font-medium border-b border-brand-800 transition-colors ${
-                  isActive
-                    ? "text-accent-500"
-                    : "text-gray-300 hover:text-accent-500"
+              <button
+                key={s.id}
+                onClick={() => { scrollToSection(s.id); setMenuOpen(false); }}
+                style={{ transitionDelay: menuOpen ? `${i * 50}ms` : "0ms" }}
+                className={`text-left text-2xl font-bold text-white/80 hover:text-white py-3 border-b border-white/5 transition-all duration-500 ${
+                  menuOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"
                 }`}
               >
-                <span
-                  className={`w-1.5 h-1.5 rounded-full mr-3 shrink-0 ${isActive ? "bg-accent-500" : "bg-accent-500/50"}`}
-                />
-                {link.label}
-              </Link>
+                {label}
+              </button>
             );
           })}
-
-          <div className="border-b border-brand-800">
+          <div className="pt-6">
             <button
-              type="button"
-              className={`flex w-full items-center justify-between py-3.5 text-sm font-medium text-left transition-colors ${
-                isZarmedeeActive ? "text-accent-500" : "text-gray-300"
-              }`}
-              onClick={() => setZarmedeeOpen(!zarmedeeOpen)}
-              aria-expanded={zarmedeeOpen}
+              onClick={toggle}
+              className="text-white/40 text-sm font-medium"
             >
-              <span className="flex items-center">
-                <span
-                  className={`w-1.5 h-1.5 rounded-full mr-3 shrink-0 ${isZarmedeeActive ? "bg-accent-500" : "bg-accent-500/50"}`}
-                />
-                {t.nav.newsAds}
-              </span>
-              <ChevronDown
-                className={`shrink-0 transition-transform ${zarmedeeOpen ? "rotate-180" : ""}`}
-              />
+              {lang === "mn" ? "Switch to English" : "Монгол руу шилжих"}
             </button>
-            {zarmedeeOpen && (
-              <div className="pb-2 pl-2">
-                {zarmedeeLinks.map((item) => {
-                  const active = pathname === item.href;
-                  return (
-                    <Link
-                      key={item.href}
-                      href={item.href}
-                      onClick={() => {
-                        setMenuOpen(false);
-                        setZarmedeeOpen(false);
-                      }}
-                      className={`flex items-center py-2.5 pl-6 text-sm border-l-2 border-brand-700 transition-colors ${
-                        active
-                          ? "border-accent-500 text-accent-500"
-                          : "border-transparent text-gray-400 hover:text-accent-400"
-                      }`}
-                    >
-                      {item.label}
-                    </Link>
-                  );
-                })}
-              </div>
-            )}
           </div>
-
-          {restNavLinks.map((link) => {
-            const isActive = pathname === link.href;
-            return (
-              <Link
-                key={link.href}
-                href={link.href}
-                onClick={() => {
-                  setMenuOpen(false);
-                  setZarmedeeOpen(false);
-                }}
-                className={`flex items-center py-3.5 text-sm font-medium border-b border-brand-800 last:border-0 transition-colors ${
-                  isActive
-                    ? "text-accent-500"
-                    : "text-gray-300 hover:text-accent-500"
-                }`}
-              >
-                <span
-                  className={`w-1.5 h-1.5 rounded-full mr-3 shrink-0 ${isActive ? "bg-accent-500" : "bg-accent-500/50"}`}
-                />
-                {link.label}
-              </Link>
-            );
-          })}
         </div>
       </div>
     </header>
+  );
+}
+
+function LogoMark() {
+  return (
+    <img 
+      src="/logo.png" 
+      alt="Zevtabs" 
+      className="w-8 h-8 object-contain shrink-0 group-hover:scale-110 transition-transform duration-300" 
+    />
+  );
+}
+
+function WordMark({ dark }: { dark: boolean }) {
+  return (
+    <span
+      className={`text-[17px] font-semibold tracking-tight transition-colors duration-300 ${
+        dark ? "text-neutral-800" : "text-white"
+      }`}
+    >
+      Zevtabs
+    </span>
   );
 }

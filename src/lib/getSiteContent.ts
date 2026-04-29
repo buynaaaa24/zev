@@ -9,6 +9,7 @@ import type {
   SalesPageSections,
   ServicesSections,
   TeamPageSections,
+  PartnerLogo,
 } from "./site-content-types";
 import {
   fetchWithTimeout,
@@ -81,6 +82,7 @@ const EMPTY_CONTACT: ContactSections = {
   items: [],
   agent: { initials: "", name: "", role: "", telHref: "", telLabel: "" },
   formTitle: "",
+  formLabels: { name: "", email: "", message: "" },
 };
 const EMPTY_SERVICES: ServicesSections = {
   header: { badge: "", h2Line1: "", h2Accent: "", intro: "" },
@@ -163,6 +165,7 @@ export async function getAboutSections(lang: string = "mn", siteId: string = "ze
       ...EMPTY_ABOUT.main,
       ...main,
       stats: Array.isArray(main.stats) ? (main.stats as { value: string; label: string }[]) : [],
+      partners: Array.isArray(main.partners) ? (main.partners as PartnerLogo[]) : [],
     },
   };
 }
@@ -187,6 +190,7 @@ export async function getContactSections(lang: string = "mn", siteId: string = "
     items: Array.isArray(patch.items) ? (patch.items as ContactSections["items"]) : [],
     agent: { ...EMPTY_CONTACT.agent, ...asRecord(patch.agent) },
     formTitle: typeof patch.formTitle === "string" ? patch.formTitle : "",
+    formLabels: { ...EMPTY_CONTACT.formLabels, ...asRecord(patch.formLabels) } as ContactSections["formLabels"],
   };
 }
 

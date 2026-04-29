@@ -1,38 +1,20 @@
-import type { Metadata } from "next";
 import { Suspense } from "react";
-import { Roboto } from "next/font/google";
-import "../globals.css";
 import Providers from "@/components/Providers";
 import Navbar from "@/components/Navbar";
 import FooterWithContent from "@/components/FooterWithContent";
 import PageWrapper from "@/components/PageWrapper";
 import ChatBotLoader from "@/components/ChatBotLoader";
 
-import { getLanguageServer } from "@/lib/i18n-server";
-
-const roboto = Roboto({
-  variable: "--font-roboto",
-  subsets: ["latin"],
-  weight: ["400", "700", "900"],
-  display: "swap",
-});
-
-export const metadata: Metadata = {
-  title: "BukhBat — Барилга & Оффис Түрээс",
-  description:
-    "BukhBat нь premium арилжааны орон зай болон оффис барьж, түрээслүүлдэг. Орчин үеийн барилга, ухаалаг дизайн, бизнест зориулсан уян хатан түрээсийн нөхцөл.",
-};
-
 function FooterFallback() {
   return (
     <footer
-      className="min-h-[12rem] border-t border-brand-800 bg-brand-900"
+      className="min-h-[12rem] border-t border-neutral-100 bg-neutral-50"
       aria-hidden
     />
   );
 }
 
-export default async function RootLayout({
+export default async function SiteLayout({
   children,
   params,
 }: Readonly<{
@@ -40,21 +22,17 @@ export default async function RootLayout({
   params: Promise<{ siteId: string }>;
 }>) {
   const { siteId } = await params;
-  const lang = await getLanguageServer();
+  
   return (
-    <html lang={lang} className={`${roboto.variable} h-full antialiased`}>
-      <body className="min-h-full flex flex-col">
-        <Providers>
-          <Navbar siteId={siteId} />
-          <PageWrapper>
-            <main className="flex-1">{children}</main>
-          </PageWrapper>
-          <Suspense fallback={<FooterFallback />}>
-            <FooterWithContent siteId={siteId} />
-          </Suspense>
-          <ChatBotLoader />
-        </Providers>
-      </body>
-    </html>
+    <Providers>
+      <Navbar siteId={siteId} />
+      <PageWrapper>
+        <main className="flex-1">{children}</main>
+      </PageWrapper>
+      <Suspense fallback={<FooterFallback />}>
+        <FooterWithContent siteId={siteId} />
+      </Suspense>
+      <ChatBotLoader />
+    </Providers>
   );
 }
