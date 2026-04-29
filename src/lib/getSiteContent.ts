@@ -1,0 +1,233 @@
+import { cache } from "react";
+import type {
+  AboutSections,
+  ContactSections,
+  FooterSections,
+  HomeSections,
+  JobsPageSections,
+  PropertiesPageSections,
+  SalesPageSections,
+  ServicesSections,
+  TeamPageSections,
+} from "./site-content-types";
+import {
+  fetchWithTimeout,
+  SERVER_FETCH_TIMEOUT_MS,
+  type NextFetchInit,
+} from "./server-fetch";
+
+/**
+ * Server-side CMS base (not necessarily the same as the browser's NEXT_PUBLIC_API_URL).
+ * Falls back to loopback for local builds when env is unset.
+ * Strips trailing `/api` since callers already append `/api/v1/…`.
+ */
+function getApiBaseForServer(): string {
+  let url = (
+    process.env.SITE_CONTENT_API_URL ??
+    process.env.API_INTERNAL_URL ??
+    process.env.NEXT_PUBLIC_API_URL ??
+    "http://127.0.0.1:4000"
+  ).trim().replace(/\/+$/, "");
+  if (url.endsWith("/api")) {
+    url = url.slice(0, -4);
+  }
+  return url;
+}
+
+function skipFetch(): boolean {
+  const v = process.env.SKIP_SITE_CONTENT_FETCH;
+  return v === "1" || v === "true";
+}
+
+type ApiSitePage = {
+  sections?: unknown;
+};
+
+const EMPTY_HOME: HomeSections = {
+  hero: {
+    slideImages: [],
+    badge: "",
+    titleLine1: "",
+    titleAccent: "",
+    titleLine2: "",
+    desc: "",
+    btn1: "",
+    btn2: "",
+    stats: [],
+    slideLabel: "",
+  },
+};
+const EMPTY_ABOUT: AboutSections = {
+  main: {
+    sectionLabel: "",
+    h2Line1: "",
+    h2Accent: "",
+    p1: "",
+    p2: "",
+    imageUrl: "",
+    imageBuildingName: "",
+    imageBuildingSubtitle: "",
+    yearsBadgeValue: "",
+    yearsLabel: "",
+    stats: [],
+  },
+};
+const EMPTY_FOOTER: FooterSections = {
+  partners: { partnersLabel: "", items: [] },
+  brand: { desc: "" },
+};
+const EMPTY_CONTACT: ContactSections = {
+  hero: { badge: "", h2Accent: "", intro: "" },
+  items: [],
+  agent: { initials: "", name: "", role: "", telHref: "", telLabel: "" },
+  formTitle: "",
+};
+const EMPTY_SERVICES: ServicesSections = {
+  header: { badge: "", h2Line1: "", h2Accent: "", intro: "" },
+  features: [],
+  banner: [],
+};
+const EMPTY_PROPERTIES_PAGE: PropertiesPageSections = {
+  header: { badge: "", titleLine1: "", titleAccent: "", intro: "" },
+  categories: [],
+  items: [],
+  cta: { href: "", label: "" },
+};
+const EMPTY_SALES_PAGE: SalesPageSections = {
+  header: { eyebrow: "", title: "", intro: "" },
+};
+const EMPTY_JOBS_PAGE: JobsPageSections = {
+  header: { title: "", intro: "" },
+};
+const EMPTY_TEAM_PAGE: TeamPageSections = {
+  header: { eyebrow: "", h2Line1: "", h2Accent: "", intro: "" },
+  members: [],
+  cta: { title: "", subtitle: "", buttonLabel: "", buttonHref: "" },
+};
+
+const REVALIDATE_SECONDS = 60;
+
+const fetchSitePageSections = cache(async (pageId: string, lang: string = "mn", siteId: string = "zevtaps"): Promise<unknown> => {
+  if (skipFetch()) return {};
+
+  const isDev = process.env.NODE_ENV === "development";
+  const fetchInit: NextFetchInit = isDev
+    ? { cache: "no-store" }
+    : {
+        next: {
+          revalidate: REVALIDATE_SECONDS,
+          tags: ["site-content"],
+        },
+      };
+
+  try {
+    const res = await fetchWithTimeout(
+      `${getApiBaseForServer()}/api/v1/site-pages/${pageId}?lang=${lang}&siteId=${siteId}`,
+      fetchInit,
+      SERVER_FETCH_TIMEOUT_MS,
+    );
+    if (!res.ok) return {};
+    const json = (await res.json()) as { data?: ApiSitePage };
+    return json.data?.sections && typeof json.data.sections === "object"
+      ? json.data.sections
+      : {};
+  } catch {
+    return {};
+  }
+});
+
+function asRecord(v: unknown): Record<string, unknown> {
+  return v && typeof v === "object" && !Array.isArray(v)
+    ? (v as Record<string, unknown>)
+    : {};
+}
+
+export async function getHomeSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<HomeSections> {
+  const patch = asRecord(await fetchSitePageSections("home", lang, siteId));
+  const hero = asRecord(patch.hero);
+  return {
+    hero: {
+      ...EMPTY_HOME.hero,
+      ...hero,
+      slideImages: Array.isArray(hero.slideImages) ? (hero.slideImages as string[]) : [],
+      stats: Array.isArray(hero.stats) ? (hero.stats as { value: string; label: string }[]) : [],
+    },
+  };
+}
+
+export async function getAboutSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<AboutSections> {
+  const patch = asRecord(await fetchSitePageSections("about", lang, siteId));
+  const main = asRecord(patch.main);
+  return {
+    main: {
+      ...EMPTY_ABOUT.main,
+      ...main,
+      stats: Array.isArray(main.stats) ? (main.stats as { value: string; label: string }[]) : [],
+    },
+  };
+}
+
+export async function getFooterSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<FooterSections> {
+  const patch = asRecord(await fetchSitePageSections("footer", lang, siteId));
+  const partners = asRecord(patch.partners);
+  return {
+    partners: {
+      ...EMPTY_FOOTER.partners,
+      ...partners,
+      items: Array.isArray(partners.items) ? (partners.items as FooterSections["partners"]["items"]) : [],
+    },
+    brand: { ...EMPTY_FOOTER.brand, ...asRecord(patch.brand) },
+  };
+}
+
+export async function getContactSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<ContactSections> {
+  const patch = asRecord(await fetchSitePageSections("contact", lang, siteId));
+  return {
+    hero: { ...EMPTY_CONTACT.hero, ...asRecord(patch.hero) },
+    items: Array.isArray(patch.items) ? (patch.items as ContactSections["items"]) : [],
+    agent: { ...EMPTY_CONTACT.agent, ...asRecord(patch.agent) },
+    formTitle: typeof patch.formTitle === "string" ? patch.formTitle : "",
+  };
+}
+
+export async function getServicesSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<ServicesSections> {
+  const patch = asRecord(await fetchSitePageSections("services", lang, siteId));
+  return {
+    header: { ...EMPTY_SERVICES.header, ...asRecord(patch.header) },
+    features: Array.isArray(patch.features) ? (patch.features as ServicesSections["features"]) : [],
+    banner: Array.isArray(patch.banner) ? (patch.banner as ServicesSections["banner"]) : [],
+  };
+}
+
+export async function getPropertiesPageSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<PropertiesPageSections> {
+  const patch = asRecord(await fetchSitePageSections("properties-page", lang, siteId));
+  return {
+    header: { ...EMPTY_PROPERTIES_PAGE.header, ...asRecord(patch.header) },
+    categories: Array.isArray(patch.categories) ? (patch.categories as string[]) : [],
+    items: Array.isArray(patch.items) ? (patch.items as PropertiesPageSections["items"]) : [],
+    cta: { ...EMPTY_PROPERTIES_PAGE.cta, ...asRecord(patch.cta) },
+  };
+}
+
+export async function getSalesPageSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<SalesPageSections> {
+  const patch = asRecord(await fetchSitePageSections("sales-page", lang, siteId));
+  return {
+    header: { ...EMPTY_SALES_PAGE.header, ...asRecord(patch.header) },
+  };
+}
+
+export async function getJobsPageSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<JobsPageSections> {
+  const patch = asRecord(await fetchSitePageSections("jobs-page", lang, siteId));
+  return {
+    header: { ...EMPTY_JOBS_PAGE.header, ...asRecord(patch.header) },
+  };
+}
+
+export async function getTeamPageSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<TeamPageSections> {
+  const patch = asRecord(await fetchSitePageSections("team", lang, siteId));
+  return {
+    header: { ...EMPTY_TEAM_PAGE.header, ...asRecord(patch.header) },
+    members: Array.isArray(patch.members) ? (patch.members as TeamPageSections["members"]) : [],
+    cta: { ...EMPTY_TEAM_PAGE.cta, ...asRecord(patch.cta) },
+  };
+}
