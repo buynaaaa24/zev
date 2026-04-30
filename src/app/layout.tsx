@@ -14,6 +14,9 @@ export const metadata: Metadata = {
   title: "Zevtabs",
   description:
     "Zevtabs delivers cutting-edge digital solutions with an uncompromising commitment to design, performance, and user experience.",
+  icons: {
+    icon: "/logo.png",
+  },
 };
 
 export default async function RootLayout({
