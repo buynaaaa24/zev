@@ -100,6 +100,13 @@ export type PropertiesPageSections = {
     category: string;
     videoUrl?: string;
     redirectUrl?: string;
+    badge?: string | null;
+    size?: string;
+    floor?: string;
+    parking?: string;
+    price?: string;
+    tag?: string;
+    description?: string;
   }[];
   cta: {
     href: string;
