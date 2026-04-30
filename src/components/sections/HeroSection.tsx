@@ -155,12 +155,6 @@ export default function HeroSection({ hero }: { hero: HomeSections["hero"] }) {
               <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" />
             </svg>
           </button>
-          <button
-            onClick={() => document.getElementById("about")?.scrollIntoView({ behavior: "smooth" })}
-            className="inline-flex items-center justify-center gap-2 px-8 py-4 rounded-full border border-white/20 text-white text-[15px] font-medium hover:bg-white/10 hover:border-white/30 active:scale-[0.97] transition-all duration-300"
-          >
-            {hero.btn2 || "Discover More"}
-          </button>
         </div>
 
         {/* Stats */}
@@ -183,13 +177,6 @@ export default function HeroSection({ hero }: { hero: HomeSections["hero"] }) {
         </div>
       </div>
 
-      {/* Scroll indicator */}
-      <div className="absolute bottom-8 left-1/2 -translate-x-1/2 flex flex-col items-center gap-2 z-10 animate-bounce" style={{ animationDuration: "2s" }}>
-        <span className="text-white/25 text-[10px] uppercase tracking-widest">Scroll</span>
-        <svg className="w-4 h-4 text-white/25" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M19 9l-7 7-7-7" />
-        </svg>
-      </div>
     </section>
   );
 }

@@ -3,30 +3,27 @@
 import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { usePosEaseLang } from "@/contexts/PosEaseLangContext";
+import { useAmarHomeLang } from "@/contexts/AmarHomeLangContext";
 
 const NAV = {
   en: [
-    { label: "Overview",      href: "/posease", key: "overview" },
-    { label: "Features",      href: "/posease#features", key: "features" },
-    { label: "Hardware",      href: "/posease#hardware", key: "hardware" },
-    { label: "Pricing",       href: "/posease#pricing", key: "pricing" },
+    { label: "Overview",      href: "/amarhome", key: "overview" },
+    { label: "Features",      href: "/amarhome#features", key: "features" },
+    { label: "Hardware",      href: "/amarhome#hardware", key: "hardware" },
+    { label: "Pricing",       href: "/amarhome#pricing", key: "pricing" },
   ],
   mn: [
-    { label: "Танилцуулга",   href: "/posease", key: "overview" },
-    { label: "Онцлогууд",     href: "/posease#features", key: "features" },
-    { label: "Төхөөрөмж",     href: "/posease#hardware", key: "hardware" },
-    { label: "Үнэ тариф",     href: "/posease#pricing", key: "pricing" },
+    { label: "Танилцуулга",   href: "/amarhome", key: "overview" },
+    { label: "Онцлогууд",     href: "/amarhome#features", key: "features" },
+    { label: "Төхөөрөмж",     href: "/amarhome#hardware", key: "hardware" },
+    { label: "Үнэ тариф",     href: "/amarhome#pricing", key: "pricing" },
   ],
 };
 
-const PRIMARY = "#ec4899"; // Pink 500
-
-export default function PosEaseNavbar() {
+export default function AmarHomeNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { lang, toggle, sections } = usePosEaseLang();
+  const { lang, toggle, sections } = useAmarHomeLang();
   
-  // Filter links based on active sections
   const links = NAV[lang].filter(link => {
     if (link.key === "overview") return true;
     if (link.key === "features") return sections.features;
@@ -50,14 +47,15 @@ export default function PosEaseNavbar() {
         "
       >
         {/* Logo */}
-        <Link href="/posease" className="flex items-center gap-3 group">
+        <Link href="/amarhome" className="flex items-center gap-3 group">
           <div
-            className="rounded-2xl overflow-hidden shrink-0 transition-all duration-500 w-11 h-11 shadow-[0_4px_12px_rgba(236,72,153,0.3)]"
+            className="rounded-2xl overflow-hidden shrink-0 transition-all duration-500 w-11 h-11"
+            style={{ boxShadow: `0 4px 12px rgba(5,150,105,0.4)` }}
           >
-            <img src="/posease-logo.jpg" alt="PosEase" className="w-full h-full object-cover" />
+            <img src="/amarhome-logo.jpg" alt="AmarHome" className="w-full h-full object-cover" />
           </div>
           <span className="font-bold tracking-tight text-white text-base">
-            PosEase
+            AmarHome
           </span>
         </Link>
 

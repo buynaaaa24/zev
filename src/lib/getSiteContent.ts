@@ -11,6 +11,7 @@ import type {
   TeamPageSections,
   PartnerLogo,
   PosEaseSections,
+  AmarHomeSections,
 } from "./site-content-types";
 import {
   fetchWithTimeout,
@@ -113,6 +114,12 @@ const EMPTY_POSEASE: PosEaseSections = {
   hardware: { title: "", items: [] },
   pricing: { title: "", tiers: [] },
 };
+const EMPTY_AMARHOME: AmarHomeSections = {
+  hero: { title: "", titleAccent: "", desc: "", cta: "" },
+  features: { title: "", desc: "", items: [] },
+  hardware: { title: "", items: [] },
+  pricing: { title: "", tiers: [] },
+};
 
 const REVALIDATE_SECONDS = 60;
 
@@ -123,11 +130,11 @@ const fetchSitePageSections = cache(async (pageId: string, lang: string = "mn", 
   const fetchInit: NextFetchInit = isDev
     ? { cache: "no-store" }
     : {
-        next: {
-          revalidate: REVALIDATE_SECONDS,
-          tags: ["site-content"],
-        },
-      };
+      next: {
+        revalidate: REVALIDATE_SECONDS,
+        tags: ["site-content"],
+      },
+    };
 
   try {
     const res = await fetchWithTimeout(
@@ -259,6 +266,27 @@ export async function getPosEaseSections(lang: string = "mn", siteId: string = "
     },
     pricing: {
       ...EMPTY_POSEASE.pricing,
+      ...asRecord(patch.pricing),
+      tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
+    },
+  };
+}
+export async function getAmarHomeSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<AmarHomeSections> {
+  const patch = asRecord(await fetchSitePageSections("amarhome", lang, siteId));
+  return {
+    hero: { ...EMPTY_AMARHOME.hero, ...asRecord(patch.hero) },
+    features: {
+      ...EMPTY_AMARHOME.features,
+      ...asRecord(patch.features),
+      items: Array.isArray(asRecord(patch.features).items) ? (asRecord(patch.features).items as any) : [],
+    },
+    hardware: {
+      ...EMPTY_AMARHOME.hardware,
+      ...asRecord(patch.hardware),
+      items: Array.isArray(asRecord(patch.hardware).items) ? (asRecord(patch.hardware).items as any) : [],
+    },
+    pricing: {
+      ...EMPTY_AMARHOME.pricing,
       ...asRecord(patch.pricing),
       tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
     },

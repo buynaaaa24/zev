@@ -6,6 +6,9 @@ export const DEFAULT_API = "http://103.236.194.106:5000";
  * `/api` (common reverse-proxy setup) we strip it automatically.
  */
 export function getApiBaseUrl(): string {
+  if (typeof window !== "undefined") {
+    return "";
+  }
   let url = (process.env.NEXT_PUBLIC_API_URL ?? DEFAULT_API).trim().replace(/\/+$/, "");
   if (url.endsWith("/api")) {
     url = url.slice(0, -4);
@@ -15,14 +18,14 @@ export function getApiBaseUrl(): string {
 
 /**
  * Socket.io is mounted on the HTTP server root (`/socket.io/`), not under `/api/v1`.
- * If `NEXT_PUBLIC_API_URL` ends with `/api`, use the origin without it for `io()`.
+ * Always use the direct backend URL for sockets because `next.config.mjs` does not proxy `/socket.io`.
  */
 export function getSocketBaseUrl(): string {
-  let u = getApiBaseUrl().replace(/\/$/, "");
-  if (u.endsWith("/api")) {
-    u = u.slice(0, -4);
+  let url = (process.env.NEXT_PUBLIC_API_URL ?? DEFAULT_API).trim().replace(/\/+$/, "");
+  if (url.endsWith("/api")) {
+    url = url.slice(0, -4);
   }
-  return u;
+  return url;
 }
 
 /**

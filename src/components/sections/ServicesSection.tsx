@@ -48,10 +48,8 @@ function ServiceRow({ s, index }: { s: { n: string; title: string; desc: string;
           <span key={t} className="px-3 py-1 text-xs font-medium rounded-full bg-neutral-100 text-neutral-500 group-hover:bg-accent-50 group-hover:text-accent-600 transition-colors duration-300">{t}</span>
         ))}
       </div>
-      <div className="shrink-0 w-9 h-9 rounded-full border border-neutral-200 flex items-center justify-center text-neutral-300 group-hover:border-accent-500 group-hover:text-accent-500 group-hover:translate-x-1 transition-all duration-300">
-        <svg className="w-3.5 h-3.5" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
-      </div>
     </div>
+
   );
 }
 

@@ -49,7 +49,10 @@ export default async function Home({
         }
       />
       <ServicesSection services={servicesData} />
-      <WorkSection properties={propertiesData} />
+      <WorkSection 
+        properties={propertiesData} 
+        bgImages={homeData.hero.slideImages}
+      />
       <ContactSection contact={contactData} />
     </>
   );

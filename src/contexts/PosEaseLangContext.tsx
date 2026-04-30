@@ -4,12 +4,29 @@ import { createContext, useContext, useState, useEffect, ReactNode } from "react
 
 export type PLang = "en" | "mn";
 
-type Ctx = { lang: PLang; toggle: () => void };
+type ActiveSections = {
+  features: boolean;
+  hardware: boolean;
+  pricing: boolean;
+};
 
-const PosEaseLangContext = createContext<Ctx>({ lang: "mn", toggle: () => {} });
+type Ctx = { 
+  lang: PLang; 
+  toggle: () => void; 
+  sections: ActiveSections;
+  setSections: (s: ActiveSections) => void;
+};
+
+const PosEaseLangContext = createContext<Ctx>({ 
+  lang: "mn", 
+  toggle: () => {},
+  sections: { features: true, hardware: true, pricing: true },
+  setSections: () => {}
+});
 
 export function PosEaseLangProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<PLang>("mn");
+  const [sections, setSections] = useState<ActiveSections>({ features: true, hardware: true, pricing: true });
 
   useEffect(() => {
     const match = document.cookie.match(/(^|;)\s*posease-lang\s*=\s*([^;]+)/);
@@ -24,7 +41,7 @@ export function PosEaseLangProvider({ children }: { children: ReactNode }) {
   };
 
   return (
-    <PosEaseLangContext.Provider value={{ lang, toggle }}>
+    <PosEaseLangContext.Provider value={{ lang, toggle, sections, setSections }}>
       {children}
     </PosEaseLangContext.Provider>
   );

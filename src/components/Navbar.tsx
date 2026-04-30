@@ -9,7 +9,7 @@ const SECTIONS = [
   { id: "home",     label: { en: "Home",     mn: "Нүүр" } },
   { id: "about",    label: { en: "About",    mn: "Тухай" } },
   { id: "services", label: { en: "Services", mn: "Үйлчилгээ" } },
-  { id: "showcase", label: { en: "Work",     mn: "Төсөл" } },
+  { id: "work",     label: { en: "Work",     mn: "Төсөл" } },
   { id: "contact",  label: { en: "Contact",  mn: "Холбоо" } },
 ];
 
@@ -32,7 +32,7 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
   // Track scroll depth + active section
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > 30);
+      setScrolled(window.scrollY > window.innerHeight - 80);
 
       // Find which section is currently in view
       const sectionIds = SECTIONS.map((s) => s.id);
@@ -64,13 +64,20 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${
-        isTransparent
-          ? "bg-transparent"
-          : "bg-white/80 backdrop-blur-xl border-b border-neutral-100/60 shadow-sm"
+      className={`fixed top-0 left-0 right-0 z-[200] flex justify-center transition-all duration-500 pointer-events-none ${
+        scrolled ? "pt-0" : "pt-4 sm:pt-6"
       }`}
     >
-      <div className="max-w-[1200px] mx-auto px-6 flex items-center justify-between h-[60px] md:h-[68px]">
+      <div 
+        className={`
+          flex items-center justify-between pointer-events-auto
+          transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]
+          ${scrolled 
+            ? "w-full h-[60px] md:h-[68px] rounded-none bg-white/80 backdrop-blur-[24px] border-b border-neutral-200/50 shadow-sm px-6 md:px-10" 
+            : "w-[92%] max-w-[1200px] h-[60px] md:h-[64px] rounded-[32px] bg-white/10 backdrop-blur-[12px] border border-white/20 px-6 shadow-2xl"
+          }
+        `}
+      >
 
         {/* Logo */}
         <button
@@ -106,10 +113,10 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
                     isActive
                       ? isTransparent
                         ? "text-white bg-white/10"
-                        : "text-neutral-800 bg-neutral-100"
+                        : "text-neutral-900 bg-neutral-100"
                       : isTransparent
                         ? "text-white/70 hover:text-white hover:bg-white/10"
-                        : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100"
+                        : "text-neutral-500 hover:text-neutral-900 hover:bg-neutral-100"
                   }`}
                 >
                   {label}
