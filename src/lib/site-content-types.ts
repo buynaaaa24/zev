@@ -152,3 +152,26 @@ export type TeamPageSections = {
     buttonHref: string;
   };
 };
+export type PosEaseSections = {
+  hero: {
+    title: string;
+    titleAccent: string;
+    desc: string;
+    cta: string;
+    secondary: string;
+    image?: string;
+  };
+  features: {
+    title: string;
+    desc: string;
+    items: { title: string; desc: string; size: "small" | "medium" | "large"; image?: string }[];
+  };
+  hardware: {
+    title: string;
+    items: { name: string; desc: string; label: string; image?: string }[];
+  };
+  pricing: {
+    title: string;
+    tiers: { name: string; price: string; desc: string }[];
+  };
+};

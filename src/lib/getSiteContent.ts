@@ -10,6 +10,7 @@ import type {
   ServicesSections,
   TeamPageSections,
   PartnerLogo,
+  PosEaseSections,
 } from "./site-content-types";
 import {
   fetchWithTimeout,
@@ -105,6 +106,12 @@ const EMPTY_TEAM_PAGE: TeamPageSections = {
   header: { eyebrow: "", h2Line1: "", h2Accent: "", intro: "" },
   members: [],
   cta: { title: "", subtitle: "", buttonLabel: "", buttonHref: "" },
+};
+const EMPTY_POSEASE: PosEaseSections = {
+  hero: { title: "", titleAccent: "", desc: "", cta: "", secondary: "" },
+  features: { title: "", desc: "", items: [] },
+  hardware: { title: "", items: [] },
+  pricing: { title: "", tiers: [] },
 };
 
 const REVALIDATE_SECONDS = 60;
@@ -233,5 +240,27 @@ export async function getTeamPageSections(lang: string = "mn", siteId: string = 
     header: { ...EMPTY_TEAM_PAGE.header, ...asRecord(patch.header) },
     members: Array.isArray(patch.members) ? (patch.members as TeamPageSections["members"]) : [],
     cta: { ...EMPTY_TEAM_PAGE.cta, ...asRecord(patch.cta) },
+  };
+}
+
+export async function getPosEaseSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<PosEaseSections> {
+  const patch = asRecord(await fetchSitePageSections("posease", lang, siteId));
+  return {
+    hero: { ...EMPTY_POSEASE.hero, ...asRecord(patch.hero) },
+    features: {
+      ...EMPTY_POSEASE.features,
+      ...asRecord(patch.features),
+      items: Array.isArray(asRecord(patch.features).items) ? (asRecord(patch.features).items as any) : [],
+    },
+    hardware: {
+      ...EMPTY_POSEASE.hardware,
+      ...asRecord(patch.hardware),
+      items: Array.isArray(asRecord(patch.hardware).items) ? (asRecord(patch.hardware).items as any) : [],
+    },
+    pricing: {
+      ...EMPTY_POSEASE.pricing,
+      ...asRecord(patch.pricing),
+      tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
+    },
   };
 }
