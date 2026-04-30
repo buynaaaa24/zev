@@ -6,7 +6,7 @@
     "port": "5002"
   },
   "scripts": {
-    "dev": "next dev --port 5001",
+    "dev": "next dev --port 5002",
     "dev:webpack": "next dev --webpack --port 5002",
     "build": "next build",
     "start": "next start --port 5002",

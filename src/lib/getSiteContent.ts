@@ -27,7 +27,7 @@ function getApiBaseForServer(): string {
     process.env.SITE_CONTENT_API_URL ??
     process.env.API_INTERNAL_URL ??
     process.env.NEXT_PUBLIC_API_URL ??
-    "http://103.236.194.106:5001"
+    "http://103.236.194.106:5000"
   ).trim().replace(/\/+$/, "");
   if (url.endsWith("/api")) {
     url = url.slice(0, -4);

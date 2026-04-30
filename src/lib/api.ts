@@ -1,4 +1,4 @@
-export const DEFAULT_API = "http://103.236.194.106:5001";
+export const DEFAULT_API = "http://103.236.194.106:5000";
 
 /**
  * Base URL for foodcity-back (no trailing slash, no trailing `/api`).
