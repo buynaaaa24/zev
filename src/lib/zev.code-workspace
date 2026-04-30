@@ -1,0 +1,14 @@
+{
+	"folders": [
+		{
+			"path": "../.."
+		},
+		{
+			"path": "../../../zevBack"
+		},
+		{
+			"path": "../../../zevAdmin"
+		}
+	],
+	"settings": {}
+}

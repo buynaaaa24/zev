@@ -7,19 +7,21 @@ export type PartnerLogo = {
   height: number;
 };
 
+export type HeroContent = {
+  slideImages: string[];
+  badge: string;
+  titleLine1: string;
+  titleAccent: string;
+  titleLine2: string;
+  desc: string;
+  btn1: string;
+  btn2: string;
+  stats: StatItem[];
+  slideLabel: string;
+};
+
 export type HomeSections = {
-  hero: {
-    slideImages: string[];
-    badge: string;
-    titleLine1: string;
-    titleAccent: string;
-    titleLine2: string;
-    desc: string;
-    btn1: string;
-    btn2: string;
-    stats: StatItem[];
-    slideLabel: string;
-  };
+  hero: HeroContent;
 };
 
 export type AboutSections = {
