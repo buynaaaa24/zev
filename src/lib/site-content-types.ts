@@ -98,13 +98,6 @@ export type PropertiesPageSections = {
     name: string;
     image: string;
     category: string;
-    badge: string | null;
-    size: string;
-    floor: string;
-    parking: string;
-    price: string;
-    tag: string;
-    description: string;
     videoUrl?: string;
     redirectUrl?: string;
   }[];
