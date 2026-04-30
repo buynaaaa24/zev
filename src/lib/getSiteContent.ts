@@ -12,6 +12,7 @@ import type {
   PartnerLogo,
   PosEaseSections,
   AmarHomeSections,
+  RentlySections,
 } from "./site-content-types";
 import {
   fetchWithTimeout,
@@ -118,6 +119,14 @@ const EMPTY_AMARHOME: AmarHomeSections = {
   hero: { title: "", titleAccent: "", desc: "", cta: "" },
   features: { title: "", desc: "", items: [] },
   hardware: { title: "", items: [] },
+  pricing: { title: "", tiers: [] },
+};
+const EMPTY_RENTLY: RentlySections = {
+  hero: { title: "", titleAccent: "", desc: "", cta: "", secondary: "" },
+  features: { title: "", desc: "", items: [] },
+  notifications: { title: "", desc: "" },
+  penalties: { title: "", desc: "" },
+  costs: { title: "", desc: "" },
   pricing: { title: "", tiers: [] },
 };
 
@@ -287,6 +296,26 @@ export async function getAmarHomeSections(lang: string = "mn", siteId: string = 
     },
     pricing: {
       ...EMPTY_AMARHOME.pricing,
+      ...asRecord(patch.pricing),
+      tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
+    },
+  };
+}
+
+export async function getRentlySections(lang: string = "mn", siteId: string = "zevtaps"): Promise<RentlySections> {
+  const patch = asRecord(await fetchSitePageSections("rently", lang, siteId));
+  return {
+    hero: { ...EMPTY_RENTLY.hero, ...asRecord(patch.hero) },
+    features: {
+      ...EMPTY_RENTLY.features,
+      ...asRecord(patch.features),
+      items: Array.isArray(asRecord(patch.features).items) ? (asRecord(patch.features).items as any) : [],
+    },
+    notifications: { ...EMPTY_RENTLY.notifications, ...asRecord(patch.notifications) },
+    penalties: { ...EMPTY_RENTLY.penalties, ...asRecord(patch.penalties) },
+    costs: { ...EMPTY_RENTLY.costs, ...asRecord(patch.costs) },
+    pricing: {
+      ...EMPTY_RENTLY.pricing,
       ...asRecord(patch.pricing),
       tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
     },
