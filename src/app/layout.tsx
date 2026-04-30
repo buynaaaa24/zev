@@ -11,7 +11,7 @@ const inter = Inter({
 });
 
 export const metadata: Metadata = {
-  title: "Zevtabs — Premium Digital Solutions",
+  title: "Zevtabs",
   description:
     "Zevtabs delivers cutting-edge digital solutions with an uncompromising commitment to design, performance, and user experience.",
 };

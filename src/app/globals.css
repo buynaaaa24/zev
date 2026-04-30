@@ -143,7 +143,7 @@ html {
 
 /* ── Typography scale (Apple-like) ── */
 .display-xl {
-  @apply text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-black tracking-tight leading-none;
+  @apply text-5xl sm:text-6xl md:text-7xl lg:text-[88px] font-black tracking-tighter leading-[0.95];
 }
 .display-lg {
   @apply text-4xl sm:text-5xl md:text-6xl font-black tracking-tight leading-tight;
@@ -153,4 +153,39 @@ html {
 }
 .body-lg {
   @apply text-lg sm:text-xl leading-relaxed font-light;
+}
+
+/* ── 3D & Animation Utilities ── */
+.perspective-1200 {
+  perspective: 1200px;
+}
+.preserve-3d {
+  transform-style: preserve-3d;
+}
+.backface-hidden {
+  backface-visibility: hidden;
+}
+
+.tilt-wrapper {
+  transition: transform 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+  will-change: transform;
+}
+
+.apple-mask {
+  mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, black 80%, transparent 100%);
+}
+
+.mask-fade-in {
+  mask-image: radial-gradient(circle at center, black 0%, transparent 100%);
+  mask-size: 200% 200%;
+  mask-position: center;
+  transition: mask-size 1.2s ease-in-out;
+}
+.mask-fade-in.visible {
+  mask-size: 100% 100%;
+}
+
+@media (max-width: 640px) {
+  .display-xl { @apply text-5xl; }
 }

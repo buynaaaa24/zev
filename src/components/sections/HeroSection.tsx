@@ -98,14 +98,15 @@ export default function HeroSection({ hero }: { hero: HomeSections["hero"] }) {
     <section id="home" ref={heroRef} className="relative min-h-screen flex items-center overflow-hidden bg-black">
       {/* Background Images */}
       {images.length > 0 ? (
-        <div className="absolute inset-0 z-0">
+        <div className="absolute inset-0 z-0 overflow-hidden">
           {images.map((src, i) => (
             <div
               key={i}
-              className="absolute inset-0 transition-opacity duration-1000 ease-in-out bg-cover bg-center"
+              className="absolute inset-0 transition-all duration-[3000ms] ease-out bg-cover bg-center"
               style={{
                 backgroundImage: `url(${src})`,
                 opacity: i === bgIdx ? 0.4 : 0,
+                transform: i === bgIdx ? "scale(1.08)" : "scale(1)",
               }}
             />
           ))}
@@ -125,20 +126,20 @@ export default function HeroSection({ hero }: { hero: HomeSections["hero"] }) {
 
       <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16 pt-36 pb-28 lg:pt-44">
         {/* Headline */}
-        <h1 className={`font-black tracking-tight leading-[1.04] mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`} style={{ transitionDelay: ".2s" }}>
-          <span className="block text-white text-5xl sm:text-6xl md:text-7xl lg:text-[88px]">
+        <h1 className={`display-xl mb-10 transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`} style={{ transitionDelay: ".2s" }}>
+          <span className="block text-white">
             {hero.titleLine1 || "Built for"}
           </span>
-          <span className="block text-5xl sm:text-6xl md:text-7xl lg:text-[88px]" style={{ background: "linear-gradient(135deg,#fff 0%,#a0b4ff 50%,#0066CC 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", transition: "opacity .35s ease, transform .35s ease", opacity: wordVisible ? 1 : 0, transform: wordVisible ? "translateY(0)" : "translateY(16px)" }}>
+          <span className="block" style={{ background: "linear-gradient(135deg,#fff 0%,#a0b4ff 50%,#0066CC 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", backgroundClip: "text", transition: "opacity .5s ease, transform .5s ease", opacity: wordVisible ? 1 : 0, transform: wordVisible ? "translateY(0)" : "translateY(24px)" }}>
             {WORDS[wordIdx]}
           </span>
-          <span className="block text-white/80 text-5xl sm:text-6xl md:text-7xl lg:text-[88px]">
+          <span className="block text-white/90">
             {hero.titleLine2 || "Delivered now."}
           </span>
         </h1>
 
         {/* Description */}
-        <p className={`text-white/45 text-lg sm:text-xl leading-relaxed max-w-xl mb-12 font-light transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: ".38s" }}>
+        <p className={`text-white/45 text-lg sm:text-2xl leading-relaxed max-w-2xl mb-14 font-light transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: ".45s" }}>
           {hero.desc || "Zevtabs is a premium platform combining cutting-edge design with powerful functionality — crafted for businesses that demand excellence."}
         </p>
 

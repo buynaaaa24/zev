@@ -105,6 +105,8 @@ export type PropertiesPageSections = {
     price: string;
     tag: string;
     description: string;
+    videoUrl?: string;
+    redirectUrl?: string;
   }[];
   cta: {
     href: string;

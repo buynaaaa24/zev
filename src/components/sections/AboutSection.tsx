@@ -34,16 +34,21 @@ function FeatureCard({ title, desc, index }: { title: string; desc: string; inde
       ref={ref}
       style={{
         transitionDelay: `${index * 80}ms`,
-        transitionDuration: "600ms",
+        transitionDuration: "800ms",
         transitionProperty: "opacity, transform",
-        transitionTimingFunction: "cubic-bezier(0.25,0.46,0.45,0.94)",
+        transitionTimingFunction: "cubic-bezier(0.22, 1, 0.36, 1)",
         opacity: vis ? 1 : 0,
-        transform: vis ? "translateY(0) scale(1)" : "translateY(32px) scale(0.97)",
+        transform: vis ? "translateY(0) scale(1)" : "translateY(40px) scale(0.97)",
       }}
-      className="group bg-white rounded-2xl p-8 border border-neutral-100 hover:border-accent-200 hover:shadow-xl hover:shadow-accent-500/5 cursor-default"
+      className="group bg-white rounded-3xl p-10 border border-neutral-100/80 hover:border-accent-200 hover:shadow-2xl hover:shadow-accent-500/10 cursor-default transition-all duration-500 hover:-translate-y-2"
     >
-      <h3 className="text-neutral-800 font-bold text-[17px] mb-2 group-hover:text-accent-600 transition-colors duration-300">{title}</h3>
-      <p className="text-neutral-400 text-[14px] leading-relaxed">{desc}</p>
+      <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center mb-6 group-hover:bg-accent-50 group-hover:scale-110 transition-all duration-500">
+        <div className="w-6 h-6 rounded-lg bg-accent-500/20 flex items-center justify-center">
+           <div className="w-2 h-2 rounded-full bg-accent-500" />
+        </div>
+      </div>
+      <h3 className="text-neutral-900 font-bold text-xl mb-3 group-hover:text-accent-600 transition-colors duration-300">{title}</h3>
+      <p className="text-neutral-500 text-[15px] leading-relaxed font-light">{desc}</p>
     </div>
   );
 }
@@ -81,8 +86,8 @@ export default function AboutSection({ about, partners = [] }: { about: AboutSec
           className="max-w-2xl mb-20"
           style={{
             opacity: headerVis ? 1 : 0,
-            transform: headerVis ? "translateY(0)" : "translateY(48px)",
-            transition: "opacity 0.8s cubic-bezier(0.25,0.46,0.45,0.94), transform 0.8s cubic-bezier(0.25,0.46,0.45,0.94)",
+            transform: headerVis ? "translateY(0)" : "translateY(60px)",
+            transition: "opacity 1s cubic-bezier(0.22, 1, 0.36, 1), transform 1s cubic-bezier(0.22, 1, 0.36, 1)",
           }}
         >
           <h2 className="text-4xl sm:text-5xl md:text-[56px] font-black tracking-tight leading-[1.06] text-neutral-800 mb-5">
