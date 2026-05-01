@@ -49,6 +49,121 @@ function ModalVideoPlayer({ src }: { src: string }) {
   );
 }
 
+function ProjectCard({ 
+  project: p, 
+  index: i, 
+  headerVis, 
+  onSelect 
+}: { 
+  project: Project; 
+  index: number; 
+  headerVis: boolean; 
+  onSelect: (p: Project) => void;
+}) {
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const hasDirectVideo = p.videoUrl && isDirectVideo(p.videoUrl);
+
+  const handleMouseEnter = () => {
+    if (videoRef.current) {
+      videoRef.current.play().catch(() => {});
+    }
+  };
+
+  const handleMouseLeave = () => {
+    if (videoRef.current) {
+      videoRef.current.pause();
+    }
+  };
+
+  return (
+    <div 
+      key={p.id} 
+      className={`group relative rounded-[48px] p-5 overflow-hidden border border-white/[0.08] bg-white/[0.03] backdrop-blur-3xl transition-all duration-1000 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
+      style={{ 
+        transitionDelay: `${i * 150}ms`,
+        boxShadow: "inset 0 0 0 1px rgba(255,255,255,0.05)"
+      }}
+      onMouseEnter={handleMouseEnter}
+      onMouseLeave={handleMouseLeave}
+    >
+      <div 
+        onClick={() => p.videoUrl && onSelect(p)}
+        className={`relative aspect-[16/11] max-h-[480px] overflow-hidden rounded-[32px] bg-neutral-950 mb-6 transition-all duration-700 group-hover:shadow-[0_30px_70px_rgba(0,0,0,0.6)] ${p.videoUrl ? 'cursor-pointer' : ''}`}
+      >
+        {/* Quality Masking: Subtle Frosted Glass Overlay (Clears on hover) */}
+        <div className="absolute inset-0 z-[15] bg-white/[0.02] backdrop-blur-[1px] group-hover:backdrop-blur-none transition-all duration-700 pointer-events-none" />
+        
+        {/* Grain/Noise Overlay for Quality Masking */}
+        <div className="absolute inset-0 z-20 opacity-[0.2] pointer-events-none mix-blend-overlay" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
+        
+        {/* Subtle Vignette & Glow */}
+        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/80 via-transparent to-black/20 pointer-events-none" />
+        <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.15),transparent_70%)] pointer-events-none" />
+
+        {/* Default Image */}
+        {p.image && (
+          <img 
+            src={resolveMediaUrl(p.image)} 
+            alt={p.title} 
+            className={`w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-110 ${hasDirectVideo ? 'group-hover:opacity-0' : 'opacity-100'}`}
+            loading="lazy"
+          />
+        )}
+        
+        {/* Autoplaying Video Preview (Muted) - Now plays on hover */}
+        {hasDirectVideo && (
+          <video
+            ref={videoRef}
+            src={resolveMediaUrl(p.videoUrl!)}
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 w-full h-full object-cover opacity-0 group-hover:opacity-100 transition-opacity duration-700 scale-105 group-hover:scale-100"
+          />
+        )}
+
+        {/* Play Overlay (iOS style) */}
+        {p.videoUrl && (
+          <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-all duration-500">
+            <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 backdrop-blur-md shadow-2xl">
+              <Play fill="white" className="ml-1 opacity-80" size={24} />
+            </div>
+          </div>
+        )}
+
+        <div className="absolute top-6 left-6 z-30 px-3 py-1 rounded-full bg-white/10 border border-white/10 backdrop-blur-xl opacity-0 group-hover:opacity-100 transition-all duration-500">
+          <span className="text-white/90 text-[10px] font-black uppercase tracking-[0.15em]">{p.category}</span>
+        </div>
+      </div>
+      
+      <div className="px-4 pb-4">
+        <div className="flex items-center justify-between mb-2">
+          <h3 className="text-white text-3xl font-black tracking-tight group-hover:text-indigo-400 transition-colors">
+            {p.title}
+          </h3>
+          {p.redirectUrl ? (
+            <a 
+              href={p.redirectUrl}
+              onClick={(e) => e.stopPropagation()}
+              className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-2 group-hover:translate-x-0 hover:bg-white hover:text-black hover:border-white hover:scale-110 active:scale-95"
+            >
+              <ArrowRight size={18} />
+            </a>
+          ) : (
+            <div className="w-10 h-10 rounded-full border border-white/10 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-500 translate-x-2 group-hover:translate-x-0">
+              <ArrowRight size={18} className="text-white/40" />
+            </div>
+          )}
+        </div>
+        <p className="text-white/40 font-medium text-lg leading-relaxed line-clamp-1">{p.category}</p>
+      </div>
+
+      {/* Glassy Corner Accent */}
+      <div className="absolute bottom-[-40px] right-[-40px] w-48 h-48 bg-indigo-500/10 blur-[60px] rounded-full pointer-events-none transition-transform duration-1000 group-hover:scale-150" />
+    </div>
+  );
+}
+
 export default function WorkSection({ 
   properties, 
   bgImages = [] 
@@ -221,72 +336,15 @@ export default function WorkSection({
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 relative z-10">
-          {displayProjects.map((p, i) => {
-            const hasDirectVideo = p.videoUrl && isDirectVideo(p.videoUrl);
-            return (
-              <div 
-                key={p.id} 
-                className={`group relative rounded-[48px] p-4 overflow-hidden border border-white/10 bg-neutral-900/40 backdrop-blur-xl transition-all duration-1000 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
-                style={{ transitionDelay: `${i * 150}ms` }}
-              >
-                <div 
-                  onClick={() => p.videoUrl && setActiveVideo(p)}
-                  className={`relative aspect-[16/10] max-h-[500px] overflow-hidden rounded-[36px] bg-neutral-900 mb-6 transition-all duration-500 group-hover:shadow-[0_20px_60px_rgba(0,0,0,0.5)] ${p.videoUrl ? 'cursor-pointer' : ''}`}
-                >
-                  {/* Grain/Noise Overlay for Quality Masking */}
-                  <div className="absolute inset-0 z-10 opacity-[0.15] pointer-events-none mix-blend-overlay" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
-                  
-                  {/* Subtle Vignette */}
-                  <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/60 via-transparent to-black/20 pointer-events-none" />
-
-                  {/* Default Image */}
-                  {p.image && (
-                    <img 
-                      src={resolveMediaUrl(p.image)} 
-                      alt={p.title} 
-                      className={`w-full h-full object-cover transition-transform duration-1000 group-hover:scale-105 ${hasDirectVideo ? 'opacity-0 group-hover:opacity-0' : 'opacity-100'}`}
-                      loading="lazy"
-                    />
-                  )}
-                  
-                  {/* Autoplaying Video Preview (Muted) */}
-                  {hasDirectVideo && (
-                    <video
-                      src={resolveMediaUrl(p.videoUrl!)}
-                      autoPlay
-                      muted
-                      loop
-                      playsInline
-                      className="absolute inset-0 w-full h-full object-cover"
-                    />
-                  )}
-
-                  {/* Play Overlay */}
-                  {p.videoUrl && (
-                    <div className="absolute inset-0 z-20 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-all duration-500">
-                      <div className="w-16 h-16 rounded-full bg-white text-black flex items-center justify-center scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 shadow-2xl">
-                        <Play fill="currentColor" className="ml-1" size={24} />
-                      </div>
-                    </div>
-                  )}
-
-                  <div className="absolute top-6 left-6 z-20 px-4 py-1 rounded-full bg-black/40 border border-white/10 backdrop-blur-md opacity-0 group-hover:opacity-100 transition-opacity duration-500">
-                    <span className="text-white text-[10px] font-black uppercase tracking-widest">{p.category}</span>
-                  </div>
-                </div>
-                
-                <div className="px-6 pb-6">
-                  <h3 className="text-white text-3xl font-black tracking-tight mb-2 group-hover:text-indigo-400 transition-colors">
-                    {p.title}
-                  </h3>
-                  <p className="text-white/40 font-medium text-lg leading-relaxed line-clamp-1">{p.category}</p>
-                </div>
-
-                {/* Corner Accent */}
-                <div className="absolute bottom-[-20px] right-[-20px] w-32 h-32 bg-indigo-600/10 blur-[40px] rounded-full pointer-events-none" />
-              </div>
-            );
-          })}
+          {displayProjects.map((p, i) => (
+            <ProjectCard 
+              key={p.id} 
+              project={p} 
+              index={i} 
+              headerVis={headerVis} 
+              onSelect={setActiveVideo} 
+            />
+          ))}
         </div>
 
         {/* CTA Button */}

@@ -80,97 +80,89 @@ export default function Properties({
           {paged.map((p) => (
             <div
               key={p.id}
-              className="group bg-white border border-gray-100 hover:border-accent-200 rounded overflow-hidden hover:shadow-2xl transition-all duration-300"
+              className="group relative bg-white/60 backdrop-blur-xl border border-gray-100/50 rounded-[32px] overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1"
             >
-              <div className="relative h-40 overflow-hidden bg-gradient-to-br from-brand-700 to-brand-900 sm:h-48">
+              <div className="relative h-52 sm:h-60 overflow-hidden bg-gray-100">
                 {p.image ? (
-                  // eslint-disable-next-line @next/next/no-img-element -- CMS-uploaded absolute/relative paths
-                  <img
-                    src={resolveMediaUrl(p.image)}
-                    alt={p.name}
-                    className="h-full w-full object-cover"
-                  />
-                ) : (
                   <>
-                    <div
-                      className="absolute inset-0 opacity-10"
-                      style={{
-                        backgroundImage:
-                          "linear-gradient(rgba(255,255,255,0.4) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.4) 1px, transparent 1px)",
-                        backgroundSize: "24px 24px",
-                      }}
+                    {/* Frosted Glass Masking (Clears on hover) */}
+                    <div className="absolute inset-0 z-10 bg-white/5 backdrop-blur-[1px] group-hover:backdrop-blur-0 transition-all duration-700 pointer-events-none" />
+                    
+                    {/* Quality Masking: Subtle Noise */}
+                    <div className="absolute inset-0 z-10 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
+
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={resolveMediaUrl(p.image)}
+                      alt={p.name}
+                      className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
                     />
-                    <svg
-                      viewBox="0 0 120 80"
-                      className="absolute bottom-0 right-4 w-20 opacity-20 sm:w-24"
-                      fill="white"
-                    >
-                      <rect x="10" y="20" width="30" height="60" />
-                      <rect x="50" y="5" width="40" height="75" />
-                      <rect x="100" y="35" width="20" height="45" />
-                      {[0, 1, 2].map((r) =>
-                        [15, 25, 35].map((x) => (
-                          <rect
-                            key={`${r}${x}`}
-                            x={x}
-                            y={28 + r * 18}
-                            width="6"
-                            height="10"
-                            fill="#f97316"
-                            opacity="0.8"
-                          />
-                        )),
-                      )}
-                    </svg>
+                    
+                    {/* Bottom Vignette */}
+                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent z-10 pointer-events-none" />
                   </>
+                ) : (
+                  <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-brand-700 to-brand-900 opacity-20">
+                    <span className="text-brand-900 font-bold opacity-30">No Image</span>
+                  </div>
                 )}
+                
                 {p.badge && (
-                  <span className="absolute left-3 top-3 rounded bg-accent-500 px-2.5 py-1 text-xs font-bold text-white">
+                  <span className="absolute left-4 top-4 z-20 rounded-full bg-accent-500/90 backdrop-blur-md px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-lg">
                     {p.badge}
                   </span>
                 )}
-                <span className="absolute bottom-3 right-3 z-10 rounded bg-black/35 px-3 py-1 text-xs font-bold uppercase tracking-widest text-white backdrop-blur-sm">
+                
+                <span className="absolute bottom-4 right-4 z-20 rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-sm">
                   {p.tag}
                 </span>
               </div>
 
-              <div className="p-4 sm:p-6">
-                <h3 className="font-bold text-brand-900 text-base sm:text-lg mb-1">
-                  {p.name}
-                </h3>
-                <p className="text-gray-400 text-sm mb-4 leading-relaxed">
+              <div className="p-6">
+                <div className="flex justify-between items-start mb-3">
+                  <div>
+                    <h3 className="font-black text-brand-900 text-xl tracking-tight leading-tight mb-1">
+                      {p.name}
+                    </h3>
+                    <div className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-2">
+                      {p.category}
+                    </div>
+                  </div>
+                </div>
+                
+                <p className="text-gray-500 text-sm mb-6 leading-relaxed line-clamp-2 min-h-[40px]">
                   {p.description}
                 </p>
 
-                <div className="grid grid-cols-3 gap-2 mb-4 sm:mb-5 py-3 sm:py-4 border-y border-gray-100">
+                <div className="grid grid-cols-3 gap-1 mb-6 py-4 border-y border-gray-100/60">
                   {[
-                    { icon: "▭", label: p.size },
-                    { icon: "≡", label: p.floor },
-                    { icon: "⊡", label: p.parking },
-                  ].map((spec) => (
-                    <div key={spec.label} className="text-center">
-                      <div className="text-accent-500 text-xs mb-0.5">
-                        {spec.icon}
-                      </div>
-                      <div className="text-gray-600 text-xs font-medium leading-tight">
+                    { icon: "▭", label: p.size, sub: "m²" },
+                    { icon: "≡", label: p.floor, sub: "Давхар" },
+                    { icon: "⊡", label: p.parking, sub: "Зогсоол" },
+                  ].map((spec, idx) => (
+                    <div key={idx} className="text-center border-r last:border-0 border-gray-100">
+                      <div className="text-accent-500 text-xs font-bold mb-0.5">
                         {spec.label}
+                      </div>
+                      <div className="text-[9px] text-gray-400 uppercase font-black tracking-tighter">
+                        {spec.sub}
                       </div>
                     </div>
                   ))}
                 </div>
 
-                <div className="flex items-center justify-between gap-2">
+                <div className="flex items-center justify-between">
                   <div>
-                    <div className="text-xs text-gray-400 uppercase tracking-wide">
+                    <div className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">
                       Эхлэх үнэ
                     </div>
-                    <div className="text-accent-500 font-black text-base sm:text-lg leading-tight">
+                    <div className="text-brand-900 font-black text-xl tracking-tighter">
                       {p.price}
                     </div>
                   </div>
                   <a
                     href="/contact"
-                    className="shrink-0 bg-brand-900 hover:bg-accent-500 text-white text-xs sm:text-sm font-semibold px-3 sm:px-4 py-2 rounded transition-colors duration-200"
+                    className="h-11 flex items-center bg-brand-900 hover:bg-accent-500 text-white text-xs font-bold px-6 rounded-full transition-all duration-300 hover:shadow-lg active:scale-95 shadow-brand-900/10"
                   >
                     Лавлагаа авах
                   </a>
