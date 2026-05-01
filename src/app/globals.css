@@ -190,3 +190,13 @@ html {
 @media (max-width: 640px) {
   .display-xl { @apply text-5xl; }
 }
+
+/* -- QR Page Animations ---------------------------------- */
+@keyframes shine {
+  100% {
+    left: 125%;
+  }
+}
+.animate-shine {
+  animation: shine 1.5s cubic-bezier(0.4, 0, 0.2, 1) infinite;
+}

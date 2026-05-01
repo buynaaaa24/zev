@@ -236,3 +236,16 @@ export type RentlySections = {
     tiers: { name: string; price: string; desc: string }[];
   };
 };
+
+export type QrSections = {
+  description?: { mn: string; en: string };
+  ios?: string;
+  android?: string;
+  facebook?: string;
+  facebookName?: string;
+  instagram?: string;
+  instagramName?: string;
+  color?: string;
+  glow?: string;
+};
+

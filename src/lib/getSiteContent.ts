@@ -13,6 +13,7 @@ import type {
   PosEaseSections,
   AmarHomeSections,
   RentlySections,
+  QrSections,
 } from "./site-content-types";
 import {
   fetchWithTimeout,
@@ -320,4 +321,13 @@ export async function getRentlySections(lang: string = "mn", siteId: string = "z
       tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
     },
   };
+}
+const EMPTY_QR: QrSections = {};
+
+export async function getQrSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<QrSections> {
+  const patch = asRecord(await fetchSitePageSections("qr-portal", lang, siteId));
+  return {
+    ...EMPTY_QR,
+    ...patch,
+  } as QrSections;
 }

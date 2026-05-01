@@ -1,7 +1,7 @@
 import { NextResponse } from 'next/server';
 import type { NextRequest } from 'next/server';
 
-const SITES = ['zevtabs', 'parkease', 'posease', 'amarhome', 'rently'];
+const SITES = ['zevtabs', 'parkease', 'posease', 'amarhome', 'rently', 'qr'];
 const DEFAULT_SITE = 'zevtabs';
 
 export function middleware(request: NextRequest) {
