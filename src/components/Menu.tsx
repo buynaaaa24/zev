@@ -1,8 +1,152 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import type { PropertiesPageSections } from "@/lib/site-content-types";
 import { resolveMediaUrl } from "@/lib/media";
+
+const VIDEO_EXTS = /\.(mp4|webm|mov|ogg|avi)(\?.*)?$/i;
+function isVideo(src: string) { return VIDEO_EXTS.test(src); }
+
+function getYoutubeThumbUrl(url: string) {
+  if (!url) return null;
+  const cleanUrl = url.trim();
+  const ytIdMatch = cleanUrl.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/|live\/))([\w-]{11})/);
+  const videoId = ytIdMatch ? ytIdMatch[1] : null;
+  if (videoId) {
+    return `https://www.youtube.com/embed/${videoId}?autoplay=1&mute=1&controls=0&loop=1&playlist=${videoId}&playsinline=1&modestbranding=1&rel=0`;
+  }
+  return null;
+}
+
+function PropertyCard({ p }: { p: PropertiesPageSections["items"][number] }) {
+  const [isHovered, setIsHovered] = useState(false);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const hasDirectVideo = p.videoUrl && isVideo(p.videoUrl);
+  const ytThumbUrl = p.videoUrl && !hasDirectVideo ? getYoutubeThumbUrl(p.videoUrl) : null;
+  const imageIsVideo = p.image && isVideo(p.image);
+
+  return (
+    <div
+      className="group relative bg-white/60 backdrop-blur-xl border border-gray-100/50 rounded-[32px] overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1"
+      onMouseEnter={() => { setIsHovered(true); videoRef.current?.play().catch(() => {}); }}
+      onMouseLeave={() => { setIsHovered(false); videoRef.current?.pause(); }}
+    >
+      <div className="relative h-52 sm:h-60 overflow-hidden bg-gray-100">
+        {/* Premium Gradient Overlay */}
+        <div className="absolute inset-0 z-10 bg-gradient-to-t from-black/20 to-transparent pointer-events-none opacity-100 group-hover:opacity-50 transition-opacity duration-700" />
+
+        {/* Cover Image */}
+        {p.image && !imageIsVideo ? (
+          // eslint-disable-next-line @next/next/no-img-element
+          <img
+            src={resolveMediaUrl(p.image)}
+            alt={p.name}
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+          />
+        ) : null}
+
+        {/* Hover Video or Main Video */}
+        {imageIsVideo ? (
+          <video
+            ref={videoRef}
+            src={resolveMediaUrl(p.image)}
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105"
+          />
+        ) : hasDirectVideo ? (
+          <video
+            ref={videoRef}
+            src={resolveMediaUrl(p.videoUrl!)}
+            muted
+            loop
+            playsInline
+            className={`absolute inset-0 h-full w-full object-cover transition-transform duration-1000 group-hover:scale-105 ${p.image ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}`}
+          />
+        ) : ytThumbUrl && (isHovered || !p.image) ? (
+          <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-transform duration-1000 group-hover:scale-105 bg-black ${p.image ? 'animate-in fade-in duration-700' : ''}`}>
+            <iframe
+              src={ytThumbUrl}
+              className="absolute w-[300%] h-[300%] -top-[100%] -left-[100%] pointer-events-none opacity-80"
+              allow="autoplay; encrypted-media"
+              tabIndex={-1}
+              aria-hidden="true"
+            />
+          </div>
+        ) : !p.image ? (
+          <div className="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-brand-700 to-brand-900 opacity-20">
+            <span className="text-brand-900 font-bold opacity-30">No Media</span>
+          </div>
+        ) : null}
+        
+        {/* Bottom Vignette */}
+        <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent z-10 pointer-events-none" />
+        
+        {p.badge && (
+          <span className="absolute left-4 top-4 z-20 rounded-full bg-accent-500/90 backdrop-blur-md px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-lg">
+            {p.badge}
+          </span>
+        )}
+        
+        <span className="absolute bottom-4 right-4 z-20 rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-sm">
+          {p.tag}
+        </span>
+      </div>
+
+      <div className="p-6">
+        <div className="flex justify-between items-start mb-3">
+          <div>
+            <h3 className="font-black text-brand-900 text-xl tracking-tight leading-tight mb-1">
+              {p.name}
+            </h3>
+            <div className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-2">
+              {p.category}
+            </div>
+          </div>
+        </div>
+        
+        <p className="text-gray-500 text-sm mb-6 leading-relaxed line-clamp-2 min-h-[40px]">
+          {p.description}
+        </p>
+
+        <div className="grid grid-cols-3 gap-1 mb-6 py-4 border-y border-gray-100/60">
+          {[
+            { icon: "▭", label: p.size, sub: "m²" },
+            { icon: "≡", label: p.floor, sub: "Давхар" },
+            { icon: "⊡", label: p.parking, sub: "Зогсоол" },
+          ].map((spec, idx) => (
+            <div key={idx} className="text-center border-r last:border-0 border-gray-100">
+              <div className="text-accent-500 text-xs font-bold mb-0.5">
+                {spec.label}
+              </div>
+              <div className="text-[9px] text-gray-400 uppercase font-black tracking-tighter">
+                {spec.sub}
+              </div>
+            </div>
+          ))}
+        </div>
+
+        <div className="flex items-center justify-between">
+          <div>
+            <div className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">
+              Эхлэх үнэ
+            </div>
+            <div className="text-brand-900 font-black text-xl tracking-tighter">
+              {p.price}
+            </div>
+          </div>
+          <a
+            href={p.redirectUrl || "/contact"}
+            className="h-11 flex items-center bg-brand-900 hover:bg-accent-500 text-white text-xs font-bold px-6 rounded-full transition-all duration-300 hover:shadow-lg active:scale-95 shadow-brand-900/10"
+          >
+            Лавлагаа авах
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
 
 export default function Properties({
   content,
@@ -78,97 +222,7 @@ export default function Properties({
           style={{ animationDelay: "0.6s" }}
         >
           {paged.map((p) => (
-            <div
-              key={p.id}
-              className="group relative bg-white/60 backdrop-blur-xl border border-gray-100/50 rounded-[32px] overflow-hidden hover:shadow-[0_20px_50px_rgba(0,0,0,0.08)] transition-all duration-500 hover:-translate-y-1"
-            >
-              <div className="relative h-52 sm:h-60 overflow-hidden bg-gray-100">
-                {p.image ? (
-                  <>
-                    {/* Frosted Glass Masking (Clears on hover) */}
-                    <div className="absolute inset-0 z-10 bg-white/5 backdrop-blur-[1px] group-hover:backdrop-blur-0 transition-all duration-700 pointer-events-none" />
-                    
-                    {/* Quality Masking: Subtle Noise */}
-                    <div className="absolute inset-0 z-10 opacity-[0.03] pointer-events-none mix-blend-overlay" style={{ backgroundImage: "url('https://grainy-gradients.vercel.app/noise.svg')" }} />
-
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={resolveMediaUrl(p.image)}
-                      alt={p.name}
-                      className="h-full w-full object-cover transition-transform duration-1000 group-hover:scale-110"
-                    />
-                    
-                    {/* Bottom Vignette */}
-                    <div className="absolute inset-x-0 bottom-0 h-24 bg-gradient-to-t from-black/40 to-transparent z-10 pointer-events-none" />
-                  </>
-                ) : (
-                  <div className="h-full w-full flex items-center justify-center bg-gradient-to-br from-brand-700 to-brand-900 opacity-20">
-                    <span className="text-brand-900 font-bold opacity-30">No Image</span>
-                  </div>
-                )}
-                
-                {p.badge && (
-                  <span className="absolute left-4 top-4 z-20 rounded-full bg-accent-500/90 backdrop-blur-md px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-lg">
-                    {p.badge}
-                  </span>
-                )}
-                
-                <span className="absolute bottom-4 right-4 z-20 rounded-full bg-white/20 backdrop-blur-md border border-white/20 px-3 py-1 text-[10px] font-black uppercase tracking-widest text-white shadow-sm">
-                  {p.tag}
-                </span>
-              </div>
-
-              <div className="p-6">
-                <div className="flex justify-between items-start mb-3">
-                  <div>
-                    <h3 className="font-black text-brand-900 text-xl tracking-tight leading-tight mb-1">
-                      {p.name}
-                    </h3>
-                    <div className="text-xs text-gray-400 font-bold uppercase tracking-wider mb-2">
-                      {p.category}
-                    </div>
-                  </div>
-                </div>
-                
-                <p className="text-gray-500 text-sm mb-6 leading-relaxed line-clamp-2 min-h-[40px]">
-                  {p.description}
-                </p>
-
-                <div className="grid grid-cols-3 gap-1 mb-6 py-4 border-y border-gray-100/60">
-                  {[
-                    { icon: "▭", label: p.size, sub: "m²" },
-                    { icon: "≡", label: p.floor, sub: "Давхар" },
-                    { icon: "⊡", label: p.parking, sub: "Зогсоол" },
-                  ].map((spec, idx) => (
-                    <div key={idx} className="text-center border-r last:border-0 border-gray-100">
-                      <div className="text-accent-500 text-xs font-bold mb-0.5">
-                        {spec.label}
-                      </div>
-                      <div className="text-[9px] text-gray-400 uppercase font-black tracking-tighter">
-                        {spec.sub}
-                      </div>
-                    </div>
-                  ))}
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <div>
-                    <div className="text-[10px] text-gray-400 font-black uppercase tracking-widest mb-1">
-                      Эхлэх үнэ
-                    </div>
-                    <div className="text-brand-900 font-black text-xl tracking-tighter">
-                      {p.price}
-                    </div>
-                  </div>
-                  <a
-                    href="/contact"
-                    className="h-11 flex items-center bg-brand-900 hover:bg-accent-500 text-white text-xs font-bold px-6 rounded-full transition-all duration-300 hover:shadow-lg active:scale-95 shadow-brand-900/10"
-                  >
-                    Лавлагаа авах
-                  </a>
-                </div>
-              </div>
-            </div>
+            <PropertyCard key={p.id} p={p} />
           ))}
         </div>
 
