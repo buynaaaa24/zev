@@ -47,6 +47,7 @@ const nextConfig = {
   experimental: {
     optimizePackageImports: ["lucide-react"],
   },
+  transpilePackages: ["lenis"],
   compiler: {
     removeConsole: process.env.NODE_ENV === "production",
   },
