@@ -7,16 +7,16 @@ import { useParkEaseLang } from "@/contexts/ParkEaseLangContext";
 
 const NAV = {
   en: [
-    { label: "Overview",      href: "/parkease" },
-    { label: "How It Works",  href: "/parkease#how-it-works" },
-    { label: "Payments",      href: "/parkease#payments" },
-    { label: "Pricing",       href: "/parkease#pricing" },
+    { label: "Overview", href: "/parkease" },
+    { label: "How It Works", href: "/parkease#how-it-works" },
+    { label: "Payments", href: "/parkease#payments" },
+    { label: "Pricing", href: "/parkease#pricing" },
   ],
   mn: [
-    { label: "Танилцуулга",        href: "/parkease" },
-    { label: "Хэрхэн ажилладаг",  href: "/parkease#how-it-works" },
-    { label: "Төлбөр",            href: "/parkease#payments" },
-    { label: "Үнэ тариф",         href: "/parkease#pricing" },
+    { label: "Танилцуулга", href: "/parkease" },
+    { label: "Хэрхэн ажилладаг", href: "/parkease#how-it-works" },
+    { label: "Төлбөр", href: "/parkease#payments" },
+    { label: "Үнэ тариф", href: "/parkease#pricing" },
   ],
 };
 
@@ -45,24 +45,20 @@ export default function ParkEaseNavbar() {
 
   return (
     <header
-      className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${
-        glass
-          ? "bg-transparent"
-          : "bg-white/80 backdrop-blur-xl border-b border-neutral-100/60 shadow-sm"
-      }`}
+      className={`fixed top-0 left-0 right-0 z-[200] transition-all duration-500 ${glass
+        ? "bg-transparent"
+        : "bg-white/80 backdrop-blur-xl border-b border-neutral-100/60 shadow-sm"
+        }`}
     >
       <div className="max-w-[1200px] mx-auto px-5 sm:px-10 flex items-center justify-between h-[60px] md:h-[68px]">
 
         {/* Logo */}
         <Link href="/parkease" className="flex items-center gap-2.5 group">
-          <div
-            className="w-8 h-8 rounded-xl flex items-center justify-center shrink-0 group-hover:scale-110 transition-transform duration-300"
-            style={{ background: "linear-gradient(135deg,#f6b414,#ffc93c)" }}
-          >
-            <svg width="14" height="16" viewBox="0 0 14 16" fill="none" aria-hidden>
-              <text x="1" y="13" fontSize="14" fontWeight="900" fill="#1a0f00" fontFamily="system-ui,-apple-system">P</text>
-            </svg>
-          </div>
+          <img
+            src="/images/parkease.jpg"
+            alt="ParkEase Logo"
+            className="w-10 h-10 rounded-xl object-cover shadow-sm group-hover:scale-110 transition-transform duration-300"
+          />
           <span className={`text-[17px] font-bold tracking-tight transition-colors duration-300 ${glass ? "text-white" : "text-neutral-800"}`}>
             ParkEase
           </span>
@@ -74,11 +70,10 @@ export default function ParkEaseNavbar() {
             <Link
               key={item.href}
               href={item.href}
-              className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ${
-                glass
-                  ? "text-white/70 hover:text-white hover:bg-white/10"
-                  : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100"
-              }`}
+              className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ${glass
+                ? "text-white/70 hover:text-white hover:bg-white/10"
+                : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100"
+                }`}
             >
               {item.label}
             </Link>
@@ -90,11 +85,10 @@ export default function ParkEaseNavbar() {
           {/* Language toggle */}
           <button
             onClick={toggle}
-            className={`text-[13px] font-semibold px-3 py-1.5 rounded-full border transition-all duration-200 ${
-              glass
-                ? "border-white/20 text-white/60 hover:text-white hover:border-white/40"
-                : "border-neutral-200 text-neutral-400 hover:text-neutral-700 hover:border-neutral-300"
-            }`}
+            className={`text-[13px] font-semibold px-3 py-1.5 rounded-full border transition-all duration-200 ${glass
+              ? "border-white/20 text-white/60 hover:text-white hover:border-white/40"
+              : "border-neutral-200 text-neutral-400 hover:text-neutral-700 hover:border-neutral-300"
+              }`}
           >
             {lang === "mn" ? "EN" : "МН"}
           </button>
@@ -130,9 +124,8 @@ export default function ParkEaseNavbar() {
 
       {/* Mobile Menu */}
       <div
-        className={`md:hidden fixed inset-0 top-[60px] bg-black/92 backdrop-blur-xl flex flex-col transition-all duration-500 ${
-          menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
-        }`}
+        className={`md:hidden fixed inset-0 top-[60px] bg-black/92 backdrop-blur-xl flex flex-col transition-all duration-500 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
       >
         <div className="flex flex-col px-8 pt-10 gap-2">
           {links.map((item, i) => (
@@ -141,9 +134,8 @@ export default function ParkEaseNavbar() {
               href={item.href}
               onClick={() => setMenuOpen(false)}
               style={{ transitionDelay: menuOpen ? `${i * 50}ms` : "0ms" }}
-              className={`text-left text-2xl font-bold text-white/80 hover:text-white py-3 border-b border-white/5 transition-all duration-500 ${
-                menuOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"
-              }`}
+              className={`text-left text-2xl font-bold text-white/80 hover:text-white py-3 border-b border-white/5 transition-all duration-500 ${menuOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"
+                }`}
             >
               {item.label}
             </Link>

@@ -198,9 +198,11 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
         <div className="container mx-auto px-6 lg:px-24 flex items-center justify-between">
           <div className="flex-1 flex justify-start">
             <Link href="/" className="flex items-center gap-2 group">
-              <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold shadow-lg shadow-emerald-500/20">
-                R
-              </div>
+              <img
+                src="/images/rently.png"
+                alt="Rently Logo"
+                className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300"
+              />
               <span className="font-bold text-lg tracking-tight text-white">Rently</span>
             </Link>
           </div>
@@ -362,9 +364,11 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
          <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
             <div className="md:col-span-2">
                <div className="flex items-center gap-3 mb-4">
-                  <div className="w-8 h-8 rounded-lg bg-emerald-600 flex items-center justify-center text-white font-bold">
-                     R
-                  </div>
+                  <img
+                    src="/images/rently.png"
+                    alt="Rently Logo"
+                    className="w-8 h-8 object-contain"
+                  />
                   <span className="text-xl font-black tracking-tighter text-white">Rently</span>
                </div>
                <p className="text-white/30 max-w-sm text-xs leading-relaxed">"Simplicity is the ultimate sophistication."</p>

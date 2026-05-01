@@ -642,9 +642,11 @@ function Footer() {
     <footer className="bg-black border-t border-white/5 py-8 sm:py-10">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
         <div className="flex items-center gap-2.5">
-          <div className="w-6 h-6 rounded-lg flex items-center justify-center" style={{ background: "linear-gradient(135deg,#f6b414,#ffc93c)" }}>
-            <svg width="10" height="12" viewBox="0 0 10 12" fill="none" aria-hidden><text x="0" y="10" fontSize="10" fontWeight="900" fill="#1a0f00" fontFamily="system-ui">P</text></svg>
-          </div>
+          <img
+            src="/images/parkease.jpg"
+            alt="ParkEase Logo"
+            className="w-6 h-6 rounded-lg object-cover"
+          />
           <span className="text-white/60 text-sm font-medium">ParkEase</span>
         </div>
         <p className="text-white/25 text-xs text-center">
