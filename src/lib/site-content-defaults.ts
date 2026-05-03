@@ -75,6 +75,7 @@ export const defaultFooterSections: FooterSections = {
 export const defaultContactSections: ContactSections = {
   hero: {
     badge: "Холбоо барих",
+    h2Line1: "Санаагаа бодит",
     h2Accent: "Хамтдаа эхлүүлцгээе",
     intro:
       "Оффис түрээслэх, барилга захиалах эсвэл хөрөнгө оруулалт судлах бол манай баг бэлэн хүлээж байна.",

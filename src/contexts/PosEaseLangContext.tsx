@@ -1,6 +1,6 @@
 "use client";
 
-import { createContext, useContext, useState, useEffect, ReactNode } from "react";
+import { createContext, useContext, useState, useEffect, ReactNode, useMemo } from "react";
 
 export type PLang = "en" | "mn";
 
@@ -40,8 +40,15 @@ export function PosEaseLangProvider({ children }: { children: ReactNode }) {
     document.cookie = `posease-lang=${next}; path=/; max-age=${60 * 60 * 24 * 365}`;
   };
 
+  const contextValue = useMemo(() => ({ 
+    lang, 
+    toggle, 
+    sections, 
+    setSections 
+  }), [lang, sections]);
+
   return (
-    <PosEaseLangContext.Provider value={{ lang, toggle, sections, setSections }}>
+    <PosEaseLangContext.Provider value={contextValue}>
       {children}
     </PosEaseLangContext.Provider>
   );

@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { RentlySections } from "@/lib/site-content-types";
 import { useRentlyLang } from "@/contexts/RentlyLangContext";
+import LeadFormSection from "@/components/sections/LeadFormSection";
 import { getApiBaseUrl } from "@/lib/api";
-import { ArrowRight, ChevronRight, Plus, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronRight, Plus } from "lucide-react";
 
 const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
   en: {
@@ -193,54 +194,6 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
   return (
     <main className="bg-[#050505] selection:bg-emerald-600 selection:text-white min-h-screen relative overflow-hidden font-sans">
       
-      {/* NAVBAR */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-black/80 backdrop-blur-md shadow-sm py-4 border-b border-white/5" : "bg-transparent py-6"}`}>
-        <div className="container mx-auto px-6 lg:px-24 flex items-center justify-between">
-          <div className="flex-1 flex justify-start">
-            <Link href="/" className="flex items-center gap-2 group">
-              <img
-                src="/images/rently.png"
-                alt="Rently Logo"
-                className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300"
-              />
-              <span className="font-bold text-lg tracking-tight text-white">Rently</span>
-            </Link>
-          </div>
-
-          <nav className="hidden md:flex shrink-0 items-center gap-8">
-            <a href="#features" className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 hover:text-emerald-400 transition-colors">{lang === 'mn' ? 'Боломжууд' : 'Features'}</a>
-            <a href="#additional" className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 hover:text-emerald-400 transition-colors">{lang === 'mn' ? 'Нэмэлт' : 'Additional'}</a>
-            <a href="#pricing" className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 hover:text-emerald-400 transition-colors">{lang === 'mn' ? 'Үнэ тариф' : 'Pricing'}</a>
-          </nav>
-
-          <div className="flex-1 hidden md:flex justify-end items-center gap-6">
-            <button onClick={toggle} className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500 hover:text-emerald-400 transition-colors">
-              {lang === "mn" ? "EN" : "MN"}
-            </button>
-            <a href="#contact" className="px-5 py-2.5 rounded-full border border-white/10 text-white text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white/5 transition-all">
-              {lang === 'mn' ? 'Холбогдох' : 'Contact'}
-            </a>
-          </div>
-
-          <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </header>
-
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black pt-24 px-6 flex flex-col gap-6 md:hidden">
-          <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-xl font-black text-white">{lang === 'mn' ? 'Боломжууд' : 'Features'}</a>
-          <a href="#additional" onClick={() => setMobileMenuOpen(false)} className="text-xl font-black text-white">{lang === 'mn' ? 'Нэмэлт' : 'Additional'}</a>
-          <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-xl font-black text-white">{lang === 'mn' ? 'Үнэ тариф' : 'Pricing'}</a>
-          <button onClick={() => { toggle(); setMobileMenuOpen(false); }} className="text-xl font-black text-emerald-500 text-left">
-            {lang === "mn" ? "English" : "Mongolian"}
-          </button>
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="px-5 py-3 mt-4 text-center rounded-full bg-emerald-600 text-white text-lg font-bold">
-            {lang === 'mn' ? 'Холбогдох' : 'Contact'}
-          </a>
-        </div>
-      )}
 
       <style jsx global>{`
         @keyframes float {
@@ -274,7 +227,7 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
                  {hero.desc}
               </p>
               <div className="flex flex-wrap gap-4">
-                 <Link href="#features" className="group px-8 py-4 rounded-full bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-900/40 flex items-center gap-3">
+                 <Link href="#kholbooBarikh" className="group px-8 py-4 rounded-full bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-900/40 flex items-center gap-3">
                     {hero.cta} <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
                  </Link>
               </div>
@@ -358,6 +311,9 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
           </div>
         </section>
       )}
+
+      {/* CONTACT */}
+      <LeadFormSection systemName="Rently" accentColor="#10b981" contactEmail="contact@rently.com" />
 
       {/* FOOTER */}
       <footer className="py-10 relative z-10 border-t border-white/5 px-6 md:px-24">
@@ -458,6 +414,10 @@ function PricingTier({ tier, index, totalCount }: { tier: any; index: number; to
           <span className={`text-[7px] md:text-[8px] font-black uppercase tracking-[0.4em] mb-3 block ${isMiddle ? "text-white/60" : "text-emerald-500"}`}>{tier.name}</span>
           <h3 className="text-white text-2xl md:text-3xl font-black mb-2 md:mb-4">{tier.price}</h3>
           <p className={`text-[10px] md:text-xs mb-8 font-medium ${isMiddle ? "text-white/70" : "text-white/40"}`}>{tier.desc}</p>
+          
+          <Link href="#kholbooBarikh" className={`mt-auto w-full py-4 rounded-xl text-center font-black text-[10px] uppercase tracking-widest transition-all duration-500 ${isMiddle ? "bg-white text-black hover:bg-black hover:text-white" : "bg-emerald-500 text-white hover:bg-white hover:text-black"}`}>
+             Get Started
+          </Link>
        </div>
     </div>
   );

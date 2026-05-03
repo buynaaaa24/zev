@@ -194,9 +194,11 @@ function ProjectCard({
 
 export default function WorkSection({ 
   properties, 
+  lang = "mn",
   bgImages = [] 
 }: { 
   properties: PropertiesPageSections;
+  lang?: string;
   bgImages?: string[];
 }) {
   const headerRef = useRef<HTMLDivElement>(null);

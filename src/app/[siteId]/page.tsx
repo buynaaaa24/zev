@@ -3,6 +3,7 @@ import AboutSection from "../../components/sections/AboutSection";
 import ServicesSection from "../../components/sections/ServicesSection";
 import WorkSection from "../../components/sections/WorkSection";
 import ContactSection from "../../components/sections/ContactSection";
+import LeadFormSection from "../../components/sections/LeadFormSection";
 import {
   getHomeSections,
   getAboutSections,
@@ -37,6 +38,7 @@ export default async function Home({
     getFooterSections(lang, siteId),
   ]);
 
+
   return (
     <>
       <HeroSection hero={homeData.hero} />
@@ -51,9 +53,14 @@ export default async function Home({
       <ServicesSection services={servicesData} />
       <WorkSection 
         properties={propertiesData} 
+        lang={lang}
         bgImages={homeData.hero.slideImages}
       />
-      <ContactSection contact={contactData} />
+      {siteId === "zevtabs" ? (
+        <LeadFormSection systemName="Zevtabs General" />
+      ) : (
+        <ContactSection contact={contactData} />
+      )}
     </>
   );
 }

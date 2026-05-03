@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { ParkEaseLangProvider } from "@/contexts/ParkEaseLangContext";
 import ParkEaseNavbar from "@/components/parkease/ParkEaseNavbar";
+import SmoothScroll from "@/components/SmoothScroll";
 
 export const metadata: Metadata = {
   title: "ParkEase – Smart Automated Parking",
@@ -15,8 +16,10 @@ export default function ParkEaseLayout({
 }) {
   return (
     <ParkEaseLangProvider>
-      <ParkEaseNavbar />
-      {children}
+      <SmoothScroll>
+        <ParkEaseNavbar />
+        {children}
+      </SmoothScroll>
     </ParkEaseLangProvider>
   );
 }

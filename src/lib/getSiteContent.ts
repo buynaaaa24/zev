@@ -82,7 +82,7 @@ const EMPTY_FOOTER: FooterSections = {
   brand: { desc: "" },
 };
 const EMPTY_CONTACT: ContactSections = {
-  hero: { badge: "", h2Accent: "", intro: "" },
+  hero: { badge: "", h2Line1: "", h2Accent: "", intro: "" },
   items: [],
   agent: { initials: "", name: "", role: "", telHref: "", telLabel: "" },
   formTitle: "",
@@ -222,7 +222,14 @@ export async function getServicesSections(lang: string = "mn", siteId: string = 
   const patch = asRecord(await fetchSitePageSections("services", lang, siteId));
   return {
     header: { ...EMPTY_SERVICES.header, ...asRecord(patch.header) },
-    features: Array.isArray(patch.features) ? (patch.features as ServicesSections["features"]) : [],
+    features: Array.isArray(patch.features) 
+      ? (patch.features as ServicesSections["features"]).map(f => ({
+          title: f.title || "",
+          desc: f.desc || "",
+          image: f.image,
+          accent: f.accent
+        }))
+      : [],
     banner: Array.isArray(patch.banner) ? (patch.banner as ServicesSections["banner"]) : [],
   };
 }

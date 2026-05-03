@@ -3,9 +3,9 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { AmarHomeSections } from "@/lib/site-content-types";
-import AmarHomeNavbar from "../../components/amarhome/AmarHomeNavbar";
 import { ArrowRight, ChevronRight, Plus } from "lucide-react";
 import { useAmarHomeLang } from "@/contexts/AmarHomeLangContext";
+import LeadFormSection from "../../components/sections/LeadFormSection";
 
 const DEFAULTS: { en: AmarHomeSections; mn: AmarHomeSections } = {
   en: {
@@ -78,24 +78,12 @@ const DEFAULTS: { en: AmarHomeSections; mn: AmarHomeSections } = {
   }
 };
 
-function useReveal() {
-  const ref = useRef<HTMLDivElement>(null);
-  const [visible, setVisible] = useState(false);
-  useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.1 });
-    obs.observe(el); return () => obs.disconnect();
-  }, []);
-  return { ref, visible };
-}
-
-export default function AmarHomeClient({ initialData }: { initialData?: AmarHomeSections }) {
-  const data = initialData || DEFAULTS.en;
-  const defaults = DEFAULTS.en;
+export default function AmarHomeClient({ data }: { data: AmarHomeSections }) {
+  const { lang } = useAmarHomeLang();
   const [mounted, setMounted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
-  const { setSections } = useAmarHomeLang();
-  
+  const defaults = lang === "en" ? DEFAULTS.en : DEFAULTS.mn;
+
   useEffect(() => {
     setMounted(true);
     const canvas = canvasRef.current;
@@ -134,48 +122,24 @@ export default function AmarHomeClient({ initialData }: { initialData?: AmarHome
     titleAccent: data.hero.titleAccent || defaults.hero.titleAccent,
     desc: data.hero.desc || defaults.hero.desc,
     cta: data.hero.cta || defaults.hero.cta,
-    image: data.hero.image || defaults.hero.image,
   };
 
-  // CLEAN DATA
-  const features = (data.features.items || []).filter(i => i.title && i.title.trim() !== "");
-  const hardware = (data.hardware.items || []).filter(i => i.name && i.name.trim() !== "");
-  const pricing = (data.pricing.tiers || []).filter(i => i.name && i.name.trim() !== "");
-
-  // Update Navbar visibility context
-  useEffect(() => {
-    if (setSections) {
-      setSections({
-        features: features.length > 0,
-        hardware: hardware.length > 0,
-        pricing: pricing.length > 0,
-      });
-    }
-  }, [features.length, hardware.length, pricing.length, setSections]);
+  const features = data.features.items.length > 0 ? data.features : defaults.features;
+  const hardware = data.hardware.items.length > 0 ? data.hardware.items : defaults.hardware.items;
+  const pricing = data.pricing.tiers.length > 0 ? data.pricing.tiers : defaults.pricing.tiers;
 
   const getGridCols = (count: number) => {
-    if (count === 1) return "grid-cols-1 max-w-lg mx-auto";
-    if (count === 2) return "grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto";
-    return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+    if (count === 1) return "grid-cols-1 max-w-md mx-auto";
+    if (count === 2) return "grid-cols-1 md:grid-cols-2 max-w-2xl mx-auto";
+    return "grid-cols-1 md:grid-cols-3";
   };
 
   return (
-    <main className="bg-[#050505] selection:bg-emerald-600 selection:text-white min-h-screen relative overflow-hidden font-sans">
-      <AmarHomeNavbar />
-
-      <style jsx global>{`
-        @keyframes float {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-20px) scale(1.02); }
-        }
-        .animate-float {
-          animation: float 6s ease-in-out infinite;
-        }
-      `}</style>
-
-      {/* LUXURY BACKGROUND */}
+    <main className="bg-[#050505] min-h-screen relative overflow-hidden font-sans selection:bg-emerald-500 selection:text-white">
+      
+      
+      {/* BACKGROUND ELEMENTS */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-[#050505]" />
         <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[70%] rounded-full bg-emerald-900/40 blur-[160px] animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-5%] w-[60%] h-[50%] rounded-full bg-emerald-600/10 blur-[140px]" />
         <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(6,78,59,0.4) 0%, transparent 80%)" }} />
@@ -187,76 +151,45 @@ export default function AmarHomeClient({ initialData }: { initialData?: AmarHome
       <section className="relative min-h-[90vh] flex items-center pt-20 px-6 md:px-16 lg:px-24 z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full max-w-[1400px] mx-auto">
            <div className={`lg:col-span-6 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}>
-              <h1 className="display-xl text-white mb-6">
+              <h1 className="text-5xl sm:text-6xl lg:text-[80px] font-black text-white mb-6 leading-[1.1] tracking-tighter">
                  {hero.title}<br />
                  <span className="bg-gradient-to-r from-emerald-400 to-white text-transparent bg-clip-text italic pr-4">{hero.titleAccent}</span>
               </h1>
-              <p className="body-lg text-white/40 max-w-lg mb-10">
+              <p className="text-lg sm:text-xl text-white/40 max-w-lg mb-10 leading-relaxed font-medium">
                  {hero.desc}
               </p>
               <div className="flex flex-wrap gap-4">
-                 <Link href="#features" className="group px-8 py-4 rounded-full bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-900/40 flex items-center gap-3">
+                 <Link href="#kholbooBarikh" className="group px-8 py-4 rounded-full bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-900/40 flex items-center gap-3">
                     {hero.cta} <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
                  </Link>
-              </div>
-           </div>
-           
-           <div className={`lg:col-span-6 relative transition-all duration-[1500ms] delay-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-20 scale-95"}`}>
-              <div className="relative aspect-square sm:aspect-video lg:aspect-[4/5] xl:aspect-square animate-float">
-                  <div className="absolute inset-0 bg-emerald-500/10 rounded-[32px] sm:rounded-[48px] blur-[40px] sm:blur-[60px]" />
-                  <div className="relative h-full w-full rounded-[32px] sm:rounded-[48px] border border-white/10 bg-neutral-900/20 backdrop-blur-3xl overflow-hidden shadow-2xl p-2 sm:p-3">
-                     {hero.image ? (
-                        <img src={hero.image} alt="Hero" className="w-full h-full object-cover rounded-[24px] sm:rounded-[40px]" />
-                     ) : (
-                        <div className="w-full h-full bg-[#0a0a0a] rounded-[24px] sm:rounded-[40px] flex flex-col p-6 sm:p-12">
-                           <div className="flex justify-between items-start mb-12">
-                              <div className="flex gap-2">
-                                 <div className="w-3 h-3 rounded-full bg-emerald-500/40" />
-                                 <div className="w-3 h-3 rounded-full bg-white/5" />
-                                 <div className="w-3 h-3 rounded-full bg-white/5" />
-                              </div>
-                           </div>
-                           <div className="space-y-6 flex-1">
-                              <div className="h-[2px] w-full bg-gradient-to-r from-emerald-500/40 to-transparent" />
-                              <div className="grid grid-cols-2 gap-4">
-                                 <div className="h-24 rounded-[24px] bg-white/5 animate-pulse" />
-                                 <div className="h-24 rounded-[24px] bg-white/5 animate-pulse" />
-                              </div>
-                           </div>
-                        </div>
-                     )}
-                  </div>
               </div>
            </div>
         </div>
       </section>
 
-      {/* FEATURES (Онцлог) */}
-      {features.length > 0 && (
-        <section id="features" className="py-12 md:py-24 relative z-10 px-6">
-          <div className="max-w-[1200px] mx-auto">
-            <div className="text-center mb-12 md:mb-20 max-w-2xl mx-auto">
-                <h2 className="display-lg text-white mb-6">
-                  {data.features.title}
-                </h2>
-                <p className="body-lg text-white/40">{data.features.desc}</p>
-            </div>
-            
-            <div className="space-y-16 md:space-y-24">
-                {features.map((item, idx) => (
-                  <FeatureRow key={idx} item={item} index={idx} />
-                ))}
-            </div>
-          </div>
-        </section>
-      )}
+      {/* FEATURES (Технологи) */}
+      <section id="features" className="py-20 md:py-40 relative z-10 px-6">
+        <div className="max-w-[1200px] mx-auto">
+           <div className="mb-20 md:mb-32">
+              <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Innovation</span>
+              <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-[0.9]">{features.title}</h2>
+              <p className="text-white/40 text-lg mt-6 max-w-xl">{features.desc}</p>
+           </div>
+           
+           <div className="flex flex-col gap-24 md:gap-40">
+              {features.items.map((item, i) => (
+                <FeatureRow key={i} item={item} index={i} />
+              ))}
+           </div>
+        </div>
+      </section>
 
       {/* HARDWARE (Төхөөрөмжүүд) */}
       {hardware.length > 0 && (
         <section id="hardware" className="py-12 md:py-24 bg-neutral-900/10 relative z-10">
           <div className="max-w-[1200px] mx-auto px-6">
             <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12 md:mb-16">
-                <h2 className="display-lg text-white">{data.hardware.title}</h2>
+                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">{data.hardware.title}</h2>
             </div>
             
             <div className={`grid ${getGridCols(hardware.length)} gap-6 md:gap-10`}>
@@ -273,7 +206,7 @@ export default function AmarHomeClient({ initialData }: { initialData?: AmarHome
         <section id="pricing" className="py-12 md:py-24 relative z-10 px-6">
           <div className="max-w-[1000px] mx-auto">
             <div className="text-center mb-12 md:mb-16">
-                <h2 className="display-lg text-white mb-8">{data.pricing.title}</h2>
+                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-8">{data.pricing.title}</h2>
                 <div className="w-12 h-1 bg-emerald-500 mx-auto rounded-full" />
             </div>
             
@@ -286,39 +219,43 @@ export default function AmarHomeClient({ initialData }: { initialData?: AmarHome
         </section>
       )}
 
+      {/* CONTACT */}
+      <LeadFormSection systemName="AmarHome" accentColor="#10b981" contactEmail="contact@amarhome.com" />
+
       {/* FOOTER */}
-      <footer className="py-10 relative z-10 border-t border-white/5 px-6 md:px-24">
-         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
+      <footer className="py-20 relative z-10 border-t border-white/5 px-6 md:px-24">
+         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
             <div className="md:col-span-2">
-               <div className="flex items-center gap-3 mb-4">
-                  <div className="w-10 h-10 rounded-xl overflow-hidden">
+               <div className="flex items-center gap-3 mb-6">
+                  <div className="w-12 h-12 rounded-xl overflow-hidden">
                      <img src="/amarhome-logo.jpg" alt="Logo" className="w-full h-full object-cover" />
                   </div>
-                  <span className="text-xl font-black tracking-tighter text-white">AMAR<span className="text-emerald-500">HOME</span></span>
+                  <span className="text-2xl font-black tracking-tighter text-white">AMAR<span className="text-emerald-500">HOME</span></span>
                </div>
-               <p className="text-white/30 max-w-sm text-xs leading-relaxed">"Simplicity is the ultimate sophistication." — Leonardo da Vinci</p>
+               <p className="text-white/30 max-w-sm text-sm leading-relaxed">"Simplicity is the ultimate sophistication." — Leonardo da Vinci</p>
             </div>
-            <div className="flex flex-col gap-3">
-               <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Navigation</span>
-               <div className="flex flex-col gap-2 text-white/50 font-bold uppercase tracking-widest text-[9px]">
+            <div className="flex flex-col gap-4">
+               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Navigation</span>
+               <div className="flex flex-col gap-3 text-white/50 font-bold uppercase tracking-widest text-[10px]">
                   <Link href="#features" className="hover:text-emerald-400 transition-colors">Features</Link>
                   <Link href="#hardware" className="hover:text-emerald-400 transition-colors">Hardware</Link>
                   <Link href="#pricing" className="hover:text-emerald-400 transition-colors">Investment</Link>
+                  <Link href="#kholbooBarikh" className="hover:text-emerald-400 transition-colors">Contact</Link>
                </div>
             </div>
-            <div className="flex flex-col gap-3">
-               <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Contact</span>
-               <div className="text-white/50 font-bold uppercase tracking-widest text-[9px] leading-loose">
+            <div className="flex flex-col gap-4">
+               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Contact</span>
+               <div className="text-white/50 font-bold uppercase tracking-widest text-[10px] leading-loose">
                   Ulaanbaatar, MN<br />
                   contact@amarhome.com
                </div>
             </div>
          </div>
-         <div className="max-w-[1400px] mx-auto mt-10 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[8px] font-black uppercase tracking-[0.2em] text-white/20">
+         <div className="max-w-[1400px] mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[9px] font-black uppercase tracking-[0.2em] text-white/20">
             <p>© 2026 AMARHOME — All Rights Reserved</p>
-            <div className="flex gap-6">
-               <a href="#" className="hover:text-white transition-colors">Privacy</a>
-               <a href="#" className="hover:text-white transition-colors">Terms</a>
+            <div className="flex gap-8">
+               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
+               <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
             </div>
          </div>
       </footer>
@@ -388,7 +325,23 @@ function PricingTier({ tier, index, totalCount }: { tier: any; index: number; to
           <span className={`text-[7px] md:text-[8px] font-black uppercase tracking-[0.4em] mb-3 block ${isMiddle ? "text-white/60" : "text-emerald-500"}`}>{tier.name}</span>
           <h3 className="text-white text-2xl md:text-3xl font-black mb-2 md:mb-4">{tier.price}</h3>
           <p className={`text-[10px] md:text-xs mb-8 font-medium ${isMiddle ? "text-white/70" : "text-white/40"}`}>{tier.desc}</p>
+          <Link href="#kholbooBarikh" className={`mt-auto w-full py-4 rounded-xl text-center font-black text-[10px] uppercase tracking-widest transition-all duration-500 ${isMiddle ? "bg-white text-black hover:bg-black hover:text-white" : "bg-emerald-500 text-white hover:bg-white hover:text-black"}`}>
+             Get Started
+          </Link>
        </div>
     </div>
   );
+}
+
+function useReveal() {
+  const [visible, setVisible] = useState(false);
+  const ref = useRef(null);
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+    obs.observe(el);
+    return () => obs.disconnect();
+  }, []);
+  return { ref, visible };
 }

@@ -2,28 +2,26 @@
 
 import { useEffect, useState } from "react";
 import Link from "next/link";
-import { useParkEaseLang } from "@/contexts/ParkEaseLangContext";
+import { useRentlyLang } from "@/contexts/RentlyLangContext";
 
 const NAV = {
   en: [
-    { label: "Overview", href: "/parkease" },
-    { label: "How It Works", href: "/parkease#how-it-works" },
-    { label: "Payments", href: "/parkease#payments" },
-    { label: "Pricing", href: "/parkease#pricing" },
+    { label: "Overview",      href: "/rently", key: "overview" },
+    { label: "Features",      href: "/rently#features", key: "features" },
+    { label: "Additional",    href: "/rently#additional", key: "additional" },
+    { label: "Pricing",       href: "/rently#pricing", key: "pricing" },
   ],
   mn: [
-    { label: "Танилцуулга", href: "/parkease" },
-    { label: "Хэрхэн ажилладаг", href: "/parkease#how-it-works" },
-    { label: "Төлбөр", href: "/parkease#payments" },
-    { label: "Үнэ тариф", href: "/parkease#pricing" },
+    { label: "Танилцуулга",   href: "/rently", key: "overview" },
+    { label: "Боломжууд",     href: "/rently#features", key: "features" },
+    { label: "Нэмэлт",        href: "/rently#additional", key: "additional" },
+    { label: "Үнэ тариф",     href: "/rently#pricing", key: "pricing" },
   ],
 };
 
-const CTA = { en: "Request Trial", mn: "Турших хүсэлт" };
-
-export default function ParkEaseNavbar() {
+export default function RentlyNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
-  const { lang, toggle } = useParkEaseLang();
+  const { lang, toggle } = useRentlyLang();
   
   const links = NAV[lang];
 
@@ -42,14 +40,14 @@ export default function ParkEaseNavbar() {
         "
       >
         {/* Logo */}
-        <Link href="/parkease" className="flex items-center gap-3 group">
+        <Link href="/rently" className="flex items-center gap-3 group">
           <div
-            className="rounded-2xl overflow-hidden shrink-0 transition-all duration-500 w-11 h-11 shadow-[0_4px_12px_rgba(246,180,20,0.3)]"
+            className="rounded-2xl overflow-hidden shrink-0 transition-all duration-500 w-11 h-11 shadow-[0_4px_12px_rgba(16,185,129,0.3)]"
           >
-            <img src="/images/parkease.jpg" alt="ParkEase" className="w-full h-full object-cover" />
+            <img src="/images/rently.png" alt="Rently" className="w-full h-full object-contain" />
           </div>
           <span className="font-bold tracking-tight text-white text-base">
-            ParkEase
+            Rently
           </span>
         </Link>
 
@@ -68,14 +66,6 @@ export default function ParkEaseNavbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          {/* Desktop CTA */}
-          <Link
-            href="/parkease/try"
-            className="hidden sm:inline-block text-[11px] font-bold px-4 py-2 rounded-full bg-[#f6b414] text-[#1a0f00] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
-          >
-            {CTA[lang]}
-          </Link>
-
           <button
             onClick={toggle}
             className="text-[11px] font-bold px-2.5 py-1.5 rounded-xl border transition-all duration-300 border-white/20 text-white/50 hover:text-white"
@@ -112,13 +102,6 @@ export default function ParkEaseNavbar() {
               {item.label}
             </Link>
           ))}
-          <Link
-            href="/parkease/try"
-            onClick={() => setMenuOpen(false)}
-            className="mt-4 text-xl font-bold px-8 py-4 rounded-full bg-[#f6b414] text-[#1a0f00]"
-          >
-            {CTA[lang]}
-          </Link>
         </div>
       </div>
     </header>

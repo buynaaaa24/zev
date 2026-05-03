@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import { HomeSections } from "@/lib/site-content-types";
+import { resolveMediaUrl } from "@/lib/media";
 
 export default function HeroSection({ hero }: { hero: HomeSections["hero"] }) {
   const [mounted, setMounted] = useState(false);
@@ -104,7 +105,7 @@ export default function HeroSection({ hero }: { hero: HomeSections["hero"] }) {
               key={i}
               className="absolute inset-0 transition-all duration-[3000ms] ease-out bg-cover bg-center"
               style={{
-                backgroundImage: `url(${src})`,
+                backgroundImage: `url(${resolveMediaUrl(src)})`,
                 opacity: i === bgIdx ? 0.4 : 0,
                 transform: i === bgIdx ? "scale(1.08)" : "scale(1)",
               }}

@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParkEaseLang } from "@/contexts/ParkEaseLangContext";
+import LeadFormSection from "@/components/sections/LeadFormSection";
 
 const YELLOW = "#f6b414";
 const YELLOW_DARK = "#d99a0e";
@@ -330,7 +331,7 @@ function HeroSection() {
         </p>
 
         <div className={`flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`} style={{ transitionDelay: ".44s" }}>
-          <Link href="/parkease/try" className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-[15px] font-semibold active:scale-[0.97] transition-all duration-300" style={{ background: `linear-gradient(90deg,${YELLOW},#ffc93c,${YELLOW})`, backgroundSize: "200%", animation: "shimmer 3s linear infinite", boxShadow: `0 8px 28px ${YELLOW_GLOW}0.35)`, color: "#1a0f00" }}>
+          <Link href="#kholbooBarikh" className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-[15px] font-semibold active:scale-[0.97] transition-all duration-300" style={{ background: `linear-gradient(90deg,${YELLOW},#ffc93c,${YELLOW})`, backgroundSize: "200%", animation: "shimmer 3s linear infinite", boxShadow: `0 8px 28px ${YELLOW_GLOW}0.35)`, color: "#1a0f00" }}>
             {t.cta1}
             <svg className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300" fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M17 8l4 4m0 0l-4 4m4-4H3" /></svg>
           </Link>
@@ -556,7 +557,7 @@ function PricingSection() {
                   ))}
                 </ul>
                 <Link
-                  href="/parkease/try"
+                  href="#kholbooBarikh"
                   className={highlight[i] ? "block text-center text-[14px] font-semibold py-3 rounded-xl sm:rounded-2xl" : "block text-center text-[14px] font-semibold py-3 rounded-xl sm:rounded-2xl bg-white border border-neutral-200 text-neutral-800 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-300"}
                   style={highlight[i] ? { background: YELLOW, color: "#1a0f00", boxShadow: `0 8px 24px ${YELLOW_GLOW}0.3)` } : {}}
                 >
@@ -568,7 +569,7 @@ function PricingSection() {
 
           <p className={`text-center text-neutral-400 text-sm mt-8 sm:mt-10 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`} style={{ transitionDelay: "0.35s" }}>
             {t.note}{" "}
-            <Link href="/parkease/try" className="font-medium hover:underline" style={{ color: YELLOW_DARK }}>{t.quote}</Link>
+            <Link href="#kholbooBarikh" className="font-medium hover:underline" style={{ color: YELLOW_DARK }}>{t.quote}</Link>
           </p>
         </div>
       </div>
@@ -670,8 +671,9 @@ export default function ParkEasePage() {
       <FeaturesSection />
       <PricingSection />
       <FreeDriverSection />
-      <CTASection />
+      <LeadFormSection systemName="ParkEase" accentColor={YELLOW} />
       <Footer />
     </>
   );
 }
+     

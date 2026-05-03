@@ -54,6 +54,7 @@ export type FooterSections = {
 export type ContactSections = {
   hero: {
     badge: string;
+    h2Line1: string;
     h2Accent: string;
     intro: string;
   };
@@ -80,7 +81,12 @@ export type ServicesSections = {
     h2Accent: string;
     intro: string;
   };
-  features: { title: string; desc: string }[];
+  features: { 
+    title: string; 
+    desc: string;
+    image?: string;
+    accent?: string;
+  }[];
   banner: { value: string; suffix: string; label: string }[];
 };
 
