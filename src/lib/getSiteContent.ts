@@ -1,6 +1,7 @@
 import { cache } from "react";
 import type {
   AboutSections,
+  AjluudSections,
   ContactSections,
   FooterSections,
   HomeSections,
@@ -337,4 +338,17 @@ export async function getQrSections(lang: string = "mn", siteId: string = "zevta
     ...EMPTY_QR,
     ...patch,
   } as QrSections;
+}
+
+const EMPTY_AJLUUD: AjluudSections = {
+  header: { badge: "", titleLine1: "", titleAccent: "" },
+  items: [],
+};
+
+export async function getAjluudSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<AjluudSections> {
+  const patch = asRecord(await fetchSitePageSections("ajluud", lang, siteId));
+  return {
+    header: { ...EMPTY_AJLUUD.header, ...asRecord(patch.header) },
+    items: Array.isArray(patch.items) ? (patch.items as AjluudSections["items"]) : [],
+  };
 }

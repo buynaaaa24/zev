@@ -255,3 +255,22 @@ export type QrSections = {
   glow?: string;
 };
 
+export type AjluudSections = {
+  header: {
+    badge: string;
+    titleLine1: string;
+    titleAccent: string;
+  };
+  items: {
+    id: number;
+    title: string;
+    category: string;
+    image: string;
+    mobileImage?: string;
+    showMobile?: boolean;
+    videoUrl?: string;
+    description?: string;
+    link?: string;
+  }[];
+};
+
