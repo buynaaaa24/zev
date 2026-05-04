@@ -91,14 +91,14 @@ function ProjectCard({
   return (
     <div 
       key={p.id} 
-      className={`group relative flex flex-col gap-5 transition-all duration-1000 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
+      className={`group relative flex flex-col p-4 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[40px] transition-all duration-700 hover:bg-white/[0.06] hover:border-white/20 hover:shadow-[0_30px_80px_rgba(0,0,0,0.6)] hover:-translate-y-2 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
       style={{ transitionDelay: `${i * 150}ms` }}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
       <div 
         onClick={() => p.videoUrl && onSelect(p)}
-        className={`relative aspect-[4/3] md:aspect-[16/11] w-full overflow-hidden rounded-[32px] bg-neutral-900 border border-white/10 transition-all duration-700 group-hover:shadow-[0_30px_80px_rgba(99,102,241,0.2)] group-hover:-translate-y-2 ${p.videoUrl ? 'cursor-pointer' : ''}`}
+        className={`relative aspect-[4/3] md:aspect-[16/11] w-full overflow-hidden rounded-[28px] bg-neutral-900 border border-white/5 transition-all duration-700 ${p.videoUrl ? 'cursor-pointer' : ''}`}
       >
         {/* Subtle Vignette & Glow */}
         <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none opacity-80 group-hover:opacity-40 transition-opacity duration-700" />
@@ -122,7 +122,7 @@ function ProjectCard({
             muted
             loop
             playsInline
-            className="absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-105"
+            className="absolute inset-0 w-full h-full object-contain bg-black/60 transition-all duration-1000 ease-out group-hover:scale-105"
           />
         ) : hasDirectVideo ? (
           <video
@@ -131,13 +131,13 @@ function ProjectCard({
             muted
             loop
             playsInline
-            className={`absolute inset-0 w-full h-full object-cover transition-all duration-1000 ease-out group-hover:scale-105 ${p.image ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}`}
+            className={`absolute inset-0 w-full h-full object-contain bg-black/60 transition-all duration-1000 ease-out group-hover:scale-105 ${p.image ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}`}
           />
         ) : ytThumbUrl && (isHovered || !p.image) ? (
-          <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-all duration-1000 ease-out group-hover:scale-105 bg-black ${p.image ? 'animate-in fade-in duration-700' : ''}`}>
+          <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-all duration-1000 ease-out group-hover:scale-105 bg-black/90 flex items-center justify-center ${p.image ? 'animate-in fade-in duration-700' : ''}`}>
             <iframe
               src={ytThumbUrl}
-              className="absolute w-[300%] h-[300%] -top-[100%] -left-[100%] pointer-events-none opacity-80"
+              className="absolute inset-0 w-full h-full scale-[1.1] pointer-events-none opacity-90"
               allow="autoplay; encrypted-media"
               tabIndex={-1}
               aria-hidden="true"
@@ -151,39 +151,39 @@ function ProjectCard({
 
         {/* Play Overlay (iOS style) */}
         {p.videoUrl && (
-          <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/0 group-hover:bg-black/20 transition-all duration-500">
-            <div className="w-16 h-16 rounded-full bg-white/10 border border-white/20 text-white flex items-center justify-center scale-90 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 backdrop-blur-md shadow-2xl">
-              <Play fill="white" className="ml-1 opacity-80" size={24} />
+          <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-all duration-500">
+            <div className="w-16 h-16 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
+              <Play fill="white" className="ml-1 opacity-100" size={24} />
             </div>
           </div>
         )}
 
-        <div className="absolute top-6 left-6 z-30 px-3 py-1 rounded-full bg-black/30 border border-white/10 backdrop-blur-xl opacity-100 transition-all duration-500">
-          <span className="text-white/90 text-[10px] font-black uppercase tracking-[0.15em]">{p.category}</span>
+        <div className="absolute top-5 left-5 z-30 px-3.5 py-1.5 rounded-full bg-black/40 border border-white/20 backdrop-blur-2xl transition-all duration-500 group-hover:bg-black/60">
+          <span className="text-white text-[11px] font-bold uppercase tracking-wider">{p.category}</span>
         </div>
       </div>
       
-      <div className="px-2">
-        <div className="flex items-start justify-between gap-4">
+      <div className="px-3 pt-6 pb-2">
+        <div className="flex items-center justify-between gap-4">
           <div>
-            <h3 className="text-white text-3xl font-black tracking-tight group-hover:text-indigo-400 transition-colors">
+            <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight group-hover:text-white transition-colors">
               {p.title}
             </h3>
             {p.category && (
-              <p className="mt-1 text-white/50 font-medium text-base tracking-wide">{p.category}</p>
+              <p className="mt-1.5 text-white/50 font-medium text-sm sm:text-base tracking-wide">{p.category}</p>
             )}
           </div>
           {p.redirectUrl ? (
             <a 
               href={p.redirectUrl}
               onClick={(e) => e.stopPropagation()}
-              className="shrink-0 w-12 h-12 rounded-full border border-white/10 flex items-center justify-center opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500 hover:bg-white hover:text-black hover:scale-110 active:scale-95"
+              className="shrink-0 w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white transition-all duration-500 hover:bg-white hover:text-black hover:scale-110 active:scale-95 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]"
             >
               <ArrowRight size={20} />
             </a>
           ) : (
-            <div className="shrink-0 w-12 h-12 flex items-center justify-center opacity-0 -translate-x-4 group-hover:opacity-100 group-hover:translate-x-0 transition-all duration-500">
-              <ArrowRight size={20} className="text-white/20" />
+            <div className="shrink-0 w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/50 transition-all duration-500">
+              <ArrowRight size={20} />
             </div>
           )}
         </div>
