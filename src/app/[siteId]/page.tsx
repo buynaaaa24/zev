@@ -57,7 +57,7 @@ export default async function Home({
         bgImages={homeData.hero.slideImages}
       />
       {siteId === "zevtabs" ? (
-        <LeadFormSection systemName="Zevtabs General" />
+        <LeadFormSection systemName="Zevtabs General" id="contact" />
       ) : (
         <ContactSection contact={contactData} />
       )}

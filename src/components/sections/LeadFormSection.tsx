@@ -15,6 +15,7 @@ interface LeadFormSectionProps {
   title?: string;
   subtitle?: string;
   contactEmail?: string;
+  id?: string;
 }
 
 export default function LeadFormSection({ 
@@ -22,7 +23,8 @@ export default function LeadFormSection({
   accentColor = "#6366f1", // Default Indigo
   title = "Санаагаа бодит болгон хувиргацгаая",
   subtitle = "Холбоо барих",
-  contactEmail = "contact@zevtabs.mn"
+  contactEmail = "contact@zevtabs.mn",
+  id = "kholbooBarikh"
 }: LeadFormSectionProps) {
   const [form, setForm] = useState({
     utas: "",
@@ -84,7 +86,7 @@ export default function LeadFormSection({
   };
 
   return (
-    <section id="kholbooBarikh" className={`relative py-24 lg:py-32 overflow-hidden bg-black ${montserrat.className}`}>
+    <section id={id} className={`relative py-24 lg:py-32 overflow-hidden bg-black ${montserrat.className}`}>
       {/* Background Elements */}
       <div className="absolute inset-0 z-0 pointer-events-none">
         <div className="absolute top-[-10%] right-[-5%] w-[40%] h-[40%] rounded-full opacity-20 blur-[120px]" style={{ backgroundColor: accentColor }} />
