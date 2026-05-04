@@ -48,7 +48,6 @@ export default function LeadFormSection({
 
   const validate = () => {
     const newErrors: any = {};
-    if (!form.ner.trim()) newErrors.ner = true;
     if (form.utas.length !== 8) newErrors.utas = true;
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.mail)) newErrors.mail = true;
     if (!form.tailbar.trim()) newErrors.tailbar = true;
@@ -171,17 +170,6 @@ export default function LeadFormSection({
                     onSubmit={handleSubmit}
                     className="space-y-6"
                   >
-                    <div className="space-y-2">
-                      <label className="text-white/30 text-[10px] font-black uppercase tracking-widest ml-1">Нэр</label>
-                      <input 
-                        name="ner"
-                        value={form.ner}
-                        onChange={handleChange}
-                        placeholder="Таны нэр"
-                        className={`w-full bg-white/5 border ${error.ner ? 'border-red-500' : 'border-white/10'} rounded-2xl px-6 py-4 text-white placeholder:text-white/10 outline-none focus:border-white/30 transition-all`}
-                      />
-                    </div>
-
                     <div className="grid sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-white/30 text-[10px] font-black uppercase tracking-widest ml-1">Утас</label>

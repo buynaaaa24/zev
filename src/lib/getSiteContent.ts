@@ -133,7 +133,7 @@ const EMPTY_RENTLY: RentlySections = {
 
 const REVALIDATE_SECONDS = 60;
 
-const fetchSitePageSections = cache(async (pageId: string, lang: string = "mn", siteId: string = "zevtaps"): Promise<unknown> => {
+const fetchSitePageSections = cache(async (pageId: string, lang: string = "mn", siteId: string = "zevtabs"): Promise<unknown> => {
   if (skipFetch()) return {};
 
   const isDev = process.env.NODE_ENV === "development";
@@ -168,7 +168,7 @@ function asRecord(v: unknown): Record<string, unknown> {
     : {};
 }
 
-export async function getHomeSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<HomeSections> {
+export async function getHomeSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<HomeSections> {
   const patch = asRecord(await fetchSitePageSections("home", lang, siteId));
   const hero = asRecord(patch.hero);
   return {
@@ -181,7 +181,7 @@ export async function getHomeSections(lang: string = "mn", siteId: string = "zev
   };
 }
 
-export async function getAboutSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<AboutSections> {
+export async function getAboutSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<AboutSections> {
   const patch = asRecord(await fetchSitePageSections("about", lang, siteId));
   const main = asRecord(patch.main);
   return {
@@ -194,7 +194,7 @@ export async function getAboutSections(lang: string = "mn", siteId: string = "ze
   };
 }
 
-export async function getFooterSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<FooterSections> {
+export async function getFooterSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<FooterSections> {
   const patch = asRecord(await fetchSitePageSections("footer", lang, siteId));
   const partners = asRecord(patch.partners);
   return {
@@ -207,7 +207,7 @@ export async function getFooterSections(lang: string = "mn", siteId: string = "z
   };
 }
 
-export async function getContactSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<ContactSections> {
+export async function getContactSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<ContactSections> {
   const patch = asRecord(await fetchSitePageSections("contact", lang, siteId));
   return {
     hero: { ...EMPTY_CONTACT.hero, ...asRecord(patch.hero) },
@@ -218,23 +218,23 @@ export async function getContactSections(lang: string = "mn", siteId: string = "
   };
 }
 
-export async function getServicesSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<ServicesSections> {
+export async function getServicesSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<ServicesSections> {
   const patch = asRecord(await fetchSitePageSections("services", lang, siteId));
   return {
     header: { ...EMPTY_SERVICES.header, ...asRecord(patch.header) },
-    features: Array.isArray(patch.features) 
+    features: Array.isArray(patch.features)
       ? (patch.features as ServicesSections["features"]).map(f => ({
-          title: f.title || "",
-          desc: f.desc || "",
-          image: f.image,
-          accent: f.accent
-        }))
+        title: f.title || "",
+        desc: f.desc || "",
+        image: f.image,
+        accent: f.accent
+      }))
       : [],
     banner: Array.isArray(patch.banner) ? (patch.banner as ServicesSections["banner"]) : [],
   };
 }
 
-export async function getPropertiesPageSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<PropertiesPageSections> {
+export async function getPropertiesPageSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<PropertiesPageSections> {
   const patch = asRecord(await fetchSitePageSections("properties-page", lang, siteId));
   return {
     header: { ...EMPTY_PROPERTIES_PAGE.header, ...asRecord(patch.header) },
@@ -244,21 +244,21 @@ export async function getPropertiesPageSections(lang: string = "mn", siteId: str
   };
 }
 
-export async function getSalesPageSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<SalesPageSections> {
+export async function getSalesPageSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<SalesPageSections> {
   const patch = asRecord(await fetchSitePageSections("sales-page", lang, siteId));
   return {
     header: { ...EMPTY_SALES_PAGE.header, ...asRecord(patch.header) },
   };
 }
 
-export async function getJobsPageSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<JobsPageSections> {
+export async function getJobsPageSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<JobsPageSections> {
   const patch = asRecord(await fetchSitePageSections("jobs-page", lang, siteId));
   return {
     header: { ...EMPTY_JOBS_PAGE.header, ...asRecord(patch.header) },
   };
 }
 
-export async function getTeamPageSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<TeamPageSections> {
+export async function getTeamPageSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<TeamPageSections> {
   const patch = asRecord(await fetchSitePageSections("team", lang, siteId));
   return {
     header: { ...EMPTY_TEAM_PAGE.header, ...asRecord(patch.header) },
@@ -267,7 +267,7 @@ export async function getTeamPageSections(lang: string = "mn", siteId: string = 
   };
 }
 
-export async function getPosEaseSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<PosEaseSections> {
+export async function getPosEaseSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<PosEaseSections> {
   const patch = asRecord(await fetchSitePageSections("posease", lang, siteId));
   return {
     hero: { ...EMPTY_POSEASE.hero, ...asRecord(patch.hero) },
@@ -288,7 +288,7 @@ export async function getPosEaseSections(lang: string = "mn", siteId: string = "
     },
   };
 }
-export async function getAmarHomeSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<AmarHomeSections> {
+export async function getAmarHomeSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<AmarHomeSections> {
   const patch = asRecord(await fetchSitePageSections("amarhome", lang, siteId));
   return {
     hero: { ...EMPTY_AMARHOME.hero, ...asRecord(patch.hero) },
@@ -310,7 +310,7 @@ export async function getAmarHomeSections(lang: string = "mn", siteId: string = 
   };
 }
 
-export async function getRentlySections(lang: string = "mn", siteId: string = "zevtaps"): Promise<RentlySections> {
+export async function getRentlySections(lang: string = "mn", siteId: string = "zevtabs"): Promise<RentlySections> {
   const patch = asRecord(await fetchSitePageSections("rently", lang, siteId));
   return {
     hero: { ...EMPTY_RENTLY.hero, ...asRecord(patch.hero) },
@@ -331,7 +331,7 @@ export async function getRentlySections(lang: string = "mn", siteId: string = "z
 }
 const EMPTY_QR: QrSections = {};
 
-export async function getQrSections(lang: string = "mn", siteId: string = "zevtaps"): Promise<QrSections> {
+export async function getQrSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<QrSections> {
   const patch = asRecord(await fetchSitePageSections("qr-portal", lang, siteId));
   return {
     ...EMPTY_QR,

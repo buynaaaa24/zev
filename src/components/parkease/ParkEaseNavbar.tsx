@@ -23,6 +23,7 @@ const CTA = { en: "Request Trial", mn: "Турших хүсэлт" };
 
 export default function ParkEaseNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { lang, toggle } = useParkEaseLang();
   
   const links = NAV[lang];
@@ -32,14 +33,25 @@ export default function ParkEaseNavbar() {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
+  useEffect(() => {
+    const handleScroll = () => setScrolled(window.scrollY > 80);
+    window.addEventListener("scroll", handleScroll);
+    handleScroll();
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <header className="fixed top-0 left-0 right-0 z-[200] flex justify-center pt-4 sm:pt-6 pointer-events-none">
       <div 
-        className="
+        className={`
           flex items-center justify-between pointer-events-auto
           transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]
-          w-[92%] max-w-[1200px] h-[64px] rounded-[32px] bg-white/10 backdrop-blur-[12px] border border-white/20 px-6
-        "
+          w-[92%] max-w-[1200px] h-[64px] rounded-[32px] backdrop-blur-[20px] border px-6
+          ${scrolled 
+            ? "bg-neutral-900/90 border-neutral-700/40 shadow-[0_8px_32px_rgba(0,0,0,0.4)]" 
+            : "bg-white/10 border-white/20"
+          }
+        `}
       >
         {/* Logo */}
         <Link href="/parkease" className="flex items-center gap-3 group">

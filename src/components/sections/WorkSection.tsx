@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
 import { ArrowRight, X, Play } from "lucide-react";
 import { PropertiesPageSections } from "@/lib/site-content-types";
@@ -60,134 +60,218 @@ function ModalVideoPlayer({ src }: { src: string }) {
   );
 }
 
-function ProjectCard({ 
-  project: p, 
-  index: i, 
-  headerVis, 
-  onSelect 
-}: { 
-  project: Project; 
-  index: number; 
-  headerVis: boolean; 
+/* ── Gear-style rotating project orbit ── */
+function GearProjectsOrbit({
+  projects,
+  headerVis,
+  onSelect,
+  ctaLabel,
+}: {
+  projects: Project[];
+  headerVis: boolean;
   onSelect: (p: Project) => void;
+  ctaLabel: string;
 }) {
-  const hasDirectVideo = p.videoUrl && isDirectVideo(p.videoUrl);
-  const ytThumbUrl = p.videoUrl && !hasDirectVideo ? getYoutubeThumbUrl(p.videoUrl) : null;
-  const videoRef = useRef<HTMLVideoElement>(null);
-  const [isHovered, setIsHovered] = useState(false);
+  const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [rotation, setRotation] = useState(0);
+  const rafRef = useRef<number>(0);
+  const lastTimeRef = useRef<number>(0);
+  const pausedRef = useRef(false);
 
-  const handleMouseEnter = () => {
-    setIsHovered(true);
-    videoRef.current?.play().catch(() => {});
+  // Auto-rotate
+  useEffect(() => {
+    const animate = (time: number) => {
+      if (lastTimeRef.current === 0) lastTimeRef.current = time;
+      const delta = time - lastTimeRef.current;
+      lastTimeRef.current = time;
+      if (!pausedRef.current) {
+        setRotation(prev => (prev + delta * 0.008) % 360);
+      }
+      rafRef.current = requestAnimationFrame(animate);
+    };
+    rafRef.current = requestAnimationFrame(animate);
+    return () => cancelAnimationFrame(rafRef.current);
+  }, []);
+
+  const handleHover = useCallback((idx: number | null) => {
+    setHoveredIdx(idx);
+    pausedRef.current = idx !== null;
+  }, []);
+
+  const count = projects.length;
+  const angleStep = 360 / count;
+
+  // Radius responsive
+  const getRadius = () => {
+    if (typeof window === "undefined") return 280;
+    if (window.innerWidth < 640) return 140;
+    if (window.innerWidth < 1024) return 220;
+    return 300;
   };
 
-  const handleMouseLeave = () => {
-    setIsHovered(false);
-    videoRef.current?.pause();
-  };
-
-  const imageIsVideo = p.image && isDirectVideo(p.image);
+  const [radius, setRadius] = useState(300);
+  useEffect(() => {
+    const update = () => setRadius(getRadius());
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
 
   return (
-    <div 
-      key={p.id} 
-      className={`group relative flex flex-col p-4 bg-white/[0.03] backdrop-blur-2xl border border-white/10 rounded-[40px] transition-all duration-700 hover:bg-white/[0.06] hover:border-white/20 hover:shadow-[0_30px_80px_rgba(0,0,0,0.6)] hover:-translate-y-2 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
-      style={{ transitionDelay: `${i * 150}ms` }}
-      onMouseEnter={handleMouseEnter}
-      onMouseLeave={handleMouseLeave}
-    >
-      <div 
-        onClick={() => p.videoUrl && onSelect(p)}
-        className={`relative aspect-[4/3] md:aspect-[16/11] w-full overflow-hidden rounded-[28px] bg-neutral-900 border border-white/5 transition-all duration-700 ${p.videoUrl ? 'cursor-pointer' : ''}`}
-      >
-        {/* Subtle Vignette & Glow */}
-        <div className="absolute inset-0 z-20 bg-gradient-to-t from-black/60 via-transparent to-transparent pointer-events-none opacity-80 group-hover:opacity-40 transition-opacity duration-700" />
-        <div className="absolute inset-0 z-20 opacity-0 group-hover:opacity-100 transition-opacity duration-700 bg-[radial-gradient(circle_at_50%_120%,rgba(99,102,241,0.15),transparent_70%)] pointer-events-none" />
+    <div className="relative w-full flex items-center justify-center" style={{ minHeight: radius * 2 + 320 }}>
+      {/* Center glow */}
+      <div className="absolute w-32 h-32 sm:w-48 sm:h-48 rounded-full bg-indigo-600/20 blur-[60px] z-0" />
+      <div className="absolute w-16 h-16 sm:w-24 sm:h-24 rounded-full border border-white/10 z-[1]" />
+      <div className="absolute rounded-full border border-white/[0.04] z-[1]" style={{ width: radius * 2, height: radius * 2 }} />
 
-        {/* Cover Image */}
-        {p.image && !imageIsVideo ? (
-          <img 
-            src={resolveMediaUrl(p.image)} 
-            alt={p.title} 
-            className="absolute inset-0 w-full h-full object-cover transition-transform duration-1000 ease-out group-hover:scale-105"
-            loading="lazy"
+      {/* Gear teeth decorations around the orbit circle */}
+      {Array.from({ length: 24 }).map((_, i) => {
+        const a = (i * 15 + rotation * 0.3) * (Math.PI / 180);
+        const outerR = radius + 8;
+        const x = Math.cos(a) * outerR;
+        const y = Math.sin(a) * outerR;
+        return (
+          <div
+            key={`tooth-${i}`}
+            className="absolute w-1.5 h-4 bg-white/[0.04] rounded-full z-[1]"
+            style={{
+              left: `calc(50% + ${x}px - 3px)`,
+              top: `calc(50% + ${y}px - 8px)`,
+              transform: `rotate(${(i * 15 + rotation * 0.3)}deg)`,
+            }}
           />
-        ) : null}
+        );
+      })}
 
-        {/* Hover Video or Main Video */}
-        {imageIsVideo ? (
-          <video
-            ref={videoRef}
-            src={resolveMediaUrl(p.image)}
-            muted
-            loop
-            playsInline
-            className="absolute inset-0 w-full h-full object-contain bg-black/60 transition-all duration-1000 ease-out group-hover:scale-105"
-          />
-        ) : hasDirectVideo ? (
-          <video
-            ref={videoRef}
-            src={resolveMediaUrl(p.videoUrl!)}
-            muted
-            loop
-            playsInline
-            className={`absolute inset-0 w-full h-full object-contain bg-black/60 transition-all duration-1000 ease-out group-hover:scale-105 ${p.image ? 'opacity-0 group-hover:opacity-100' : 'opacity-100'}`}
-          />
-        ) : ytThumbUrl && (isHovered || !p.image) ? (
-          <div className={`absolute inset-0 overflow-hidden pointer-events-none transition-all duration-1000 ease-out group-hover:scale-105 bg-black/90 flex items-center justify-center ${p.image ? 'animate-in fade-in duration-700' : ''}`}>
-            <iframe
-              src={ytThumbUrl}
-              className="absolute inset-0 w-full h-full scale-[1.1] pointer-events-none opacity-90"
-              allow="autoplay; encrypted-media"
-              tabIndex={-1}
-              aria-hidden="true"
-            />
-          </div>
-        ) : !p.image ? (
-          <div className="absolute inset-0 flex items-center justify-center bg-white/5">
-            <span className="text-white/20 font-medium tracking-widest text-xs uppercase">No Media</span>
-          </div>
-        ) : null}
+      {projects.map((p, i) => {
+        const angle = (angleStep * i + rotation) * (Math.PI / 180);
+        const x = Math.cos(angle) * radius;
+        const y = Math.sin(angle) * radius;
+        const isHovered = hoveredIdx === i;
+        const isOtherHovered = hoveredIdx !== null && hoveredIdx !== i;
+        const imageIsVideo = p.image && isDirectVideo(p.image);
 
-        {/* Play Overlay (iOS style) */}
-        {p.videoUrl && (
-          <div className="absolute inset-0 z-30 flex items-center justify-center bg-black/0 group-hover:bg-black/10 transition-all duration-500">
-            <div className="w-16 h-16 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center scale-75 opacity-0 group-hover:scale-100 group-hover:opacity-100 transition-all duration-500 backdrop-blur-2xl shadow-[0_8px_32px_rgba(0,0,0,0.3)]">
-              <Play fill="white" className="ml-1 opacity-100" size={24} />
-            </div>
-          </div>
-        )}
-
-        <div className="absolute top-5 left-5 z-30 px-3.5 py-1.5 rounded-full bg-black/40 border border-white/20 backdrop-blur-2xl transition-all duration-500 group-hover:bg-black/60">
-          <span className="text-white text-[11px] font-bold uppercase tracking-wider">{p.category}</span>
-        </div>
-      </div>
-      
-      <div className="px-3 pt-6 pb-2">
-        <div className="flex items-center justify-between gap-4">
-          <div>
-            <h3 className="text-white text-2xl sm:text-3xl font-bold tracking-tight group-hover:text-white transition-colors">
-              {p.title}
-            </h3>
-            {p.category && (
-              <p className="mt-1.5 text-white/50 font-medium text-sm sm:text-base tracking-wide">{p.category}</p>
-            )}
-          </div>
-          {p.redirectUrl ? (
-            <a 
-              href={p.redirectUrl}
-              onClick={(e) => e.stopPropagation()}
-              className="shrink-0 w-12 h-12 rounded-full border border-white/20 bg-white/5 flex items-center justify-center text-white transition-all duration-500 hover:bg-white hover:text-black hover:scale-110 active:scale-95 group-hover:shadow-[0_0_20px_rgba(255,255,255,0.2)]"
+        return (
+          <div
+            key={p.id}
+            className="absolute z-10"
+            style={{
+              left: `calc(50% + ${x}px)`,
+              top: `calc(50% + ${y}px)`,
+              transform: `translate(-50%, -50%) scale(${isHovered ? 1.25 : isOtherHovered ? 0.85 : 1})`,
+              transition: "transform 0.6s cubic-bezier(0.23,1,0.32,1), opacity 0.5s ease, z-index 0s",
+              zIndex: isHovered ? 50 : 10,
+              opacity: headerVis ? (isOtherHovered ? 0.4 : 1) : 0,
+            }}
+            onMouseEnter={() => handleHover(i)}
+            onMouseLeave={() => handleHover(null)}
+          >
+            <div
+              className={`
+                relative group cursor-pointer overflow-hidden rounded-[24px] sm:rounded-[32px] border backdrop-blur-2xl
+                transition-all duration-500
+                ${isHovered
+                  ? "w-[240px] h-[280px] sm:w-[320px] sm:h-[360px] border-indigo-500/40 shadow-[0_30px_100px_rgba(99,102,241,0.3)] bg-white/[0.08]"
+                  : "w-[100px] h-[100px] sm:w-[140px] sm:h-[140px] border-white/10 bg-white/[0.03] shadow-xl"
+                }
+              `}
             >
-              <ArrowRight size={20} />
-            </a>
-          ) : (
-            <div className="shrink-0 w-12 h-12 rounded-full border border-white/10 bg-white/5 flex items-center justify-center text-white/50 transition-all duration-500">
-              <ArrowRight size={20} />
+              {/* Image / Video Preview */}
+              <div className="absolute inset-0 overflow-hidden rounded-[24px] sm:rounded-[32px]">
+                {/* Base thumbnail (always rendered) */}
+                {p.image && !imageIsVideo ? (
+                  <img
+                    src={resolveMediaUrl(p.image)}
+                    alt={p.title}
+                    className="w-full h-full object-cover transition-transform duration-1000 group-hover:scale-110"
+                    loading="lazy"
+                  />
+                ) : imageIsVideo ? (
+                  <video
+                    src={resolveMediaUrl(p.image)}
+                    muted
+                    loop
+                    playsInline
+                    autoPlay
+                    className="w-full h-full object-cover"
+                  />
+                ) : (
+                  <div className="w-full h-full bg-gradient-to-br from-indigo-900/40 to-black flex items-center justify-center">
+                    <span className="text-white/10 text-6xl font-black">{i + 1}</span>
+                  </div>
+                )}
+
+                {/* Hover video preview overlay */}
+                {isHovered && p.videoUrl && isDirectVideo(p.videoUrl) && (
+                  <video
+                    src={resolveMediaUrl(p.videoUrl)}
+                    muted
+                    loop
+                    playsInline
+                    autoPlay
+                    className="absolute inset-0 w-full h-full object-cover z-10 animate-in fade-in duration-500"
+                  />
+                )}
+                {isHovered && p.videoUrl && !isDirectVideo(p.videoUrl) && getYoutubeThumbUrl(p.videoUrl) && (
+                  <iframe
+                    src={getYoutubeThumbUrl(p.videoUrl)!}
+                    className="absolute inset-0 w-full h-full z-10 pointer-events-none scale-[1.15] animate-in fade-in duration-500"
+                    allow="autoplay; encrypted-media"
+                    tabIndex={-1}
+                    aria-hidden="true"
+                  />
+                )}
+
+                <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-[15]" />
+              </div>
+
+              {/* Play button to open lightbox */}
+              {p.videoUrl && isHovered && (
+                <div
+                  className="absolute inset-0 z-20 flex items-center justify-center"
+                  onClick={() => onSelect(p)}
+                >
+                  <div className="w-14 h-14 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center backdrop-blur-xl shadow-2xl hover:bg-white/30 transition-all">
+                    <Play fill="white" className="ml-1" size={22} />
+                  </div>
+                </div>
+              )}
+
+              {/* Info — only visible when hovered */}
+              <div
+                className={`absolute bottom-0 inset-x-0 z-20 p-4 sm:p-6 transition-all duration-500 ${
+                  isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"
+                }`}
+              >
+                <span className="inline-block px-2.5 py-0.5 rounded-full bg-black/50 border border-white/20 backdrop-blur-sm text-white text-[9px] font-bold uppercase tracking-wider mb-2">
+                  {p.category}
+                </span>
+                <h3 className="text-white text-lg sm:text-xl font-black tracking-tight leading-tight">
+                  {p.title}
+                </h3>
+                {p.redirectUrl && (
+                  <a
+                    href={p.redirectUrl}
+                    onClick={(e) => e.stopPropagation()}
+                    className="mt-3 inline-flex items-center gap-2 text-indigo-400 text-xs font-bold hover:text-white transition-colors"
+                  >
+                    {ctaLabel} <ArrowRight size={14} />
+                  </a>
+                )}
+              </div>
+
+              {/* Category badge when NOT hovered (compact view) */}
+              {!isHovered && (
+                <div className="absolute inset-0 z-20 flex items-end justify-center pb-2 sm:pb-3">
+                  <span className="text-white text-[8px] sm:text-[10px] font-bold uppercase tracking-wider opacity-80 truncate px-2 text-center">
+                    {p.title}
+                  </span>
+                </div>
+              )}
             </div>
-          )}
-        </div>
-      </div>
+          </div>
+        );
+      })}
     </div>
   );
 }
@@ -347,7 +431,7 @@ export default function WorkSection({
         
         <div 
           ref={headerRef}
-          className={`mb-24 transition-all duration-1000 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+          className={`mb-16 text-center transition-all duration-1000 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
         >
           <span className="inline-block px-4 py-1.5 rounded-full bg-indigo-600/10 border border-indigo-600/20 text-indigo-500 text-[11px] font-black uppercase tracking-[0.2em] mb-6">
             {properties.header.badge || "Portfolio"}
@@ -359,25 +443,19 @@ export default function WorkSection({
             </span>
           </h2>
           {properties.header.intro && (
-            <p className="text-white/40 text-xl font-medium max-w-2xl leading-relaxed">
+            <p className="text-white/40 text-xl font-medium max-w-2xl mx-auto leading-relaxed">
               {properties.header.intro}
             </p>
           )}
         </div>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 relative z-10">
-          {displayProjects.map((p, i) => (
-            <ProjectCard 
-              key={p.id} 
-              project={p} 
-              index={i} 
-              headerVis={headerVis} 
-              onSelect={setActiveVideo} 
-            />
-          ))}
-        </div>
-
-        {/* CTA Button */}
+        {/* Gear-style rotating orbit */}
+        <GearProjectsOrbit
+          projects={displayProjects}
+          headerVis={headerVis}
+          onSelect={setActiveVideo}
+          ctaLabel={properties.cta?.label || "Үзэх"}
+        />
         
       </div>
 

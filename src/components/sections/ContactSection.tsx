@@ -108,17 +108,7 @@ export default function ContactSection({ contact }: { contact: ContactSections }
               </div>
 
               <form className="space-y-6">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-                  <div className="space-y-2">
-                    <label className="text-neutral-300 text-[10px] uppercase tracking-[0.2em] font-black ml-1">
-                      {contact.formLabels?.name || "Full Name"}
-                    </label>
-                    <input 
-                      type="text" 
-                      placeholder="John Doe"
-                      className="w-full bg-neutral-50/50 border border-neutral-100 rounded-2xl px-6 py-4 text-neutral-900 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-600/10 focus:border-indigo-600/30 transition-all placeholder:text-neutral-200" 
-                    />
-                  </div>
+                <div className="grid grid-cols-1 gap-6">
                   <div className="space-y-2">
                     <label className="text-neutral-300 text-[10px] uppercase tracking-[0.2em] font-black ml-1">
                       {contact.formLabels?.email || "Email Address"}

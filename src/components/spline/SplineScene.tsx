@@ -16,7 +16,7 @@ const iframeHTML = `<!DOCTYPE html>
     spline-viewer { width:100%; height:100%; --background-color:transparent; }
     #loader {
       position:absolute; inset:0; display:flex; flex-direction:column;
-      align-items:center; justify-content:center; gap:12px; background:#0a0a0a;
+      align-items:center; justify-content:center; gap:12px; background:transparent;
       transition: opacity 0.6s ease;
     }
     #loader.hidden { opacity:0; pointer-events:none; }

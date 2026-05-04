@@ -226,11 +226,9 @@ export default function PosEaseClient({ initialMn, initialEn }: PosEasePageClien
           </div>
         </div>
 
-        {/* Spline viewport — SplineScene is stable; only the wrapper ever re-renders */}
-        <div className="relative mt-32 w-full max-w-[1200px] aspect-[16/9] bg-gradient-to-b from-pink-500/10 to-transparent rounded-t-[60px] border-t border-x border-pink-500/20 p-2 sm:p-4 backdrop-blur-3xl overflow-hidden shadow-[0_-20px_80px_rgba(255,68,105,0.15)]">
-        <div className="relative w-full h-full bg-[#0a0a0a] rounded-[48px] border border-white/5 flex flex-col overflow-hidden">
-  <SplineScene />
-</div>
+        {/* Spline 3D scene — seamless, full screen, no frame */}
+        <div className="relative mt-10 w-full z-10" style={{ height: "100vh" }}>
+          <SplineScene />
         </div>
       </section>
 
