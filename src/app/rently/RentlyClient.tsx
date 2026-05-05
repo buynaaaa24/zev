@@ -6,7 +6,7 @@ import { RentlySections } from "@/lib/site-content-types";
 import { useRentlyLang } from "@/contexts/RentlyLangContext";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import { getApiBaseUrl } from "@/lib/api";
-import { ArrowRight, ChevronRight, Plus } from "lucide-react";
+import { ArrowRight, ChevronRight, Plus, Menu, X } from "lucide-react";
 
 const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
   en: {
