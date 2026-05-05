@@ -5,7 +5,6 @@ import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { Montserrat } from "next/font/google";
-import { motion } from "framer-motion";
 
 const montserrat = Montserrat({ subsets: ["latin", "cyrillic"] });
 
@@ -24,29 +23,43 @@ export default function QrRootPage() {
     if (!ctx) return;
     let animId: number;
     const particles: { x: number; y: number; r: number; dx: number; dy: number; alpha: number }[] = [];
-    const resize = () => { canvas.width = window.innerWidth; canvas.height = window.innerHeight; };
+    const resize = () => {
+      canvas.width = window.innerWidth;
+      canvas.height = window.innerHeight;
+    };
     resize();
     window.addEventListener("resize", resize);
     for (let i = 0; i < 50; i++) {
       particles.push({
-        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
         r: Math.random() * 1.2 + 0.2,
-        dx: (Math.random() - 0.5) * 0.25, dy: -Math.random() * 0.4 - 0.05,
+        dx: (Math.random() - 0.5) * 0.25,
+        dy: -Math.random() * 0.4 - 0.05,
         alpha: Math.random() * 0.3 + 0.05,
       });
     }
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(100,160,255,${p.alpha})`; ctx.fill();
-        p.x += p.dx; p.y += p.dy;
-        if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(100,160,255,${p.alpha})`;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.y < -10) {
+          p.y = canvas.height + 10;
+          p.x = Math.random() * canvas.width;
+        }
       });
       animId = requestAnimationFrame(draw);
     };
     draw();
-    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
   const projects = [
@@ -60,11 +73,29 @@ export default function QrRootPage() {
 
   return (
     <div className={`min-h-screen bg-[#050505] flex flex-col items-center justify-center p-6 overflow-hidden relative ${montserrat.className}`}>
-      {/* Official Zevfront Hero Background Pattern */}
-      <div className="absolute inset-0 z-0" style={{ background: "linear-gradient(140deg, #000 0%, #0a0a0a 50%, #0d1b2a 100%)" }} />
-      <canvas ref={canvasRef} className="absolute inset-0 w-full h-full pointer-events-none z-[1] opacity-60" aria-hidden />
-      <div className="absolute inset-0 pointer-events-none z-[2]" style={{ background: "radial-gradient(ellipse 70% 55% at 50% 0%, rgba(0,102,204,0.15) 0%, transparent 70%)" }} aria-hidden />
-      <div className="absolute inset-0 pointer-events-none opacity-[0.03] z-[3]" style={{ backgroundImage: "linear-gradient(rgba(255,255,255,.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.4) 1px,transparent 1px)", backgroundSize: "64px 64px" }} aria-hidden />
+      {/* Background patterns */}
+      <div 
+        className="absolute inset-0 z-0" 
+        style={{ background: "linear-gradient(140deg, #000 0%, #0a0a0a 50%, #0d1b2a 100%)" }} 
+      />
+      <canvas 
+        ref={canvasRef} 
+        className="absolute inset-0 w-full h-full pointer-events-none z-[1] opacity-60" 
+        aria-hidden="true" 
+      />
+      <div 
+        className="absolute inset-0 pointer-events-none z-[2]" 
+        style={{ background: "radial-gradient(ellipse 70% 55% at 50% 0%, rgba(0,102,204,0.15) 0%, transparent 70%)" }} 
+        aria-hidden="true" 
+      />
+      <div 
+        className="absolute inset-0 pointer-events-none opacity-[0.03] z-[3]" 
+        style={{ 
+          backgroundImage: "linear-gradient(rgba(255,255,255,0.4) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.4) 1px,transparent 1px)", 
+          backgroundSize: "64px 64px" 
+        }} 
+        aria-hidden="true" 
+      />
 
       <div className={`w-full max-w-md relative z-10 transition-all duration-1000 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}>
         <div className="text-center mb-16">
@@ -79,7 +110,7 @@ export default function QrRootPage() {
         </div>
 
         <div className="grid grid-cols-1 gap-3">
-          {projects.map((p, i) => (
+          {projects.map((p) => (
             <Link
               key={p.id}
               href={`/qr/${p.id}`}
