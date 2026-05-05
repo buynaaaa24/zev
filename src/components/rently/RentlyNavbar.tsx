@@ -6,23 +6,23 @@ import { useRentlyLang } from "@/contexts/RentlyLangContext";
 
 const NAV = {
   en: [
-    { label: "Overview",      href: "/rently", key: "overview" },
-    { label: "Features",      href: "/rently#features", key: "features" },
-    { label: "Additional",    href: "/rently#additional", key: "additional" },
-    { label: "Pricing",       href: "/rently#pricing", key: "pricing" },
+    { label: "Overview", href: "/rently", key: "overview" },
+    { label: "Features", href: "/rently#features", key: "features" },
+    { label: "Additional", href: "/rently#additional", key: "additional" },
+    { label: "Pricing", href: "/rently#pricing", key: "pricing" },
   ],
   mn: [
-    { label: "Танилцуулга",   href: "/rently", key: "overview" },
-    { label: "Боломжууд",     href: "/rently#features", key: "features" },
-    { label: "Нэмэлт",        href: "/rently#additional", key: "additional" },
-    { label: "Үнэ тариф",     href: "/rently#pricing", key: "pricing" },
+    { label: "Танилцуулга", href: "/rently", key: "overview" },
+    { label: "Боломжууд", href: "/rently#features", key: "features" },
+    { label: "Нэмэлт", href: "/rently#additional", key: "additional" },
+    { label: "Үнэ тариф", href: "/rently#pricing", key: "pricing" },
   ],
 };
 
 export default function RentlyNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const { lang, toggle } = useRentlyLang();
-  
+
   const links = NAV[lang];
 
   useEffect(() => {
@@ -32,7 +32,7 @@ export default function RentlyNavbar() {
 
   return (
     <header className="fixed top-0 left-0 right-0 z-[200] flex justify-center pt-4 sm:pt-6 pointer-events-none">
-      <div 
+      <div
         className="
           flex items-center justify-between pointer-events-auto
           transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)]
@@ -75,33 +75,51 @@ export default function RentlyNavbar() {
 
           {/* Mobile Menu Toggle */}
           <button
-            className="md:hidden w-8 h-8 flex flex-col items-center justify-center gap-1 rounded-xl transition-colors hover:bg-white/10"
-            onClick={() => setMenuOpen(!menuOpen)}
+            type="button"
+            className="md:hidden w-10 h-10 flex flex-col items-center justify-center gap-[5px] transition-colors hover:bg-white/10 rounded-full"
+            onClick={() => setMenuOpen((o) => !o)}
+            aria-label={menuOpen ? "Close menu" : "Open menu"}
           >
-            <span className={`block h-[1.5px] w-4 rounded-full transition-all bg-white ${menuOpen ? "rotate-45 translate-y-[2.5px]" : ""}`} />
-            <span className={`block h-[1.5px] w-4 rounded-full transition-all bg-white ${menuOpen ? "-rotate-45 -translate-y-[2.5px]" : ""}`} />
+            {[
+              menuOpen ? "translate-y-[6.5px] rotate-45" : "",
+              menuOpen ? "opacity-0" : "",
+              menuOpen ? "-translate-y-[6.5px] -rotate-45" : "",
+            ].map((cls, i) => (
+              <span
+                key={i}
+                className={`block h-[1.5px] w-6 rounded-full transition-all duration-300 bg-white ${cls}`}
+              />
+            ))}
           </button>
         </div>
       </div>
 
       {/* Mobile Menu overlay */}
       <div
-        className={`md:hidden fixed inset-0 z-[190] bg-white/95 backdrop-blur-[32px] transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] ${
-          menuOpen ? "opacity-100 pointer-events-auto translate-y-0" : "opacity-0 pointer-events-none -translate-y-full"
-        }`}
+        className={`md:hidden fixed inset-0 top-[60px] bg-black/90 backdrop-blur-xl flex flex-col transition-all duration-500 ${menuOpen ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none"
+          }`}
       >
-        <div className="flex flex-col items-center justify-center h-full gap-8 px-10">
+        <div className="flex flex-col px-8 pt-10 gap-2">
           {links.map((item, i) => (
             <Link
-              key={item.href}
+              key={item.key}
               href={item.href}
               onClick={() => setMenuOpen(false)}
-              className="text-4xl font-black text-neutral-900 tracking-tighter"
-              style={{ transitionDelay: `${i * 100}ms` }}
+              style={{ transitionDelay: menuOpen ? `${i * 50}ms` : "0ms" }}
+              className={`text-left text-2xl font-bold text-white/80 hover:text-white py-3 border-b border-white/5 transition-all duration-500 ${menuOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"
+                }`}
             >
               {item.label}
             </Link>
           ))}
+          <div className="pt-6">
+            <button
+              onClick={toggle}
+              className="text-white/40 text-sm font-medium"
+            >
+              {lang === "mn" ? "Switch to English" : "Монгол руу шилжих"}
+            </button>
+          </div>
         </div>
       </div>
     </header>
