@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { PosEaseLangProvider } from "@/contexts/PosEaseLangContext";
 import PosEaseNavbar from "@/components/posease/PosEaseNavbar";
 import SmoothScroll from "@/components/SmoothScroll";
+import FooterWithContent from "@/components/FooterWithContent";
 
 export const metadata: Metadata = {
   title: "PosEase",
@@ -22,7 +23,9 @@ export default function PosEaseLayout({
       <SmoothScroll>
         <PosEaseNavbar />
         {children}
+        <FooterWithContent siteId="posease" />
       </SmoothScroll>
     </PosEaseLangProvider>
   );
 }
+

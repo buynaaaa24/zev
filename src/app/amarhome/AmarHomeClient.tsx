@@ -222,46 +222,10 @@ export default function AmarHomeClient({ data }: { data: AmarHomeSections }) {
       {/* CONTACT */}
       <LeadFormSection systemName="AmarHome" accentColor="#10b981" contactEmail="contact@amarhome.com" />
 
-      {/* FOOTER */}
-      <footer className="py-20 relative z-10 border-t border-white/5 px-6 md:px-24">
-         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-12">
-            <div className="md:col-span-2">
-               <div className="flex items-center gap-3 mb-6">
-                  <div className="w-12 h-12 rounded-xl overflow-hidden">
-                     <img src="/amarhome-logo.jpg" alt="Logo" className="w-full h-full object-cover" />
-                  </div>
-                  <span className="text-2xl font-black tracking-tighter text-white">AMAR<span className="text-emerald-500">HOME</span></span>
-               </div>
-               <p className="text-white/30 max-w-sm text-sm leading-relaxed">"Simplicity is the ultimate sophistication." — Leonardo da Vinci</p>
-            </div>
-            <div className="flex flex-col gap-4">
-               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Navigation</span>
-               <div className="flex flex-col gap-3 text-white/50 font-bold uppercase tracking-widest text-[10px]">
-                  <Link href="#features" className="hover:text-emerald-400 transition-colors">Features</Link>
-                  <Link href="#hardware" className="hover:text-emerald-400 transition-colors">Hardware</Link>
-                  <Link href="#pricing" className="hover:text-emerald-400 transition-colors">Investment</Link>
-                  <Link href="#kholbooBarikh" className="hover:text-emerald-400 transition-colors">Contact</Link>
-               </div>
-            </div>
-            <div className="flex flex-col gap-4">
-               <span className="text-[10px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Contact</span>
-               <div className="text-white/50 font-bold uppercase tracking-widest text-[10px] leading-loose">
-                  Ulaanbaatar, MN<br />
-                  contact@amarhome.com
-               </div>
-            </div>
-         </div>
-         <div className="max-w-[1400px] mx-auto mt-20 pt-8 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-6 text-[9px] font-black uppercase tracking-[0.2em] text-white/20">
-            <p>© 2026 AMARHOME — All Rights Reserved</p>
-            <div className="flex gap-8">
-               <a href="#" className="hover:text-white transition-colors">Privacy Policy</a>
-               <a href="#" className="hover:text-white transition-colors">Terms of Service</a>
-            </div>
-         </div>
-      </footer>
     </main>
   );
 }
+
 
 function FeatureRow({ item, index }: { item: any; index: number }) {
   const { ref, visible } = useReveal();

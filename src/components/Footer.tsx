@@ -1,3 +1,5 @@
+"use client";
+
 import Link from "next/link";
 import type { FooterSections } from "@/lib/site-content-types";
 import { Translations } from "@/lib/translations";
@@ -50,86 +52,60 @@ const NAV_SECTIONS = [
 export default function Footer({
   content,
   t,
+  accentColor = "rgb(99, 102, 241)",
+  logo = "/logo.png",
+  brandName = "Zevtabs",
+  trialHref,
 }: {
   content: FooterSections;
   t: Translations;
+  accentColor?: string;
+  logo?: string;
+  brandName?: string;
+  trialHref?: string;
 }) {
   const year = new Date().getFullYear();
 
+  // Handle translations for "By" and "Trial" if not provided in t
+  const textBy = (t as any).footer?.by || "Бүтээгч:";
+  const textTrial = (t as any).footer?.trial || "Турших хүсэлт →";
+
+
   return (
-    <footer className="bg-neutral-900 text-white">
-      {/* Main footer grid */}
-      <div className="max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16 py-16 sm:py-20">
-        <div className="grid grid-cols-2 lg:grid-cols-5 gap-10 lg:gap-16">
-          {/* Brand column */}
-          <div className="col-span-2 lg:col-span-2">
-            {/* Logo mark */}
-            <div className="flex items-center gap-3 mb-5">
-              <img src="/logo.png" alt="Zevtabs" className="w-8 h-8 object-contain" />
-              <span className="text-[17px] font-semibold text-white">Zevtabs</span>
-            </div>
-
-            <p className="text-neutral-400 text-sm leading-relaxed max-w-xs mb-6">
-              {content.brand?.desc ||
-                "Premium digital solutions crafted for businesses that demand excellence."}
-            </p>
-
-            <div className="flex gap-3 mb-8">
-              {SOCIAL_LINKS.map((s) => (
-                <a
-                  key={s.label}
-                  href={s.href}
-                  aria-label={s.label}
-                  className="w-9 h-9 rounded-full border border-neutral-700 flex items-center justify-center text-neutral-400 hover:text-white hover:border-neutral-500 transition-all duration-300 hover:scale-110"
-                >
-                  {s.icon}
-                </a>
-              ))}
-            </div>
-          </div>
-
-          {/* Nav sections */}
-          {NAV_SECTIONS.map((section) => (
-            <div key={section.label}>
-              <h4 className="text-neutral-500 text-[11px] uppercase tracking-widest font-semibold mb-4">
-                {section.label}
-              </h4>
-              <ul className="flex flex-col gap-3">
-                {section.links.map((link) => (
-                  <li key={link}>
-                    <a
-                      href="#"
-                      className="text-neutral-400 hover:text-white text-sm transition-colors duration-200"
-                    >
-                      {link}
-                    </a>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+    <footer className="bg-black border-t border-white/5 py-8 sm:py-10 relative z-10">
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+        {/* Brand */}
+        <div className="flex items-center gap-2.5">
+          <img
+            src={logo}
+            alt={brandName}
+            className="w-6 h-6 rounded-lg object-cover"
+          />
+          <span className="text-white/60 text-sm font-medium">{brandName}</span>
         </div>
-      </div>
 
-      {/* Bottom bar */}
-      <div className="border-t border-neutral-800">
-        <div className="max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16 py-5 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-neutral-500 text-xs">
-            © {year} Zevtabs. All rights reserved.
-          </p>
-          <div className="flex items-center gap-5">
-            {["Privacy Policy", "Terms of Use", "Cookies"].map((item) => (
-              <a
-                key={item}
-                href="#"
-                className="text-neutral-500 hover:text-neutral-300 text-xs transition-colors duration-200"
-              >
-                {item}
-              </a>
-            ))}
-          </div>
-        </div>
+        {/* Attribution & Copyright */}
+        <p className="text-white/25 text-xs text-center">
+          {textBy}{" "}
+          <a href="/" className="text-white/40 hover:text-white/60 transition-colors">
+            Zevtabs
+          </a>{" "}
+          · © {year}
+        </p>
+
+        {/* CTA */}
+        {trialHref && (
+          <Link 
+            href={trialHref} 
+            className="text-sm font-medium transition-colors hover:opacity-80" 
+            style={{ color: accentColor }}
+          >
+            {textTrial}
+          </Link>
+        )}
       </div>
     </footer>
   );
 }
+
+

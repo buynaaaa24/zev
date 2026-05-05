@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { ParkEaseLangProvider } from "@/contexts/ParkEaseLangContext";
 import ParkEaseNavbar from "@/components/parkease/ParkEaseNavbar";
 import SmoothScroll from "@/components/SmoothScroll";
+import FooterWithContent from "@/components/FooterWithContent";
 
 export const metadata: Metadata = {
   title: "ParkEase – Smart Automated Parking",
@@ -19,7 +20,9 @@ export default function ParkEaseLayout({
       <SmoothScroll>
         <ParkEaseNavbar />
         {children}
+        <FooterWithContent siteId="parkease" />
       </SmoothScroll>
     </ParkEaseLangProvider>
   );
 }
+

@@ -635,31 +635,6 @@ function CTASection() {
 }
 
 /* ── Footer ──────────────────────────────────────────────── */
-function Footer() {
-  const { lang } = useParkEaseLang();
-  const t = T[lang].footer;
-
-  return (
-    <footer className="bg-black border-t border-white/5 py-8 sm:py-10">
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-        <div className="flex items-center gap-2.5">
-          <img
-            src="/images/parkease.jpg"
-            alt="ParkEase Logo"
-            className="w-6 h-6 rounded-lg object-cover"
-          />
-          <span className="text-white/60 text-sm font-medium">ParkEase</span>
-        </div>
-        <p className="text-white/25 text-xs text-center">
-          {t.by}{" "}
-          <a href="/" className="text-white/40 hover:text-white/60 transition-colors">Zevtabs</a>
-          {" "}· © {new Date().getFullYear()}
-        </p>
-        <Link href="/parkease/try" className="text-sm font-medium transition-colors hover:opacity-80" style={{ color: YELLOW }}>{t.trial}</Link>
-      </div>
-    </footer>
-  );
-}
 
 /* ── Page ────────────────────────────────────────────────── */
 export default function ParkEasePage() {
@@ -672,7 +647,6 @@ export default function ParkEasePage() {
       <PricingSection />
       <FreeDriverSection />
       <LeadFormSection systemName="ParkEase" accentColor={YELLOW} />
-      <Footer />
     </>
   );
 }

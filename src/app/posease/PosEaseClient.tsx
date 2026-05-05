@@ -268,29 +268,10 @@ export default function PosEaseClient({ initialMn, initialEn }: PosEasePageClien
       {/* ── Contact ── */}
       <LeadFormSection systemName="PosEase" accentColor={PINK} contactEmail="contact@posease.com" />
 
-      {/* ── Footer ── */}
-      <footer className="py-20 relative z-10 border-t border-white/10 px-6 bg-gradient-to-b from-transparent to-pink-900/5">
-        <div className="max-w-[1200px] mx-auto flex flex-col md:flex-row items-center justify-between gap-10">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-12 rounded-2xl overflow-hidden shadow-2xl shadow-pink-500/20">
-              <img src="/posease-logo.jpg" alt="Logo" className="w-full h-full object-cover" />
-            </div>
-            <span className="text-white font-black text-2xl tracking-tighter">PosEase</span>
-          </div>
-          <div className="flex gap-12 text-white/40 font-bold text-sm uppercase tracking-widest">
-            <Link href="#features"       className="hover:text-[rgb(255,68,105)] transition-colors">Features</Link>
-            <Link href="#hardware"       className="hover:text-[rgb(255,68,105)] transition-colors">Hardware</Link>
-            <Link href="#pricing"        className="hover:text-[rgb(255,68,105)] transition-colors">Pricing</Link>
-            <Link href="#kholbooBarikh"  className="hover:text-[rgb(255,68,105)] transition-colors">
-              {lang === "mn" ? "Холбогдох" : "Contact"}
-            </Link>
-          </div>
-          <p className="text-white/30 text-xs font-medium tracking-tight">© 2026 PosEase. All Rights Reserved.</p>
-        </div>
-      </footer>
     </main>
   );
 }
+
 
 /* ─────────────────────────────────────────────────────────── */
 /*  Section sub-components                                      */

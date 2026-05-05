@@ -316,46 +316,10 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
       {/* CONTACT */}
       <LeadFormSection systemName="Rently" accentColor="#10b981" contactEmail="contact@rently.com" />
 
-      {/* FOOTER */}
-      <footer className="py-10 relative z-10 border-t border-white/5 px-6 md:px-24">
-         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-            <div className="md:col-span-2">
-               <div className="flex items-center gap-3 mb-4">
-                  <img
-                    src="/images/rently.png"
-                    alt="Rently Logo"
-                    className="w-8 h-8 object-contain"
-                  />
-                  <span className="text-xl font-black tracking-tighter text-white">Rently</span>
-               </div>
-               <p className="text-white/30 max-w-sm text-xs leading-relaxed">"Simplicity is the ultimate sophistication."</p>
-            </div>
-            <div className="flex flex-col gap-3">
-               <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Navigation</span>
-               <div className="flex flex-col gap-2 text-white/50 font-bold uppercase tracking-widest text-[9px]">
-                  <Link href="#features" className="hover:text-emerald-400 transition-colors">Features</Link>
-                  <Link href="#pricing" className="hover:text-emerald-400 transition-colors">Pricing</Link>
-               </div>
-            </div>
-            <div className="flex flex-col gap-3">
-               <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Contact</span>
-               <div className="text-white/50 font-bold uppercase tracking-widest text-[9px] leading-loose">
-                  Ulaanbaatar, MN<br />
-                  contact@rently.com
-               </div>
-            </div>
-         </div>
-         <div className="max-w-[1400px] mx-auto mt-10 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[8px] font-black uppercase tracking-[0.2em] text-white/20">
-            <p>© {new Date().getFullYear()} RENTLY — All Rights Reserved</p>
-            <div className="flex gap-6">
-               <a href="#" className="hover:text-white transition-colors">Privacy</a>
-               <a href="#" className="hover:text-white transition-colors">Terms</a>
-            </div>
-         </div>
-      </footer>
     </main>
   );
 }
+
 
 function FeatureRow({ item, index }: { item: any; index: number }) {
   const { ref, visible } = useReveal();
