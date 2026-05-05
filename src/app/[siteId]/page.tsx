@@ -3,6 +3,8 @@ import AboutSection from "../../components/sections/AboutSection";
 import ServicesSection from "../../components/sections/ServicesSection";
 import WorkSection from "../../components/sections/WorkSection";
 import ContactSection from "../../components/sections/ContactSection";
+import LeadFormSection from "../../components/sections/LeadFormSection";
+import AjluudGallery from "../../components/sections/AjluudGallery";
 import {
   getHomeSections,
   getAboutSections,
@@ -10,6 +12,7 @@ import {
   getContactSections,
   getPropertiesPageSections,
   getFooterSections,
+  getAjluudSections,
 } from "@/lib/getSiteContent";
 import { getLanguageServer } from "@/lib/i18n-server";
 
@@ -28,6 +31,7 @@ export default async function Home({
     contactData,
     propertiesData,
     footerData,
+    ajluudData,
   ] = await Promise.all([
     getHomeSections(lang, siteId),
     getAboutSections(lang, siteId),
@@ -35,7 +39,9 @@ export default async function Home({
     getContactSections(lang, siteId),
     getPropertiesPageSections(lang, siteId),
     getFooterSections(lang, siteId),
+    getAjluudSections(lang, siteId),
   ]);
+
 
   return (
     <>
@@ -51,9 +57,15 @@ export default async function Home({
       <ServicesSection services={servicesData} />
       <WorkSection 
         properties={propertiesData} 
+        lang={lang}
         bgImages={homeData.hero.slideImages}
       />
-      <ContactSection contact={contactData} />
+      <AjluudGallery data={ajluudData} />
+      {siteId === "zevtabs" ? (
+        <LeadFormSection systemName="Zevtabs General" id="contact" />
+      ) : (
+        <ContactSection contact={contactData} />
+      )}
     </>
   );
 }

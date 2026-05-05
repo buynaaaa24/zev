@@ -12,7 +12,7 @@ export default async function AmarHomePage() {
   
   return (
     <AmarHomeClient 
-      initialData={initialSectionsMn} 
+      data={initialSectionsMn} 
     />
   );
 }

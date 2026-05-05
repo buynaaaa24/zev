@@ -4,8 +4,9 @@ import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { RentlySections } from "@/lib/site-content-types";
 import { useRentlyLang } from "@/contexts/RentlyLangContext";
+import LeadFormSection from "@/components/sections/LeadFormSection";
 import { getApiBaseUrl } from "@/lib/api";
-import { ArrowRight, ChevronRight, Plus, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronRight, Plus } from "lucide-react";
 
 const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
   en: {
@@ -252,12 +253,13 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
         }
       `}</style>
 
-      {/* LUXURY BACKGROUND */}
+      {/* LUXURY BACKGROUND — slightly bright green */}
       <div className="fixed inset-0 pointer-events-none z-0">
-        <div className="absolute top-0 left-0 w-full h-full bg-[#050505]" />
-        <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[70%] rounded-full bg-emerald-900/40 blur-[160px] animate-pulse" />
-        <div className="absolute bottom-[-10%] right-[-5%] w-[60%] h-[50%] rounded-full bg-emerald-600/10 blur-[140px]" />
-        <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(6,78,59,0.4) 0%, transparent 80%)" }} />
+        <div className="absolute top-0 left-0 w-full h-full bg-[#081a10]" />
+        <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[70%] rounded-full bg-emerald-800/50 blur-[160px] animate-pulse" />
+        <div className="absolute bottom-[-10%] right-[-5%] w-[60%] h-[50%] rounded-full bg-emerald-500/15 blur-[140px]" />
+        <div className="absolute top-[40%] left-[30%] w-[50%] h-[40%] rounded-full bg-emerald-700/10 blur-[120px]" />
+        <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(16,120,80,0.35) 0%, transparent 80%)" }} />
       </div>
 
       <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none z-[5]" />
@@ -399,6 +401,7 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
     </main>
   );
 }
+
 
 function FeatureRow({ item, index }: { item: any; index: number }) {
   const { ref, visible } = useReveal();

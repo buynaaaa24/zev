@@ -9,7 +9,7 @@ import { useParams } from "next/navigation";
 export default function OrderPage() {
   const { lang, t } = useLanguage();
   const params = useParams();
-  const siteId = (params?.siteId as string) || "zevtaps";
+  const siteId = (params?.siteId as string) || "zevtabs";
   const [customerName, setCustomerName] = useState("");
   const [phone, setPhone] = useState("");
   const [email, setEmail] = useState("");
@@ -26,16 +26,16 @@ export default function OrderPage() {
       const res = await fetch(`${getApiBaseUrl()}/api/v1/orders`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({
-            customerName: customerName.trim(),
-            phone: phone.trim(),
-            email: email.trim() || undefined,
-            address: address.trim() || undefined,
-            notes: notes.trim() || undefined,
-            language: lang,
-            siteId,
-            items: [],
-          }),
+        body: JSON.stringify({
+          customerName: customerName.trim(),
+          phone: phone.trim(),
+          email: email.trim() || undefined,
+          address: address.trim() || undefined,
+          notes: notes.trim() || undefined,
+          language: lang,
+          siteId,
+          items: [],
+        }),
       });
       if (!res.ok) throw new Error(await res.text());
       setStatus("ok");

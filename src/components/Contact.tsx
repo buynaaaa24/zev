@@ -128,28 +128,7 @@ export default function Contact({ content }: { content: ContactSections }) {
           >
             <h3 className="text-lg sm:text-xl font-bold text-brand-900 mb-5 sm:mb-6">{formTitle}</h3>
             <form className="flex flex-col gap-4 sm:gap-5">
-              <div className="grid grid-cols-1 xs:grid-cols-2 gap-4">
-                <div>
-                  <label className="block text-sm font-medium text-brand-900 mb-1.5">
-                    {t.contact.labels.firstName}
-                  </label>
-                  <input
-                    type="text"
-                    placeholder={t.contact.placeholders.firstName}
-                    className="w-full bg-white border border-gray-200 rounded px-4 py-3 text-sm text-brand-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-400 focus:border-transparent transition"
-                  />
-                </div>
-                <div>
-                  <label className="block text-sm font-medium text-brand-900 mb-1.5">
-                    {t.contact.labels.lastName}
-                  </label>
-                  <input
-                    type="text"
-                    placeholder={t.contact.placeholders.lastName}
-                    className="w-full bg-white border border-gray-200 rounded px-4 py-3 text-sm text-brand-900 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-accent-400 focus:border-transparent transition"
-                  />
-                </div>
-              </div>
+
               <div>
                 <label className="block text-sm font-medium text-brand-900 mb-1.5">
                   {t.contact.labels.email}

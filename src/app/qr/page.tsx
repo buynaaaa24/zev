@@ -131,9 +131,7 @@ export default function QrRootPage() {
           ))}
         </div>
 
-        <footer className="mt-16 flex flex-col items-center opacity-30">
-          <Image src="/logo.png" alt="Zev" width={40} height={20} className="grayscale" />
-        </footer>
+        </div>
       </div>
     </div>
   );

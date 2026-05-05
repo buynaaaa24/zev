@@ -1,6 +1,8 @@
 import type { Metadata } from "next";
 import { AmarHomeLangProvider } from "@/contexts/AmarHomeLangContext";
+import AmarHomeNavbar from "@/components/amarhome/AmarHomeNavbar";
 import SmoothScroll from "@/components/SmoothScroll";
+import FooterWithContent from "@/components/FooterWithContent";
 
 export const metadata: Metadata = {
   title: "AmarHome",
@@ -18,10 +20,13 @@ export default function AmarHomeLayout({
   return (
     <AmarHomeLangProvider>
       <SmoothScroll>
+        <AmarHomeNavbar />
         <div className="min-h-screen bg-[#fafafa] text-[#1a1a1a] selection:bg-[#064e3b] selection:text-white">
           {children}
         </div>
+        <FooterWithContent siteId="amarhome" />
       </SmoothScroll>
     </AmarHomeLangProvider>
   );
 }
+

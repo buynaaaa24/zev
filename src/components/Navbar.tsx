@@ -9,8 +9,9 @@ const SECTIONS = [
   { id: "home",     label: { en: "Home",     mn: "Нүүр" } },
   { id: "about",    label: { en: "About",    mn: "Тухай" } },
   { id: "services", label: { en: "Services", mn: "Үйлчилгээ" } },
-  { id: "work",     label: { en: "Work",     mn: "Төсөл" } },
-  { id: "contact",  label: { en: "Contact",  mn: "Холбоо" } },
+  { id: "work",     label: { en: "Development", mn: "Төслүүд" } },
+  { id: "ajluud",   label: { en: "Works",       mn: "Ажлууд" } },
+  { id: "contact",  label: { en: "Contact",     mn: "Холбоо" } },
 ];
 
 function scrollToSection(id: string) {
@@ -22,17 +23,32 @@ function scrollToSection(id: string) {
 
 export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
   const [scrolled, setScrolled] = useState(false);
+  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
+  const lastScrollY = useRef(0);
   const pathname = usePathname();
   const { lang, toggle } = useLanguage();
   const base = siteId === "zevtabs" ? "" : `/${siteId}`;
   const isHome = pathname === `${base}/` || pathname === base || pathname === "/";
 
-  // Track scroll depth + active section
+  // Track scroll depth + direction + active section
   useEffect(() => {
     const onScroll = () => {
-      setScrolled(window.scrollY > window.innerHeight - 80);
+      const y = window.scrollY;
+      const delta = y - lastScrollY.current;
+
+      setScrolled(y > window.innerHeight - 80);
+
+      // Hide when scrolling down past 120px, show when scrolling up
+      if (y > 120) {
+        if (delta > 6) setHidden(true);
+        else if (delta < -6) setHidden(false);
+      } else {
+        setHidden(false);
+      }
+
+      lastScrollY.current = y;
 
       // Find which section is currently in view
       const sectionIds = SECTIONS.map((s) => s.id);
@@ -66,7 +82,7 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
     <header
       className={`fixed top-0 left-0 right-0 z-[200] flex justify-center transition-all duration-500 pointer-events-none ${
         scrolled ? "pt-0" : "pt-4 sm:pt-6"
-      }`}
+      } ${hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"}`}
     >
       <div 
         className={`
