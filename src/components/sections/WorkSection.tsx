@@ -125,9 +125,9 @@ function ThreeDCarousel({
 
   const count = projects.length;
   const angleStep = 360 / count;
-  const RADIUS = 340;
-  const CARD_W = 220;
-  const CARD_H = 290;
+  const RADIUS = 300;
+  const CARD_W = 180;
+  const CARD_H = 240;
 
   return (
     <div
@@ -146,7 +146,7 @@ function ThreeDCarousel({
           width: 0,
           height: 0,
           transformStyle: "preserve-3d",
-          transform: `rotateX(-4deg) rotateY(${rotation}deg)`,
+          transform: `rotateX(-8deg) rotateY(${rotation}deg)`,
         }}
       >
         {projects.map((p, i) => {
