@@ -146,7 +146,7 @@ function ThreeDCarousel({
           width: 0,
           height: 0,
           transformStyle: "preserve-3d",
-          transform: `rotateX(22deg) rotateY(${rotation}deg)`,
+          transform: `rotateX(-4deg) rotateY(${rotation}deg)`,
         }}
       >
         {projects.map((p, i) => {
