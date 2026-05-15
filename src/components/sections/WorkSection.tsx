@@ -110,7 +110,7 @@ function ThreeDCarousel({
       const delta = time - lastTimeRef.current;
       lastTimeRef.current = time;
       if (!pausedRef.current) {
-        setRotation((prev) => prev + delta * 0.02);
+        setRotation((prev) => prev - delta * 0.02);
       }
       rafRef.current = requestAnimationFrame(animate);
     };
