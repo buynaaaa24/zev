@@ -126,8 +126,8 @@ function ThreeDCarousel({
   const count = projects.length;
   const angleStep = 360 / count;
   const RADIUS = 300;
-  const CARD_W = 180;
-  const CARD_H = 240;
+  const CARD_W = 155;
+  const CARD_H = 205;
 
   return (
     <div
@@ -146,7 +146,7 @@ function ThreeDCarousel({
           width: 0,
           height: 0,
           transformStyle: "preserve-3d",
-          transform: `rotateX(-8deg) rotateY(${rotation}deg)`,
+          transform: `rotateX(-14deg) rotateY(${rotation}deg)`,
         }}
       >
         {projects.map((p, i) => {
@@ -166,7 +166,7 @@ function ThreeDCarousel({
                 height: CARD_H,
                 left: -CARD_W / 2,
                 top: -CARD_H / 2,
-                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px)`,
+                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) rotateX(14deg)`,
                 opacity: headerVis ? (isHovered ? 1 : depthOpacity) : 0,
                 transition: "opacity 0.4s ease",
                 cursor: "pointer",
@@ -177,8 +177,8 @@ function ThreeDCarousel({
               <div
                 className={`w-full h-full relative overflow-hidden rounded-[24px] border backdrop-blur-xl transition-all duration-500 ${
                   isHovered
-                    ? "border-indigo-500/40 shadow-[0_30px_100px_rgba(99,102,241,0.45)] bg-white/[0.08] scale-[1.13]"
-                    : "border-white/10 bg-white/[0.03] scale-100"
+                    ? "border-indigo-500/40 shadow-[0_30px_100px_rgba(99,102,241,0.45)] bg-white/[0.08] scale-[1.13] -translate-y-12"
+                    : "border-white/10 bg-white/[0.03] scale-100 translate-y-0"
                 }`}
               >
                 {/* Media */}
