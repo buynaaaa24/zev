@@ -333,8 +333,11 @@ export async function getRentlySections(lang: string = "mn", siteId: string = "z
 }
 const EMPTY_PARKEASE: ParkEaseSections = {
   hero: { eyebrow: "", title1: "", desc: "", cta1: "", cta2: "", stats: [] },
+  how: { label: "", title: [], desc: "", steps: [] },
+  payments: { label: "", title: [], desc: "", qpayTitle: "", qpayBadge: "", qpayDesc: "", stickerTitle: "", stickerBadge: "", stickerDesc: "", note: "" },
   features: { title: "", desc: "", items: [] },
   pricing: { title: "", desc: "", tiers: [] },
+  free: { title: "", desc: "", cards: [] },
   cta: { title: "", desc: "", btn: "" },
 };
 
@@ -346,6 +349,17 @@ export async function getParkEaseSections(lang: string = "mn", siteId: string = 
       ...asRecord(patch.hero),
       stats: Array.isArray(asRecord(patch.hero).stats) ? (asRecord(patch.hero).stats as any) : [],
     },
+    how: {
+      ...EMPTY_PARKEASE.how,
+      ...asRecord(patch.how),
+      title: Array.isArray(asRecord(patch.how).title) ? (asRecord(patch.how).title as string[]) : [],
+      steps: Array.isArray(asRecord(patch.how).steps) ? (asRecord(patch.how).steps as any) : [],
+    },
+    payments: {
+      ...EMPTY_PARKEASE.payments,
+      ...asRecord(patch.payments),
+      title: Array.isArray(asRecord(patch.payments).title) ? (asRecord(patch.payments).title as string[]) : [],
+    },
     features: {
       ...EMPTY_PARKEASE.features,
       ...asRecord(patch.features),
@@ -355,6 +369,11 @@ export async function getParkEaseSections(lang: string = "mn", siteId: string = 
       ...EMPTY_PARKEASE.pricing,
       ...asRecord(patch.pricing),
       tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
+    },
+    free: {
+      ...EMPTY_PARKEASE.free,
+      ...asRecord(patch.free),
+      cards: Array.isArray(asRecord(patch.free).cards) ? (asRecord(patch.free).cards as any) : [],
     },
     cta: { ...EMPTY_PARKEASE.cta, ...asRecord(patch.cta) },
   };

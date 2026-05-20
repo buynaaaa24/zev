@@ -165,8 +165,11 @@ const T = {
 /* ── Admin sections context ─────────────────────────────── */
 const EMPTY_SECTIONS: ParkEaseSections = {
   hero: { eyebrow: "", title1: "", desc: "", cta1: "", cta2: "", stats: [] },
+  how: { label: "", title: [], desc: "", steps: [] },
+  payments: { label: "", title: [], desc: "", qpayTitle: "", qpayBadge: "", qpayDesc: "", stickerTitle: "", stickerBadge: "", stickerDesc: "", note: "" },
   features: { title: "", desc: "", items: [] },
   pricing: { title: "", desc: "", tiers: [] },
+  free: { title: "", desc: "", cards: [] },
   cta: { title: "", desc: "", btn: "" },
 };
 
@@ -323,7 +326,15 @@ function HeroSection() {
 /* ── How It Works ────────────────────────────────────────── */
 function HowItWorksSection() {
   const { lang } = useParkEaseLang();
-  const t = T[lang].how;
+  const defaults = T[lang].how;
+  const api = useContext(AdminCtx)[lang].how;
+
+  const label = api.label || defaults.label;
+  const title = (api.title?.length === 2 ? api.title : defaults.title) as [string, string];
+  const desc  = api.desc || defaults.desc;
+  const steps = api.steps?.length ? api.steps : defaults.steps;
+
+  const t = { label, title, desc, steps };
   const { ref, visible } = useReveal();
 
   const icons = [
@@ -365,7 +376,21 @@ function HowItWorksSection() {
 /* ── Payment Methods ─────────────────────────────────────── */
 function PaymentSection() {
   const { lang } = useParkEaseLang();
-  const t = T[lang].payments;
+  const defaults = T[lang].payments;
+  const api = useContext(AdminCtx)[lang].payments;
+
+  const t = {
+    label:        api.label        || defaults.label,
+    title:        (api.title?.length === 2 ? api.title : defaults.title) as [string, string],
+    desc:         api.desc         || defaults.desc,
+    qpayTitle:    api.qpayTitle    || defaults.qpayTitle,
+    qpayBadge:    api.qpayBadge    || defaults.qpayBadge,
+    qpayDesc:     api.qpayDesc     || defaults.qpayDesc,
+    stickerTitle: api.stickerTitle || defaults.stickerTitle,
+    stickerBadge: api.stickerBadge || defaults.stickerBadge,
+    stickerDesc:  api.stickerDesc  || defaults.stickerDesc,
+    note:         api.note         || defaults.note,
+  };
   const { ref, visible } = useReveal();
 
   const banks = [
@@ -550,7 +575,14 @@ function PricingSection() {
 /* ── Free Driver ─────────────────────────────────────────── */
 function FreeDriverSection() {
   const { lang } = useParkEaseLang();
-  const t = T[lang].free;
+  const defaults = T[lang].free;
+  const api = useContext(AdminCtx)[lang].free;
+
+  const t = {
+    title: api.title || defaults.title,
+    desc:  api.desc  || defaults.desc,
+    cards: api.cards?.length ? api.cards : defaults.cards,
+  };
   const { ref, visible } = useReveal();
 
   return (

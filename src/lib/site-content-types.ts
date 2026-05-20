@@ -253,6 +253,24 @@ export type ParkEaseSections = {
     image?: string;
     stats: { value: string; label: string }[];
   };
+  how: {
+    label: string;
+    title: string[];
+    desc: string;
+    steps: { title: string; desc: string }[];
+  };
+  payments: {
+    label: string;
+    title: string[];
+    desc: string;
+    qpayTitle: string;
+    qpayBadge: string;
+    qpayDesc: string;
+    stickerTitle: string;
+    stickerBadge: string;
+    stickerDesc: string;
+    note: string;
+  };
   features: {
     title: string;
     desc: string;
@@ -262,6 +280,11 @@ export type ParkEaseSections = {
     title: string;
     desc: string;
     tiers: { name: string; slots: string; features: string[] }[];
+  };
+  free: {
+    title: string;
+    desc: string;
+    cards: { label: string; sub: string }[];
   };
   cta: {
     title: string;
