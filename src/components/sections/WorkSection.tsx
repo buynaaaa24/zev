@@ -146,7 +146,7 @@ function ThreeDCarousel({
           width: 0,
           height: 0,
           transformStyle: "preserve-3d",
-          transform: `rotateX(-14deg) rotateY(${rotation}deg)`,
+          transform: `rotateX(-23deg) rotateY(${rotation}deg)`,
         }}
       >
         {projects.map((p, i) => {
@@ -166,7 +166,7 @@ function ThreeDCarousel({
                 height: CARD_H,
                 left: -CARD_W / 2,
                 top: -CARD_H / 2,
-                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) rotateX(14deg)`,
+                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) rotateX(23deg)`,
                 opacity: headerVis ? (isHovered ? 1 : depthOpacity) : 0,
                 transition: "opacity 0.4s ease",
                 cursor: "pointer",
