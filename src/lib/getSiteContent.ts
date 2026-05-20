@@ -3,6 +3,7 @@ import type {
   AboutSections,
   AjluudSections,
   ContactSections,
+  ParkEaseSections,
   FooterSections,
   HomeSections,
   JobsPageSections,
@@ -330,6 +331,35 @@ export async function getRentlySections(lang: string = "mn", siteId: string = "z
     },
   };
 }
+const EMPTY_PARKEASE: ParkEaseSections = {
+  hero: { eyebrow: "", title1: "", desc: "", cta1: "", cta2: "", stats: [] },
+  features: { title: "", desc: "", items: [] },
+  pricing: { title: "", desc: "", tiers: [] },
+  cta: { title: "", desc: "", btn: "" },
+};
+
+export async function getParkEaseSections(lang: string = "mn", siteId: string = "parkease"): Promise<ParkEaseSections> {
+  const patch = asRecord(await fetchSitePageSections("parkease", lang, siteId));
+  return {
+    hero: {
+      ...EMPTY_PARKEASE.hero,
+      ...asRecord(patch.hero),
+      stats: Array.isArray(asRecord(patch.hero).stats) ? (asRecord(patch.hero).stats as any) : [],
+    },
+    features: {
+      ...EMPTY_PARKEASE.features,
+      ...asRecord(patch.features),
+      items: Array.isArray(asRecord(patch.features).items) ? (asRecord(patch.features).items as any) : [],
+    },
+    pricing: {
+      ...EMPTY_PARKEASE.pricing,
+      ...asRecord(patch.pricing),
+      tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
+    },
+    cta: { ...EMPTY_PARKEASE.cta, ...asRecord(patch.cta) },
+  };
+}
+
 const EMPTY_QR: QrSections = {};
 
 export async function getQrSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<QrSections> {

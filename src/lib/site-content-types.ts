@@ -243,6 +243,33 @@ export type RentlySections = {
   };
 };
 
+export type ParkEaseSections = {
+  hero: {
+    eyebrow: string;
+    title1: string;
+    desc: string;
+    cta1: string;
+    cta2: string;
+    image?: string;
+    stats: { value: string; label: string }[];
+  };
+  features: {
+    title: string;
+    desc: string;
+    items: { title: string; desc: string }[];
+  };
+  pricing: {
+    title: string;
+    desc: string;
+    tiers: { name: string; slots: string; features: string[] }[];
+  };
+  cta: {
+    title: string;
+    desc: string;
+    btn: string;
+  };
+};
+
 export type QrSections = {
   description?: { mn: string; en: string };
   ios?: string;
