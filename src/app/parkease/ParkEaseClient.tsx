@@ -47,7 +47,17 @@ const EMPTY_SECTIONS: ParkEaseSections = {
     tiers: [],
   },
   free: { title: "", desc: "", cards: [] },
-  cta: { title: "", desc: "", btn: "", emailLabel: "", email: "", phoneLabel: "", phone: "", locationLabel: "", location: "" },
+  cta: {
+    title: "",
+    desc: "",
+    btn: "",
+    emailLabel: "",
+    email: "",
+    phoneLabel: "",
+    phone: "",
+    locationLabel: "",
+    location: "",
+  },
 };
 
 const AdminCtx = createContext<{ mn: ParkEaseSections; en: ParkEaseSections }>({
