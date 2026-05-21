@@ -14,15 +14,17 @@ interface LeadFormSectionProps {
   accentColor?: string;
   title?: string;
   subtitle?: string;
+  body?: string;
   contactEmail?: string;
   id?: string;
 }
 
-export default function LeadFormSection({ 
-  systemName, 
-  accentColor = "#6366f1", // Default Indigo
+export default function LeadFormSection({
+  systemName,
+  accentColor = "#6366f1",
   title = "Санаагаа бодит болгон хувиргацгаая",
   subtitle = "Холбоо барих",
+  body = "Бид таны санааг бодит болгоход бэлэн байна. Мэдээллээ үлдээгээрэй, бид тантай удахгүй холбогдох болно.",
   contactEmail = "contact@zevtabs.mn",
   id = "kholbooBarikh"
 }: LeadFormSectionProps) {
@@ -112,7 +114,7 @@ export default function LeadFormSection({
               </span>
             </h2>
             <p className="text-white/40 text-lg font-medium max-w-md leading-relaxed mb-10">
-              Бид таны санааг бодит болгоход бэлэн байна. Мэдээллээ үлдээгээрэй, бид тантай удахгүй холбогдох болно.
+              {body}
             </p>
 
             <div className="flex flex-col gap-6">

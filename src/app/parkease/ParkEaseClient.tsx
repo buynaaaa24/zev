@@ -983,6 +983,21 @@ function FreeDriverSection() {
   );
 }
 
+/* ── CTA (Lead Form) ─────────────────────────────────────── */
+function CtaSection() {
+  const { lang } = useParkEaseLang();
+  const api = useContext(AdminCtx)[lang].cta;
+  return (
+    <LeadFormSection
+      systemName="ParkEase"
+      accentColor={YELLOW}
+      title={api.title}
+      subtitle={api.btn}
+      body={api.desc}
+    />
+  );
+}
+
 /* ── Page wrapper ────────────────────────────────────────── */
 export default function ParkEaseClient({
   initialMn,
@@ -999,7 +1014,7 @@ export default function ParkEaseClient({
       <FeaturesSection />
       <PricingSection />
       <FreeDriverSection />
-      <LeadFormSection systemName="ParkEase" accentColor={YELLOW} />
+      <CtaSection />
     </AdminCtx.Provider>
   );
 }
