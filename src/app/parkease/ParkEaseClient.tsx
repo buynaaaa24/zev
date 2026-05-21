@@ -12,7 +12,15 @@ const YELLOW_GLOW = "rgba(246,180,20,";
 
 /* ── Admin sections context ─────────────────────────────── */
 const EMPTY_SECTIONS: ParkEaseSections = {
-  hero: { eyebrow: "", title1: "", words: [], desc: "", cta1: "", cta2: "", stats: [] },
+  hero: {
+    eyebrow: "",
+    title1: "",
+    words: [],
+    desc: "",
+    cta1: "",
+    cta2: "",
+    stats: [],
+  },
   how: { label: "", title: [], desc: "", steps: [] },
   payments: {
     label: "",
@@ -28,7 +36,16 @@ const EMPTY_SECTIONS: ParkEaseSections = {
     banks: [],
   },
   features: { label: "", title: "", desc: "", items: [] },
-  pricing: { label: "", title: "", desc: "", mostPopular: "", ctaBtn: "", note: "", quoteBtn: "", tiers: [] },
+  pricing: {
+    label: "",
+    title: "",
+    desc: "",
+    mostPopular: "",
+    ctaBtn: "",
+    note: "",
+    quoteBtn: "",
+    tiers: [],
+  },
   free: { title: "", desc: "", cards: [] },
   cta: { title: "", desc: "", btn: "" },
 };
