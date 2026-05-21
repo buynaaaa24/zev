@@ -247,6 +247,7 @@ export type ParkEaseSections = {
   hero: {
     eyebrow: string;
     title1: string;
+    words: string[];
     desc: string;
     cta1: string;
     cta2: string;

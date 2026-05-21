@@ -332,7 +332,7 @@ export async function getRentlySections(lang: string = "mn", siteId: string = "z
   };
 }
 const EMPTY_PARKEASE: ParkEaseSections = {
-  hero: { eyebrow: "", title1: "", desc: "", cta1: "", cta2: "", stats: [] },
+  hero: { eyebrow: "", title1: "", words: [], desc: "", cta1: "", cta2: "", stats: [] },
   how: { label: "", title: [], desc: "", steps: [] },
   payments: { label: "", title: [], desc: "", qpayTitle: "", qpayBadge: "", qpayDesc: "", stickerTitle: "", stickerBadge: "", stickerDesc: "", note: "", banks: [] },
   features: { label: "", title: "", desc: "", items: [] },
@@ -347,6 +347,7 @@ export async function getParkEaseSections(lang: string = "mn", siteId: string = 
     hero: {
       ...EMPTY_PARKEASE.hero,
       ...asRecord(patch.hero),
+      words: Array.isArray(asRecord(patch.hero).words) ? (asRecord(patch.hero).words as string[]) : [],
       stats: Array.isArray(asRecord(patch.hero).stats) ? (asRecord(patch.hero).stats as any) : [],
     },
     how: {

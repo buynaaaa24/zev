@@ -10,16 +10,9 @@ const YELLOW = "#f6b414";
 const YELLOW_DARK = "#d99a0e";
 const YELLOW_GLOW = "rgba(246,180,20,";
 
-/* ── Animated hero words (UI only, not CMS content) ─────── */
-const WORDS = {
-  en: ["24/7.", "Zero Staff.", "All Banks.", "Auto Barrier."],
-  mn: ["24/7.", "Ажилтангүй.", "Бүх Банк.", "Автомат Хаалт."],
-} as const;
-
-
 /* ── Admin sections context ─────────────────────────────── */
 const EMPTY_SECTIONS: ParkEaseSections = {
-  hero: { eyebrow: "", title1: "", desc: "", cta1: "", cta2: "", stats: [] },
+  hero: { eyebrow: "", title1: "", words: [], desc: "", cta1: "", cta2: "", stats: [] },
   how: { label: "", title: [], desc: "", steps: [] },
   payments: {
     label: "",
@@ -71,7 +64,7 @@ function useReveal(threshold = 0.1) {
 function HeroSection() {
   const { lang } = useParkEaseLang();
   const api = useContext(AdminCtx)[lang].hero;
-  const words = WORDS[lang];
+  const words = api.words;
 
   const [mounted, setMounted] = useState(false);
   const [wordIdx, setWordIdx] = useState(0);
