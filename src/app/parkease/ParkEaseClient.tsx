@@ -47,7 +47,7 @@ const EMPTY_SECTIONS: ParkEaseSections = {
     tiers: [],
   },
   free: { title: "", desc: "", cards: [] },
-  cta: { title: "", desc: "", btn: "", emailLabel: "", email: "" },
+  cta: { title: "", desc: "", btn: "", emailLabel: "", email: "", phoneLabel: "", phone: "", locationLabel: "", location: "" },
 };
 
 const AdminCtx = createContext<{ mn: ParkEaseSections; en: ParkEaseSections }>({
@@ -996,6 +996,10 @@ function CtaSection() {
       body={api.desc}
       emailLabel={api.emailLabel}
       contactEmail={api.email}
+      phoneLabel={api.phoneLabel}
+      phone={api.phone}
+      locationLabel={api.locationLabel}
+      location={api.location}
     />
   );
 }

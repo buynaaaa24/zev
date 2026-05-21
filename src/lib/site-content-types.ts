@@ -300,6 +300,10 @@ export type ParkEaseSections = {
     btn: string;
     emailLabel: string;
     email: string;
+    phoneLabel: string;
+    phone: string;
+    locationLabel: string;
+    location: string;
   };
 };
 
