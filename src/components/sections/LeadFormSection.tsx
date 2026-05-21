@@ -15,6 +15,7 @@ interface LeadFormSectionProps {
   title?: string;
   subtitle?: string;
   body?: string;
+  emailLabel?: string;
   contactEmail?: string;
   id?: string;
 }
@@ -25,6 +26,7 @@ export default function LeadFormSection({
   title = "Санаагаа бодит болгон хувиргацгаая",
   subtitle = "Холбоо барих",
   body = "Бид таны санааг бодит болгоход бэлэн байна. Мэдээллээ үлдээгээрэй, бид тантай удахгүй холбогдох болно.",
+  emailLabel = "Email Us",
   contactEmail = "contact@zevtabs.mn",
   id = "kholbooBarikh"
 }: LeadFormSectionProps) {
@@ -123,7 +125,7 @@ export default function LeadFormSection({
                   <Send size={20} style={{ color: accentColor }} />
                 </div>
                 <div>
-                  <p className="text-white/30 text-xs font-bold uppercase tracking-widest mb-0.5">Email Us</p>
+                  <p className="text-white/30 text-xs font-bold uppercase tracking-widest mb-0.5">{emailLabel}</p>
                   <p className="text-white font-bold tracking-tight group-hover:text-white/80 transition-colors">{contactEmail}</p>
                 </div>
               </a>

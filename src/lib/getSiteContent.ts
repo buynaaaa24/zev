@@ -338,7 +338,7 @@ const EMPTY_PARKEASE: ParkEaseSections = {
   features: { label: "", title: "", desc: "", items: [] },
   pricing: { label: "", title: "", desc: "", mostPopular: "", ctaBtn: "", note: "", quoteBtn: "", tiers: [] },
   free: { title: "", desc: "", cards: [] },
-  cta: { title: "", desc: "", btn: "" },
+  cta: { title: "", desc: "", btn: "", emailLabel: "", email: "" },
 };
 
 export async function getParkEaseSections(lang: string = "mn", siteId: string = "parkease"): Promise<ParkEaseSections> {

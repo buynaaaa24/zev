@@ -298,6 +298,8 @@ export type ParkEaseSections = {
     title: string;
     desc: string;
     btn: string;
+    emailLabel: string;
+    email: string;
   };
 };
 
