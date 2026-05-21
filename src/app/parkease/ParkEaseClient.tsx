@@ -16,26 +16,6 @@ const WORDS = {
   mn: ["24/7.", "Ажилтангүй.", "Бүх Банк.", "Автомат Хаалт."],
 } as const;
 
-/* ── UI chrome labels (not CMS content) ─────────────────── */
-const UI = {
-  en: {
-    featuresLabel: "Features",
-    pricingLabel: "Pricing",
-    mostPopular: "Most Popular",
-    getStarted: "Get Started →",
-    pricingNote:
-      "Exact pricing based on slot count, location, and requirements.",
-    pricingQuote: "Request a quote →",
-  },
-  mn: {
-    featuresLabel: "Онцлогууд",
-    pricingLabel: "Үнэ тариф",
-    mostPopular: "Хамгийн алдартай",
-    getStarted: "Эхлэх →",
-    pricingNote: "Яг үнэ нь зогсоолын тоо, байршил, шаардлагад тулгуурлана.",
-    pricingQuote: "Үнийн санал авах →",
-  },
-} as const;
 
 /* ── Admin sections context ─────────────────────────────── */
 const EMPTY_SECTIONS: ParkEaseSections = {
@@ -54,8 +34,8 @@ const EMPTY_SECTIONS: ParkEaseSections = {
     note: "",
     banks: [],
   },
-  features: { title: "", desc: "", items: [] },
-  pricing: { title: "", desc: "", tiers: [] },
+  features: { label: "", title: "", desc: "", items: [] },
+  pricing: { label: "", title: "", desc: "", mostPopular: "", ctaBtn: "", note: "", quoteBtn: "", tiers: [] },
   free: { title: "", desc: "", cards: [] },
   cta: { title: "", desc: "", btn: "" },
 };
@@ -644,7 +624,6 @@ function PaymentSection() {
 function FeaturesSection() {
   const { lang } = useParkEaseLang();
   const api = useContext(AdminCtx)[lang].features;
-  const ui = UI[lang];
   const { ref, visible } = useReveal();
 
   const icons = [
@@ -745,7 +724,7 @@ function FeaturesSection() {
               className="text-sm font-semibold uppercase tracking-widest mb-3"
               style={{ color: YELLOW_DARK }}
             >
-              {ui.featuresLabel}
+              {api.label}
             </p>
             <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-neutral-900 mb-4 sm:mb-6">
               {api.title}
@@ -789,7 +768,6 @@ function FeaturesSection() {
 function PricingSection() {
   const { lang } = useParkEaseLang();
   const api = useContext(AdminCtx)[lang].pricing;
-  const ui = UI[lang];
   const { ref, visible } = useReveal();
 
   const highlight = [false, true, false];
@@ -805,7 +783,7 @@ function PricingSection() {
               className="text-sm font-semibold uppercase tracking-widest mb-3"
               style={{ color: YELLOW_DARK }}
             >
-              {ui.pricingLabel}
+              {api.label}
             </p>
             <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-neutral-900 mb-4 sm:mb-6">
               {api.title}
@@ -840,7 +818,7 @@ function PricingSection() {
                         boxShadow: `0 4px 14px ${YELLOW_GLOW}0.4)`,
                       }}
                     >
-                      {ui.mostPopular}
+                      {api.mostPopular}
                     </span>
                   </div>
                 )}
@@ -898,7 +876,7 @@ function PricingSection() {
                       : {}
                   }
                 >
-                  {ui.getStarted}
+                  {api.ctaBtn}
                 </Link>
               </div>
             ))}
@@ -908,13 +886,13 @@ function PricingSection() {
             className={`text-center text-neutral-400 text-sm mt-8 sm:mt-10 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`}
             style={{ transitionDelay: "0.35s" }}
           >
-            {ui.pricingNote}{" "}
+            {api.note}{" "}
             <Link
               href="#kholbooBarikh"
               className="font-medium hover:underline"
               style={{ color: YELLOW_DARK }}
             >
-              {ui.pricingQuote}
+              {api.quoteBtn}
             </Link>
           </p>
         </div>

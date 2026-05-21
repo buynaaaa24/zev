@@ -273,13 +273,19 @@ export type ParkEaseSections = {
     banks: { name: string; sub: string; image?: string }[];
   };
   features: {
+    label: string;
     title: string;
     desc: string;
     items: { title: string; desc: string }[];
   };
   pricing: {
+    label: string;
     title: string;
     desc: string;
+    mostPopular: string;
+    ctaBtn: string;
+    note: string;
+    quoteBtn: string;
     tiers: { name: string; slots: string; features: string[] }[];
   };
   free: {
