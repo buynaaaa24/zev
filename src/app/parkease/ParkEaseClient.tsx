@@ -52,6 +52,7 @@ const EMPTY_SECTIONS: ParkEaseSections = {
     stickerBadge: "",
     stickerDesc: "",
     note: "",
+    banks: [],
   },
   features: { title: "", desc: "", items: [] },
   pricing: { title: "", desc: "", tiers: [] },
@@ -473,14 +474,7 @@ function PaymentSection() {
   const title = api.title as [string, string] | string[];
   const { ref, visible } = useReveal();
 
-  const banks = [
-    { name: "Khan Bank", sub: "Хаан Банк" },
-    { name: "Golomt", sub: "Голомт Банк" },
-    { name: "TDB", sub: "Худалдаа Хөгжлийн" },
-    { name: "XacBank", sub: "Хас Банк" },
-    { name: "State Bank", sub: "Төрийн Банк" },
-    { name: "M Bank", sub: "М Банк" },
-  ];
+  const banks = api.banks;
 
   const qrIcon = (
     <svg
@@ -609,13 +603,21 @@ function PaymentSection() {
                 key={i}
                 className="rounded-xl sm:rounded-2xl border border-white/6 bg-white/3 p-3 sm:p-5 flex flex-col items-center text-center"
               >
-                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/8 flex items-center justify-center mb-2 sm:mb-3">
-                  <span
-                    className="font-black text-xs sm:text-sm"
-                    style={{ color: YELLOW }}
-                  >
-                    {bank.name[0]}
-                  </span>
+                <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/8 flex items-center justify-center mb-2 sm:mb-3 overflow-hidden">
+                  {bank.image ? (
+                    <img
+                      src={bank.image}
+                      alt={bank.name}
+                      className="w-full h-full object-contain p-1"
+                    />
+                  ) : (
+                    <span
+                      className="font-black text-xs sm:text-sm"
+                      style={{ color: YELLOW }}
+                    >
+                      {bank.name[0]}
+                    </span>
+                  )}
                 </div>
                 <p className="text-white/80 font-semibold text-[11px] sm:text-[13px] leading-tight">
                   {bank.name}

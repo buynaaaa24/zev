@@ -334,7 +334,7 @@ export async function getRentlySections(lang: string = "mn", siteId: string = "z
 const EMPTY_PARKEASE: ParkEaseSections = {
   hero: { eyebrow: "", title1: "", desc: "", cta1: "", cta2: "", stats: [] },
   how: { label: "", title: [], desc: "", steps: [] },
-  payments: { label: "", title: [], desc: "", qpayTitle: "", qpayBadge: "", qpayDesc: "", stickerTitle: "", stickerBadge: "", stickerDesc: "", note: "" },
+  payments: { label: "", title: [], desc: "", qpayTitle: "", qpayBadge: "", qpayDesc: "", stickerTitle: "", stickerBadge: "", stickerDesc: "", note: "", banks: [] },
   features: { title: "", desc: "", items: [] },
   pricing: { title: "", desc: "", tiers: [] },
   free: { title: "", desc: "", cards: [] },
@@ -359,6 +359,7 @@ export async function getParkEaseSections(lang: string = "mn", siteId: string = 
       ...EMPTY_PARKEASE.payments,
       ...asRecord(patch.payments),
       title: Array.isArray(asRecord(patch.payments).title) ? (asRecord(patch.payments).title as string[]) : [],
+      banks: Array.isArray(asRecord(patch.payments).banks) ? (asRecord(patch.payments).banks as any) : [],
     },
     features: {
       ...EMPTY_PARKEASE.features,

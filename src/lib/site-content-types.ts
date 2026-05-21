@@ -270,6 +270,7 @@ export type ParkEaseSections = {
     stickerBadge: string;
     stickerDesc: string;
     note: string;
+    banks: { name: string; sub: string; image?: string }[];
   };
   features: {
     title: string;
