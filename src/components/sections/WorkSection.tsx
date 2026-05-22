@@ -491,9 +491,6 @@ export default function WorkSection({
           ref={headerRef}
           className={`mb-16 text-center transition-all duration-1000 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
         >
-          <span className="inline-block px-4 py-1.5 rounded-full bg-indigo-600/10 border border-indigo-600/20 text-indigo-500 text-[11px] font-black uppercase tracking-[0.2em] mb-6">
-            {properties.header.badge || "Portfolio"}
-          </span>
           <h2 className="text-5xl sm:text-7xl md:text-[88px] font-black tracking-tighter leading-[0.9] text-white mb-8">
             {properties.header.titleLine1 || "Crafting the"}
             <br />
