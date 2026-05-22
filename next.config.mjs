@@ -17,6 +17,34 @@ function uploadProxyOrigin() {
 
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async redirects() {
+    return [
+      { source: "/Posease", destination: "/posease", permanent: false },
+      {
+        source: "/Posease/:path*",
+        destination: "/posease/:path*",
+        permanent: false,
+      },
+      { source: "/PosEase", destination: "/posease", permanent: false },
+      {
+        source: "/PosEase/:path*",
+        destination: "/posease/:path*",
+        permanent: false,
+      },
+      { source: "/Parkease", destination: "/parkease", permanent: false },
+      {
+        source: "/Parkease/:path*",
+        destination: "/parkease/:path*",
+        permanent: false,
+      },
+      { source: "/ParkEase", destination: "/parkease", permanent: false },
+      {
+        source: "/ParkEase/:path*",
+        destination: "/parkease/:path*",
+        permanent: false,
+      },
+    ];
+  },
   async rewrites() {
     const origin = uploadProxyOrigin();
     return [
