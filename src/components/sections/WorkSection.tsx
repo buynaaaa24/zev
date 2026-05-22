@@ -175,10 +175,10 @@ function ThreeDCarousel({
               onMouseLeave={() => handleHover(null)}
             >
               <div
-                className={`w-full h-full relative overflow-hidden rounded-[24px] border backdrop-blur-xl transition-all duration-500 ${
+                className={`w-full h-full relative overflow-hidden rounded-[24px] border backdrop-blur-xl transition-all duration-500 bg-zinc-900 ${
                   isHovered
-                    ? "border-indigo-500/40 shadow-[0_30px_100px_rgba(99,102,241,0.45)] bg-zinc-900 scale-[1.13] -translate-y-12"
-                    : "border-white/10 bg-zinc-900 scale-100 translate-y-0"
+                    ? "border-indigo-500/40 shadow-[0_30px_100px_rgba(99,102,241,0.45)] scale-[1.13] -translate-y-12"
+                    : "border-white/10 scale-100 translate-y-0"
                 }`}
               >
                 {/* Media */}
