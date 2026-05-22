@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getAmarHomeSections } from "@/lib/getSiteContent";
+import { getAmarHomeSections, getGlobalContact } from "@/lib/getSiteContent";
 import AmarHomeClient from "./AmarHomeClient";
 
 export const metadata: Metadata = {
@@ -8,11 +8,15 @@ export const metadata: Metadata = {
 };
 
 export default async function AmarHomePage() {
-  const initialSectionsMn = await getAmarHomeSections("mn", "amarhome");
-  
+  const [initialSectionsMn, globalContact] = await Promise.all([
+    getAmarHomeSections("mn", "amarhome"),
+    getGlobalContact(),
+  ]);
+
   return (
-    <AmarHomeClient 
-      data={initialSectionsMn} 
+    <AmarHomeClient
+      data={initialSectionsMn}
+      globalContact={globalContact}
     />
   );
 }

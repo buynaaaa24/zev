@@ -3,6 +3,7 @@ import type {
   AboutSections,
   AjluudSections,
   ContactSections,
+  GlobalContactInfo,
   ParkEaseSections,
   FooterSections,
   HomeSections,
@@ -389,6 +390,20 @@ export async function getQrSections(lang: string = "mn", siteId: string = "zevta
     ...EMPTY_QR,
     ...patch,
   } as QrSections;
+}
+
+const EMPTY_GLOBAL_CONTACT: GlobalContactInfo = {
+  emailLabel: "И-Мэйл",
+  email: "info@zevtabs.mn",
+  phoneLabel: "Утас",
+  phone: "",
+  locationLabel: "Байршил",
+  location: "",
+};
+
+export async function getGlobalContact(): Promise<GlobalContactInfo> {
+  const patch = asRecord(await fetchSitePageSections("global-contact", "mn", "zevtabs"));
+  return { ...EMPTY_GLOBAL_CONTACT, ...patch } as GlobalContactInfo;
 }
 
 const EMPTY_AJLUUD: AjluudSections = {

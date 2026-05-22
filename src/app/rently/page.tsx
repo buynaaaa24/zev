@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getRentlySections } from "@/lib/getSiteContent";
+import { getRentlySections, getGlobalContact } from "@/lib/getSiteContent";
 import RentlyClient from "./RentlyClient";
 
 export const metadata: Metadata = {
@@ -8,11 +8,15 @@ export const metadata: Metadata = {
 };
 
 export default async function RentlyPage() {
-  const initialSectionsMn = await getRentlySections("mn", "rently");
-  
+  const [initialSectionsMn, globalContact] = await Promise.all([
+    getRentlySections("mn", "rently"),
+    getGlobalContact(),
+  ]);
+
   return (
-    <RentlyClient 
-      initialData={initialSectionsMn} 
+    <RentlyClient
+      initialData={initialSectionsMn}
+      globalContact={globalContact}
     />
   );
 }

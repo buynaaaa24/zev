@@ -1,5 +1,5 @@
 import { Metadata } from "next";
-import { getPosEaseSections } from "@/lib/getSiteContent";
+import { getPosEaseSections, getGlobalContact } from "@/lib/getSiteContent";
 import PosEaseClient from "./PosEaseClient";
 
 export const metadata: Metadata = {
@@ -8,17 +8,17 @@ export const metadata: Metadata = {
 };
 
 export default async function PosEasePage() {
-  // Fetch both languages to handle client-side switching if needed, 
-  // or just fetch one and let the client handle switching by re-fetching.
-  // For simplicity, we fetch the default (mn) and let the client handle the rest.
-  
-  const initialSectionsMn = await getPosEaseSections("mn", "posease");
-  const initialSectionsEn = await getPosEaseSections("en", "posease");
+  const [initialSectionsMn, initialSectionsEn, globalContact] = await Promise.all([
+    getPosEaseSections("mn", "posease"),
+    getPosEaseSections("en", "posease"),
+    getGlobalContact(),
+  ]);
 
   return (
-    <PosEaseClient 
-      initialMn={initialSectionsMn} 
-      initialEn={initialSectionsEn} 
+    <PosEaseClient
+      initialMn={initialSectionsMn}
+      initialEn={initialSectionsEn}
+      globalContact={globalContact}
     />
   );
 }

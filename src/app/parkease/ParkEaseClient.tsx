@@ -4,7 +4,7 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParkEaseLang } from "@/contexts/ParkEaseLangContext";
 import LeadFormSection from "@/components/sections/LeadFormSection";
-import type { ParkEaseSections } from "@/lib/site-content-types";
+import type { GlobalContactInfo, ParkEaseSections } from "@/lib/site-content-types";
 
 const YELLOW = "#f6b414";
 const YELLOW_DARK = "#d99a0e";
@@ -994,7 +994,7 @@ function FreeDriverSection() {
 }
 
 /* ── CTA (Lead Form) ─────────────────────────────────────── */
-function CtaSection() {
+function CtaSection({ globalContact }: { globalContact?: GlobalContactInfo }) {
   const { lang } = useParkEaseLang();
   const api = useContext(AdminCtx)[lang].cta;
   return (
@@ -1004,12 +1004,12 @@ function CtaSection() {
       title={api.title}
       subtitle={api.btn}
       body={api.desc}
-      emailLabel={api.emailLabel}
-      contactEmail={api.email}
-      phoneLabel={api.phoneLabel}
-      phone={api.phone}
-      locationLabel={api.locationLabel}
-      location={api.location}
+      emailLabel={globalContact?.emailLabel || api.emailLabel}
+      contactEmail={globalContact?.email || api.email}
+      phoneLabel={globalContact?.phoneLabel || api.phoneLabel}
+      phone={globalContact?.phone || api.phone}
+      locationLabel={globalContact?.locationLabel || api.locationLabel}
+      location={globalContact?.location || api.location}
     />
   );
 }
@@ -1018,9 +1018,11 @@ function CtaSection() {
 export default function ParkEaseClient({
   initialMn,
   initialEn,
+  globalContact,
 }: {
   initialMn: ParkEaseSections;
   initialEn: ParkEaseSections;
+  globalContact?: GlobalContactInfo;
 }) {
   return (
     <AdminCtx.Provider value={{ mn: initialMn, en: initialEn }}>
@@ -1030,7 +1032,7 @@ export default function ParkEaseClient({
       <FeaturesSection />
       <PricingSection />
       <FreeDriverSection />
-      <CtaSection />
+      <CtaSection globalContact={globalContact} />
     </AdminCtx.Provider>
   );
 }

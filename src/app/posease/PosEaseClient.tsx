@@ -3,7 +3,7 @@
 import { useEffect, useRef, useState, memo } from "react";
 import Link from "next/link";
 import { usePosEaseLang } from "@/contexts/PosEaseLangContext";
-import { PosEaseSections } from "@/lib/site-content-types";
+import { GlobalContactInfo, PosEaseSections } from "@/lib/site-content-types";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import SplineScene from "@/components/spline/SplineScene";
 
@@ -103,9 +103,10 @@ function useReveal() {
 interface PosEasePageClientProps {
   initialMn: PosEaseSections;
   initialEn: PosEaseSections;
+  globalContact?: GlobalContactInfo;
 }
 
-export default function PosEaseClient({ initialMn, initialEn }: PosEasePageClientProps) {
+export default function PosEaseClient({ initialMn, initialEn, globalContact }: PosEasePageClientProps) {
   const { lang } = usePosEaseLang();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
@@ -266,7 +267,16 @@ export default function PosEaseClient({ initialMn, initialEn }: PosEasePageClien
       )}
 
       {/* ── Contact ── */}
-      <LeadFormSection systemName="PosEase" accentColor={PINK} contactEmail="contact@posease.com" />
+      <LeadFormSection
+        systemName="PosEase"
+        accentColor={PINK}
+        emailLabel={globalContact?.emailLabel}
+        contactEmail={globalContact?.email}
+        phoneLabel={globalContact?.phoneLabel}
+        phone={globalContact?.phone}
+        locationLabel={globalContact?.locationLabel}
+        location={globalContact?.location}
+      />
 
     </main>
   );

@@ -13,6 +13,7 @@ import {
   getPropertiesPageSections,
   getFooterSections,
   getAjluudSections,
+  getGlobalContact,
 } from "@/lib/getSiteContent";
 import { getLanguageServer } from "@/lib/i18n-server";
 
@@ -32,6 +33,7 @@ export default async function Home({
     propertiesData,
     footerData,
     ajluudData,
+    globalContact,
   ] = await Promise.all([
     getHomeSections(lang, siteId),
     getAboutSections(lang, siteId),
@@ -40,6 +42,7 @@ export default async function Home({
     getPropertiesPageSections(lang, siteId),
     getFooterSections(lang, siteId),
     getAjluudSections(lang, siteId),
+    getGlobalContact(),
   ]);
 
 
@@ -62,7 +65,16 @@ export default async function Home({
       />
       <AjluudGallery data={ajluudData} />
       {siteId === "zevtabs" ? (
-        <LeadFormSection systemName="Zevtabs General" id="contact" />
+        <LeadFormSection
+          systemName="Zevtabs General"
+          id="contact"
+          emailLabel={globalContact.emailLabel}
+          contactEmail={globalContact.email}
+          phoneLabel={globalContact.phoneLabel}
+          phone={globalContact.phone}
+          locationLabel={globalContact.locationLabel}
+          location={globalContact.location}
+        />
       ) : (
         <ContactSection contact={contactData} />
       )}

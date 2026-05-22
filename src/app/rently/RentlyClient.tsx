@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { RentlySections } from "@/lib/site-content-types";
+import { GlobalContactInfo, RentlySections } from "@/lib/site-content-types";
 import { useRentlyLang } from "@/contexts/RentlyLangContext";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import { getApiBaseUrl } from "@/lib/api";
@@ -96,7 +96,7 @@ function useReveal() {
   return { ref, visible };
 }
 
-export default function RentlyClient({ initialData }: { initialData: RentlySections }) {
+export default function RentlyClient({ initialData, globalContact }: { initialData: RentlySections; globalContact?: GlobalContactInfo }) {
   const { lang, toggle } = useRentlyLang();
   const [data, setData] = useState<RentlySections>(initialData);
   const [mounted, setMounted] = useState(false);
@@ -362,6 +362,17 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
       )}
 
       {/* FOOTER */}
+      <LeadFormSection
+        systemName="Rently"
+        accentColor="#10b981"
+        emailLabel={globalContact?.emailLabel}
+        contactEmail={globalContact?.email}
+        phoneLabel={globalContact?.phoneLabel}
+        phone={globalContact?.phone}
+        locationLabel={globalContact?.locationLabel}
+        location={globalContact?.location}
+      />
+
       <footer className="py-10 relative z-10 border-t border-white/5 px-6 md:px-24">
         <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
           <div className="md:col-span-2">
@@ -385,8 +396,8 @@ export default function RentlyClient({ initialData }: { initialData: RentlySecti
           <div className="flex flex-col gap-3">
             <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Contact</span>
             <div className="text-white/50 font-bold uppercase tracking-widest text-[9px] leading-loose">
-              Ulaanbaatar, MN<br />
-              contact@rently.com
+              {globalContact?.location || "Ulaanbaatar, MN"}<br />
+              {globalContact?.email || "info@zevtabs.mn"}
             </div>
           </div>
         </div>

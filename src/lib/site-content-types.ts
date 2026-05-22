@@ -319,6 +319,15 @@ export type QrSections = {
   glow?: string;
 };
 
+export type GlobalContactInfo = {
+  emailLabel: string;
+  email: string;
+  phoneLabel: string;
+  phone: string;
+  locationLabel: string;
+  location: string;
+};
+
 export type AjluudSections = {
   header: {
     badge: string;

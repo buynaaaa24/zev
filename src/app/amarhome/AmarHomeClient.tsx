@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
-import { AmarHomeSections } from "@/lib/site-content-types";
+import { AmarHomeSections, GlobalContactInfo } from "@/lib/site-content-types";
 import { ArrowRight, ChevronRight, Plus } from "lucide-react";
 import { useAmarHomeLang } from "@/contexts/AmarHomeLangContext";
 import LeadFormSection from "../../components/sections/LeadFormSection";
@@ -78,7 +78,7 @@ const DEFAULTS: { en: AmarHomeSections; mn: AmarHomeSections } = {
   }
 };
 
-export default function AmarHomeClient({ data }: { data: AmarHomeSections }) {
+export default function AmarHomeClient({ data, globalContact }: { data: AmarHomeSections; globalContact?: GlobalContactInfo }) {
   const { lang } = useAmarHomeLang();
   const [mounted, setMounted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -220,7 +220,16 @@ export default function AmarHomeClient({ data }: { data: AmarHomeSections }) {
       )}
 
       {/* CONTACT */}
-      <LeadFormSection systemName="AmarHome" accentColor="#10b981" contactEmail="contact@amarhome.com" />
+      <LeadFormSection
+        systemName="AmarHome"
+        accentColor="#10b981"
+        emailLabel={globalContact?.emailLabel}
+        contactEmail={globalContact?.email}
+        phoneLabel={globalContact?.phoneLabel}
+        phone={globalContact?.phone}
+        locationLabel={globalContact?.locationLabel}
+        location={globalContact?.location}
+      />
 
     </main>
   );
