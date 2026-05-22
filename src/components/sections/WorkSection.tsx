@@ -151,9 +151,6 @@ function ThreeDCarousel({
       >
         {projects.map((p, i) => {
           const cardAngle = angleStep * i;
-          const effectiveAngle = (((cardAngle + rotation) % 360) + 360) % 360;
-          const cosDepth = Math.cos((effectiveAngle * Math.PI) / 180);
-          const depthOpacity = Math.max(0.18, (cosDepth + 1) / 2);
           const isHovered = hoveredIdx === i;
           const imageIsVideo = p.image && isDirectVideo(p.image);
 
@@ -167,7 +164,7 @@ function ThreeDCarousel({
                 left: -CARD_W / 2,
                 top: -CARD_H / 2,
                 transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) rotateX(23deg)`,
-                opacity: headerVis ? (isHovered ? 1 : depthOpacity) : 0,
+                opacity: headerVis ? 1 : 0,
                 transition: "opacity 0.4s ease",
                 cursor: "pointer",
               }}
