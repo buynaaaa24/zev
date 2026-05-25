@@ -296,18 +296,18 @@ function FeaturesContent({ title, desc, items }: { title: string; desc: string; 
         <h2 className="display-lg text-white mb-10">{title}</h2>
         <p className="body-lg text-white/40 max-w-3xl leading-relaxed">{desc}</p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-8 auto-rows-[280px]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8 sm:auto-rows-[280px]">
         {items.map((item, i) => (
           <div
             key={i}
             className={`
-              group relative rounded-[48px] p-10 overflow-hidden border border-white/5 bg-neutral-900/20 backdrop-blur-3xl transition-all duration-700
+              group relative rounded-[28px] sm:rounded-[48px] p-6 sm:p-10 overflow-hidden border border-white/5 bg-neutral-900/20 backdrop-blur-3xl transition-all duration-700
               ${item.size === "large"  ? "md:col-span-2 md:row-span-2" : ""}
               ${item.size === "medium" ? "md:col-span-2" : ""}
               ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}
               hover:border-[rgb(255,68,105)]/30 hover:shadow-[0_20px_60px_rgba(255,68,105,0.1)]
             `}
-            style={{ transitionDelay: `${i * 100}ms` }}
+            style={{ transitionDelay: `${i * 100}ms`, minHeight: "200px" }}
           >
             <div className="absolute inset-0 bg-gradient-to-br from-[rgb(255,68,105)]/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
             {item.image && (
@@ -321,13 +321,13 @@ function FeaturesContent({ title, desc, items }: { title: string; desc: string; 
               </div>
             )}
             <div className="relative z-10 h-full flex flex-col justify-end">
-              <div className="w-14 h-14 rounded-2xl bg-[rgb(255,68,105)]/10 border border-[rgb(255,68,105)]/20 flex items-center justify-center mb-8 group-hover:scale-110 group-hover:bg-[rgb(255,68,105)]/30 transition-all duration-500 shadow-[0_0_30px_rgba(255,68,105,0.1)]">
+              <div className="w-10 h-10 sm:w-14 sm:h-14 rounded-2xl bg-[rgb(255,68,105)]/10 border border-[rgb(255,68,105)]/20 flex items-center justify-center mb-4 sm:mb-8 group-hover:scale-110 group-hover:bg-[rgb(255,68,105)]/30 transition-all duration-500 shadow-[0_0_30px_rgba(255,68,105,0.1)]">
                 <div className="w-3 h-3 rounded-full bg-[rgb(255,68,105)] shadow-[0_0_20px_rgba(255,68,105,1)]" />
               </div>
-              <h3 className={`font-black text-white mb-4 leading-tight ${item.size === "large" ? "text-5xl" : "text-3xl"}`}>
+              <h3 className={`font-black text-white mb-3 leading-tight ${item.size === "large" ? "text-2xl sm:text-4xl md:text-5xl" : "text-xl sm:text-2xl md:text-3xl"}`}>
                 {item.title}
               </h3>
-              <p className="text-white/40 text-lg font-medium leading-relaxed">{item.desc}</p>
+              <p className="text-white/40 text-sm sm:text-base md:text-lg font-medium leading-relaxed">{item.desc}</p>
             </div>
           </div>
         ))}
@@ -361,7 +361,7 @@ function HardwareContent({ title, items, gridClass }: { title: string; items: an
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3000ms]"
                   />
                 ) : (
-                  <span className="text-[rgb(255,68,105)]/10 text-[180px] font-black">{i + 1}</span>
+                  <span className="text-[rgb(255,68,105)]/10 text-[80px] sm:text-[140px] md:text-[180px] font-black">{i + 1}</span>
                 )}
               </div>
               <div className="absolute -top-4 -right-4 px-6 py-2 rounded-full bg-[rgb(255,68,105)] shadow-[0_10px_30px_rgba(255,68,105,0.4)]">
@@ -389,23 +389,23 @@ function PricingContent({ title, tiers, gridClass }: { title: string; tiers: any
           <div
             key={i}
             className={`
-              p-12 rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start
-              ${tiers.length === 3 && i === 1 ? "border-[rgb(255,68,105)]/40 scale-105 bg-black/40 shadow-[0_30px_100px_rgba(255,68,105,0.15)]" : ""}
+              p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start
+              ${tiers.length === 3 && i === 1 ? "border-[rgb(255,68,105)]/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(255,68,105,0.15)]" : ""}
               ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}
               hover:border-[rgb(255,68,105)]/30 hover:-translate-y-2 transition-all duration-500
             `}
             style={{ transitionDelay: `${i * 150}ms` }}
           >
-            <div className={`px-4 py-1.5 rounded-full mb-8 ${tiers.length === 3 && i === 1 ? "bg-[rgb(255,68,105)]" : "bg-white/5 border border-white/10"}`}>
+            <div className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${tiers.length === 3 && i === 1 ? "bg-[rgb(255,68,105)]" : "bg-white/5 border border-white/10"}`}>
               <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${tiers.length === 3 && i === 1 ? "text-white" : "text-[rgb(255,68,105)]"}`}>
                 {tier.name}
               </span>
             </div>
-            <p className="text-white text-6xl font-black mb-8 tracking-tighter">{tier.price}</p>
-            <p className="text-white/50 text-lg mb-12 font-medium leading-relaxed">{tier.desc}</p>
+            <p className="text-white text-4xl sm:text-5xl md:text-6xl font-black mb-4 sm:mb-8 tracking-tighter">{tier.price}</p>
+            <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">{tier.desc}</p>
             <Link
               href="#kholbooBarikh"
-              className={`mt-auto w-full py-5 rounded-[24px] text-center font-black text-lg transition-all duration-500 shadow-xl
+              className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl
                 ${tiers.length === 3 && i === 1
                   ? "bg-white text-black hover:bg-[rgb(255,68,105)] hover:text-white shadow-pink-500/20"
                   : "bg-[rgb(255,68,105)] text-white hover:bg-white hover:text-black shadow-pink-500/30"

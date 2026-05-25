@@ -86,6 +86,77 @@ function ModalVideoPlayer({ src }: { src: string }) {
   );
 }
 
+/* ── Video Tooltip (floating near cursor) ── */
+function VideoTooltip({
+  project,
+  mousePos,
+}: {
+  project: Project;
+  mousePos: { x: number; y: number };
+}) {
+  const TW = 272;
+  const TH = 200;
+  let tx = mousePos.x + 28;
+  let ty = mousePos.y - TH / 2;
+  if (typeof window !== "undefined") {
+    if (tx + TW > window.innerWidth - 16) tx = mousePos.x - TW - 28;
+    ty = Math.max(16, Math.min(ty, window.innerHeight - TH - 16));
+  }
+  const embedUrl = project.videoUrl
+    ? getYoutubeThumbUrl(project.videoUrl)
+    : null;
+  const isDirect = project.videoUrl ? isDirectVideo(project.videoUrl) : false;
+
+  return (
+    <div
+      style={{
+        position: "fixed",
+        left: tx,
+        top: ty,
+        width: TW,
+        zIndex: 99998,
+        pointerEvents: "none",
+      }}
+      className="rounded-2xl overflow-hidden border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.95)] bg-black/95 backdrop-blur-xl animate-in fade-in duration-200"
+    >
+      <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+        {isDirect ? (
+          <video
+            src={resolveMediaUrl(project.videoUrl!)}
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="w-full h-full object-cover"
+          />
+        ) : embedUrl ? (
+          <iframe
+            src={embedUrl}
+            className="absolute inset-0 w-full h-full pointer-events-none scale-[1.1]"
+            allow="autoplay; encrypted-media"
+            tabIndex={-1}
+            aria-hidden="true"
+          />
+        ) : null}
+      </div>
+      <div className="px-3 py-2.5 flex items-center justify-between gap-2">
+        <div className="min-w-0">
+          <span className="text-indigo-400 text-[9px] font-black uppercase tracking-widest block leading-none mb-0.5">
+            {project.category}
+          </span>
+          <p className="text-white text-xs font-bold truncate">
+            {project.title}
+          </p>
+        </div>
+        <div className="shrink-0 flex items-center gap-1 text-white/30">
+          <Play size={9} fill="currentColor" />
+          <span className="text-[9px]">дарж үзэх</span>
+        </div>
+      </div>
+    </div>
+  );
+}
+
 /* ── 3D Carousel ── */
 function ThreeDCarousel({
   projects,
@@ -100,6 +171,7 @@ function ThreeDCarousel({
 }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const rafRef = useRef<number>(0);
   const lastTimeRef = useRef<number>(0);
   const pausedRef = useRef(false);
@@ -126,13 +198,16 @@ function ThreeDCarousel({
   const count = projects.length;
   const angleStep = 360 / count;
   const RADIUS = 300;
-  const CARD_W = 155;
-  const CARD_H = 205;
+  const CARD_W = 165;
+  const CARD_H = 165;
+
+  const hoveredProject = hoveredIdx !== null ? projects[hoveredIdx] : null;
 
   return (
     <div
       className="relative w-full flex items-center justify-center"
       style={{ height: 640, perspective: "1100px" }}
+      onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })}
     >
       {/* Ambient center glow */}
       <div className="absolute w-56 h-56 rounded-full bg-indigo-600/15 blur-[90px] pointer-events-none" />
@@ -166,10 +241,11 @@ function ThreeDCarousel({
                 transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) rotateX(23deg)`,
                 opacity: headerVis ? 1 : 0,
                 transition: "opacity 0.4s ease",
-                cursor: "pointer",
+                cursor: p.videoUrl ? "pointer" : "default",
               }}
               onMouseEnter={() => handleHover(i)}
               onMouseLeave={() => handleHover(null)}
+              onClick={() => p.videoUrl && onSelect(p)}
             >
               <div
                 className={`w-full h-full relative overflow-hidden rounded-[24px] border backdrop-blur-xl transition-all duration-500 bg-zinc-900 ${
@@ -178,7 +254,7 @@ function ThreeDCarousel({
                     : "border-white/10 scale-100 translate-y-0"
                 }`}
               >
-                {/* Media */}
+                {/* Static media — no hover video on card */}
                 <div className="absolute inset-0 overflow-hidden rounded-[24px]">
                   {p.image && !imageIsVideo ? (
                     <img
@@ -203,66 +279,39 @@ function ThreeDCarousel({
                       </span>
                     </div>
                   )}
-
-                  {isHovered && p.videoUrl && isDirectVideo(p.videoUrl) && (
-                    <video
-                      src={resolveMediaUrl(p.videoUrl)}
-                      muted
-                      loop
-                      playsInline
-                      autoPlay
-                      className="absolute inset-0 w-full h-full object-cover z-10 animate-in fade-in duration-500"
-                    />
-                  )}
-                  {isHovered &&
-                    p.videoUrl &&
-                    !isDirectVideo(p.videoUrl) &&
-                    getYoutubeThumbUrl(p.videoUrl) && (
-                      <iframe
-                        src={getYoutubeThumbUrl(p.videoUrl)!}
-                        className="absolute inset-0 w-full h-full z-10 pointer-events-none scale-[1.15] animate-in fade-in duration-500"
-                        allow="autoplay; encrypted-media"
-                        tabIndex={-1}
-                        aria-hidden="true"
-                      />
-                    )}
-
                   <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-[15]" />
                 </div>
 
-                {/* Play button */}
+                {/* Play indicator on hover */}
                 {p.videoUrl && isHovered && (
-                  <div
-                    className="absolute inset-0 z-20 flex items-center justify-center"
-                    onClick={() => onSelect(p)}
-                  >
-                    <div className="w-12 h-12 rounded-full bg-white/20 border border-white/30 text-white flex items-center justify-center backdrop-blur-xl hover:bg-white/30 transition-all">
-                      <Play fill="white" className="ml-1" size={18} />
+                  <div className="absolute inset-0 z-20 flex items-center justify-center">
+                    <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center backdrop-blur-xl">
+                      <Play fill="white" className="ml-0.5" size={14} />
                     </div>
                   </div>
                 )}
 
                 {/* Info — visible on hover */}
                 <div
-                  className={`absolute bottom-0 inset-x-0 z-20 p-4 transition-all duration-500 ${
+                  className={`absolute bottom-0 inset-x-0 z-20 p-3 transition-all duration-500 ${
                     isHovered
                       ? "opacity-100 translate-y-0"
                       : "opacity-0 translate-y-3"
                   }`}
                 >
-                  <span className="inline-block px-2 py-0.5 rounded-full bg-black/50 border border-white/20 backdrop-blur-sm text-white text-[9px] font-bold uppercase tracking-wider mb-1.5">
+                  <span className="inline-block px-2 py-0.5 rounded-full bg-black/50 border border-white/20 backdrop-blur-sm text-white text-[9px] font-bold uppercase tracking-wider mb-1">
                     {p.category}
                   </span>
-                  <h3 className="text-white text-base font-black tracking-tight leading-tight">
+                  <h3 className="text-white text-sm font-black tracking-tight leading-tight">
                     {p.title}
                   </h3>
                   {p.redirectUrl && (
                     <a
                       href={p.redirectUrl}
                       onClick={(e) => e.stopPropagation()}
-                      className="mt-2 inline-flex items-center gap-1.5 text-indigo-400 text-xs font-bold hover:text-white transition-colors"
+                      className="mt-1.5 inline-flex items-center gap-1 text-indigo-400 text-[10px] font-bold hover:text-white transition-colors"
                     >
-                      {ctaLabel} <ArrowRight size={12} />
+                      {ctaLabel} <ArrowRight size={10} />
                     </a>
                   )}
                 </div>
@@ -280,6 +329,14 @@ function ThreeDCarousel({
           );
         })}
       </div>
+
+      {/* Floating video tooltip next to cursor */}
+      {hoveredProject?.videoUrl &&
+        typeof document !== "undefined" &&
+        createPortal(
+          <VideoTooltip project={hoveredProject} mousePos={mousePos} />,
+          document.body,
+        )}
     </div>
   );
 }
