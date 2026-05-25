@@ -3,13 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "config": {
-    "port": "5002"
+    "port": "3004"
   },
   "scripts": {
-    "dev": "next dev --port 5002",
-    "dev:webpack": "next dev --webpack --port 5002",
+    "dev": "next dev --port 3004",
+    "dev:webpack": "next dev --webpack --port 3004",
     "build": "next build",
-    "start": "next start --port 5002",
+    "start": "next start --port 3004",
     "lint": "eslint"
   },
   "dependencies": {
