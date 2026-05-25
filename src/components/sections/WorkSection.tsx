@@ -86,20 +86,20 @@ function ModalVideoPlayer({ src }: { src: string }) {
   );
 }
 
-/* ── Video Tooltip (floating near cursor) ── */
+/* ── Video Tooltip (fixed position, appears where cursor first hovered) ── */
 function VideoTooltip({
   project,
-  mousePos,
+  pos,
 }: {
   project: Project;
-  mousePos: { x: number; y: number };
+  pos: { x: number; y: number };
 }) {
-  const TW = 272;
-  const TH = 200;
-  let tx = mousePos.x + 28;
-  let ty = mousePos.y - TH / 2;
+  const TW = 380;
+  const TH = 260;
+  let tx = pos.x + 32;
+  let ty = pos.y - TH / 2;
   if (typeof window !== "undefined") {
-    if (tx + TW > window.innerWidth - 16) tx = mousePos.x - TW - 28;
+    if (tx + TW > window.innerWidth - 16) tx = pos.x - TW - 32;
     ty = Math.max(16, Math.min(ty, window.innerHeight - TH - 16));
   }
   const embedUrl = project.videoUrl
@@ -117,7 +117,7 @@ function VideoTooltip({
         zIndex: 99998,
         pointerEvents: "none",
       }}
-      className="rounded-2xl overflow-hidden border border-white/15 shadow-[0_20px_60px_rgba(0,0,0,0.95)] bg-black/95 backdrop-blur-xl animate-in fade-in duration-200"
+      className="rounded-3xl overflow-hidden border border-white/15 shadow-[0_30px_80px_rgba(0,0,0,0.95)] bg-black/95 backdrop-blur-xl animate-in fade-in duration-200"
     >
       <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
         {isDirect ? (
@@ -138,19 +138,25 @@ function VideoTooltip({
             aria-hidden="true"
           />
         ) : null}
+        {/* play overlay hint */}
+        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+          <div className="w-12 h-12 rounded-full bg-white/20 border border-white/30 flex items-center justify-center backdrop-blur-sm">
+            <Play fill="white" className="ml-0.5" size={18} />
+          </div>
+        </div>
       </div>
-      <div className="px-3 py-2.5 flex items-center justify-between gap-2">
+      <div className="px-4 py-3 flex items-center justify-between gap-3">
         <div className="min-w-0">
-          <span className="text-indigo-400 text-[9px] font-black uppercase tracking-widest block leading-none mb-0.5">
+          <span className="text-indigo-400 text-[10px] font-black uppercase tracking-widest block leading-none mb-1">
             {project.category}
           </span>
-          <p className="text-white text-xs font-bold truncate">
+          <p className="text-white text-sm font-bold truncate">
             {project.title}
           </p>
         </div>
-        <div className="shrink-0 flex items-center gap-1 text-white/30">
-          <Play size={9} fill="currentColor" />
-          <span className="text-[9px]">дарж үзэх</span>
+        <div className="shrink-0 flex items-center gap-1.5 text-white/40">
+          <Play size={10} fill="currentColor" />
+          <span className="text-[10px] font-medium">дарж үзэх</span>
         </div>
       </div>
     </div>
@@ -171,10 +177,11 @@ function ThreeDCarousel({
 }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
+  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const rafRef = useRef<number>(0);
   const lastTimeRef = useRef<number>(0);
   const pausedRef = useRef(false);
+  const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     const animate = (time: number) => {
@@ -190,10 +197,24 @@ function ThreeDCarousel({
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  const handleHover = useCallback((idx: number | null) => {
+  const handleHover = useCallback((idx: number | null, x = 0, y = 0) => {
     setHoveredIdx(idx);
     pausedRef.current = idx !== null;
+    if (idx !== null) setTooltipPos({ x, y });
   }, []);
+
+  useEffect(() => {
+    const handleClickOutside = (e: MouseEvent) => {
+      if (
+        carouselRef.current &&
+        !carouselRef.current.contains(e.target as Node)
+      ) {
+        handleHover(null);
+      }
+    };
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => document.removeEventListener("mousedown", handleClickOutside);
+  }, [handleHover]);
 
   const count = projects.length;
   const angleStep = 360 / count;
@@ -205,9 +226,9 @@ function ThreeDCarousel({
 
   return (
     <div
+      ref={carouselRef}
       className="relative w-full flex items-center justify-center"
       style={{ height: 640, perspective: "1100px" }}
-      onMouseMove={(e) => setMousePos({ x: e.clientX, y: e.clientY })}
     >
       {/* Ambient center glow */}
       <div className="absolute w-56 h-56 rounded-full bg-indigo-600/15 blur-[90px] pointer-events-none" />
@@ -243,7 +264,7 @@ function ThreeDCarousel({
                 transition: "opacity 0.4s ease",
                 cursor: p.videoUrl ? "pointer" : "default",
               }}
-              onMouseEnter={() => handleHover(i)}
+              onMouseEnter={(e) => handleHover(i, e.clientX, e.clientY)}
               onMouseLeave={() => handleHover(null)}
               onClick={() => p.videoUrl && onSelect(p)}
             >
@@ -334,7 +355,7 @@ function ThreeDCarousel({
       {hoveredProject?.videoUrl &&
         typeof document !== "undefined" &&
         createPortal(
-          <VideoTooltip project={hoveredProject} mousePos={mousePos} />,
+          <VideoTooltip project={hoveredProject} pos={tooltipPos} />,
           document.body,
         )}
     </div>
