@@ -216,11 +216,24 @@ function ThreeDCarousel({
     return () => document.removeEventListener("mousedown", handleClickOutside);
   }, [handleHover]);
 
+  const [winW, setWinW] = useState(1200);
+  useEffect(() => {
+    const update = () => setWinW(window.innerWidth);
+    update();
+    window.addEventListener("resize", update);
+    return () => window.removeEventListener("resize", update);
+  }, []);
+
+  const isMobile = winW < 640;
+  const isTablet = winW >= 640 && winW < 1024;
+
   const count = projects.length;
   const angleStep = 360 / count;
-  const RADIUS = 300;
-  const CARD_W = 165;
-  const CARD_H = 165;
+  const RADIUS = isMobile ? 150 : isTablet ? 220 : 300;
+  const CARD_W = isMobile ? 105 : isTablet ? 135 : 165;
+  const CARD_H = isMobile ? 105 : isTablet ? 135 : 165;
+  const containerH = isMobile ? 380 : isTablet ? 500 : 640;
+  const perspectiveVal = isMobile ? 650 : isTablet ? 900 : 1100;
 
   const hoveredProject = hoveredIdx !== null ? projects[hoveredIdx] : null;
 
@@ -228,7 +241,7 @@ function ThreeDCarousel({
     <div
       ref={carouselRef}
       className="relative w-full flex items-center justify-center"
-      style={{ height: 640, perspective: "1100px" }}
+      style={{ height: containerH, perspective: `${perspectiveVal}px` }}
     >
       {/* Ambient center glow */}
       <div className="absolute w-56 h-56 rounded-full bg-indigo-600/15 blur-[90px] pointer-events-none" />
@@ -268,7 +281,7 @@ function ThreeDCarousel({
               onClick={() => p.videoUrl && onSelect(p)}
             >
               <div
-                className={`w-full h-full relative overflow-hidden rounded-[24px] border backdrop-blur-xl transition-all duration-500 bg-zinc-900 ${
+                className={`w-full h-full relative overflow-hidden rounded-[24px] border backdrop-blur-xl transition-all duration-500 ${
                   isHovered
                     ? "border-indigo-500/40 shadow-[0_30px_100px_rgba(99,102,241,0.45)] scale-[1.13] -translate-y-12"
                     : "border-white/10 scale-100 translate-y-0"
