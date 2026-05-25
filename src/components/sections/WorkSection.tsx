@@ -175,7 +175,10 @@ function ThreeDCarousel({
   onSelect: (p: Project) => void;
   ctaLabel: string;
 }) {
+  // hoveredIdx — visual lift effect only (follows mouse enter/leave)
+  // lockedIdx  — which card's tooltip is pinned (stays until click-outside)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
+  const [lockedIdx, setLockedIdx] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const rafRef = useRef<number>(0);
@@ -197,10 +200,22 @@ function ThreeDCarousel({
     return () => cancelAnimationFrame(rafRef.current);
   }, []);
 
-  const handleHover = useCallback((idx: number | null, x = 0, y = 0) => {
+  const handleEnter = useCallback((idx: number, x: number, y: number) => {
     setHoveredIdx(idx);
-    pausedRef.current = idx !== null;
-    if (idx !== null) setTooltipPos({ x, y });
+    setLockedIdx(idx);
+    setTooltipPos({ x, y });
+    pausedRef.current = true;
+  }, []);
+
+  const handleLeave = useCallback(() => {
+    setHoveredIdx(null);
+    // lockedIdx and tooltip stay open
+  }, []);
+
+  const closeTooltip = useCallback(() => {
+    setLockedIdx(null);
+    setHoveredIdx(null);
+    pausedRef.current = false;
   }, []);
 
   useEffect(() => {
@@ -209,12 +224,12 @@ function ThreeDCarousel({
         carouselRef.current &&
         !carouselRef.current.contains(e.target as Node)
       ) {
-        handleHover(null);
+        closeTooltip();
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
-  }, [handleHover]);
+  }, [closeTooltip]);
 
   const [winW, setWinW] = useState(1200);
   useEffect(() => {
@@ -235,7 +250,7 @@ function ThreeDCarousel({
   const containerH = isMobile ? 380 : isTablet ? 500 : 640;
   const perspectiveVal = isMobile ? 650 : isTablet ? 900 : 1100;
 
-  const hoveredProject = hoveredIdx !== null ? projects[hoveredIdx] : null;
+  const hoveredProject = lockedIdx !== null ? projects[lockedIdx] : null;
 
   return (
     <div
@@ -277,7 +292,8 @@ function ThreeDCarousel({
                 transition: "opacity 0.4s ease",
                 cursor: p.videoUrl ? "pointer" : "default",
               }}
-              onMouseEnter={(e) => handleHover(i, e.clientX, e.clientY)}
+              onMouseEnter={(e) => handleEnter(i, e.clientX, e.clientY)}
+              onMouseLeave={handleLeave}
               onClick={() => p.videoUrl && onSelect(p)}
             >
               <div
