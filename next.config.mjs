@@ -32,22 +32,12 @@ const nextConfig = {
   },
   images: {
     remotePatterns: [
+      // Production domain
+      { protocol: "https", hostname: "zevtabs.mn", pathname: "/upload/**" },
       // Remote production server
       { protocol: "http", hostname: "103.236.194.68", pathname: "/upload/**" },
+      { protocol: "http", hostname: "103.236.194.106", pathname: "/upload/**" },
       // Local dev
-      {
-        protocol: "http",
-        hostname: "localhost",
-        port: "3003",
-        pathname: "/upload/**",
-      },
-      {
-        protocol: "http",
-        hostname: "127.0.0.1",
-        port: "3003",
-        pathname: "/upload/**",
-      },
-      // Legacy 4000 port
       {
         protocol: "http",
         hostname: "localhost",
