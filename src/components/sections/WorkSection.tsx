@@ -297,10 +297,10 @@ function ThreeDCarousel({
               onClick={() => p.videoUrl && onSelect(p)}
             >
               <div
-                className={`w-full h-full relative overflow-hidden rounded-[24px] border backdrop-blur-xl transition-all duration-500 ${
+                className={`w-full h-full relative overflow-hidden rounded-[24px] backdrop-blur-xl transition-all duration-500 ${
                   isHovered
-                    ? "border-indigo-500/40 shadow-[0_30px_100px_rgba(99,102,241,0.45)] scale-[1.13] -translate-y-12"
-                    : "border-white/10 scale-100 translate-y-0"
+                    ? "shadow-[0_30px_100px_rgba(99,102,241,0.45)] scale-[1.13] -translate-y-12"
+                    : "scale-100 translate-y-0"
                 }`}
               >
                 {/* Static media — no hover video on card */}
