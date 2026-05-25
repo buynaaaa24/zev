@@ -6,7 +6,7 @@ import { GlobalContactInfo, RentlySections } from "@/lib/site-content-types";
 import { useRentlyLang } from "@/contexts/RentlyLangContext";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import { getApiBaseUrl } from "@/lib/api";
-import { ArrowRight, ChevronRight, Plus, Menu, X } from "lucide-react";
+import { ArrowRight, ChevronRight, Plus } from "lucide-react";
 
 const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
   en: {
@@ -100,8 +100,6 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
   const { lang, toggle } = useRentlyLang();
   const [data, setData] = useState<RentlySections>(initialData);
   const [mounted, setMounted] = useState(false);
-  const [isScrolled, setIsScrolled] = useState(false);
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
   useEffect(() => {
@@ -160,11 +158,6 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
     return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
   }, []);
 
-  useEffect(() => {
-    const handleScroll = () => setIsScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
 
   const defaults = DEFAULTS[lang] || DEFAULTS.mn;
 
@@ -194,54 +187,6 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
   return (
     <main className="bg-[#050505] selection:bg-emerald-600 selection:text-white min-h-screen relative overflow-hidden font-sans">
 
-      {/* NAVBAR */}
-      <header className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${isScrolled ? "bg-black/80 backdrop-blur-md shadow-sm py-4 border-b border-white/5" : "bg-transparent py-6"}`}>
-        <div className="container mx-auto px-6 lg:px-24 flex items-center justify-between">
-          <div className="flex-1 flex justify-start">
-            <Link href="/" className="flex items-center gap-2 group">
-              <img
-                src="/images/rently.png"
-                alt="Rently Logo"
-                className="w-10 h-10 object-contain group-hover:scale-110 transition-transform duration-300"
-              />
-              <span className="font-bold text-lg tracking-tight text-white">Rently</span>
-            </Link>
-          </div>
-
-          <nav className="hidden md:flex shrink-0 items-center gap-8">
-            <a href="#features" className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 hover:text-emerald-400 transition-colors">{lang === 'mn' ? 'Боломжууд' : 'Features'}</a>
-            <a href="#additional" className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 hover:text-emerald-400 transition-colors">{lang === 'mn' ? 'Нэмэлт' : 'Additional'}</a>
-            <a href="#pricing" className="text-[10px] font-bold uppercase tracking-[0.2em] text-white/50 hover:text-emerald-400 transition-colors">{lang === 'mn' ? 'Үнэ тариф' : 'Pricing'}</a>
-          </nav>
-
-          <div className="flex-1 hidden md:flex justify-end items-center gap-6">
-            <button onClick={toggle} className="text-[10px] font-bold uppercase tracking-[0.2em] text-emerald-500 hover:text-emerald-400 transition-colors">
-              {lang === "mn" ? "EN" : "MN"}
-            </button>
-            <a href="#contact" className="px-5 py-2.5 rounded-full border border-white/10 text-white text-[10px] font-bold uppercase tracking-[0.2em] hover:bg-white/5 transition-all">
-              {lang === 'mn' ? 'Холбогдох' : 'Contact'}
-            </a>
-          </div>
-
-          <button className="md:hidden text-white" onClick={() => setMobileMenuOpen(!mobileMenuOpen)}>
-            {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
-          </button>
-        </div>
-      </header>
-
-      {mobileMenuOpen && (
-        <div className="fixed inset-0 z-40 bg-black pt-24 px-6 flex flex-col gap-6 md:hidden">
-          <a href="#features" onClick={() => setMobileMenuOpen(false)} className="text-xl font-black text-white">{lang === 'mn' ? 'Боломжууд' : 'Features'}</a>
-          <a href="#additional" onClick={() => setMobileMenuOpen(false)} className="text-xl font-black text-white">{lang === 'mn' ? 'Нэмэлт' : 'Additional'}</a>
-          <a href="#pricing" onClick={() => setMobileMenuOpen(false)} className="text-xl font-black text-white">{lang === 'mn' ? 'Үнэ тариф' : 'Pricing'}</a>
-          <button onClick={() => { toggle(); setMobileMenuOpen(false); }} className="text-xl font-black text-emerald-500 text-left">
-            {lang === "mn" ? "English" : "Mongolian"}
-          </button>
-          <a href="#contact" onClick={() => setMobileMenuOpen(false)} className="px-5 py-3 mt-4 text-center rounded-full bg-emerald-600 text-white text-lg font-bold">
-            {lang === 'mn' ? 'Холбогдох' : 'Contact'}
-          </a>
-        </div>
-      )}
 
       <style jsx global>{`
         @keyframes float {
@@ -373,42 +318,6 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
         location={globalContact?.location}
       />
 
-      <footer className="py-10 relative z-10 border-t border-white/5 px-6 md:px-24">
-        <div className="max-w-[1400px] mx-auto grid grid-cols-1 md:grid-cols-4 gap-8">
-          <div className="md:col-span-2">
-            <div className="flex items-center gap-3 mb-4">
-              <img
-                src="/images/rently.png"
-                alt="Rently Logo"
-                className="w-8 h-8 object-contain"
-              />
-              <span className="text-xl font-black tracking-tighter text-white">Rently</span>
-            </div>
-            <p className="text-white/30 max-w-sm text-xs leading-relaxed">"Simplicity is the ultimate sophistication."</p>
-          </div>
-          <div className="flex flex-col gap-3">
-            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Navigation</span>
-            <div className="flex flex-col gap-2 text-white/50 font-bold uppercase tracking-widest text-[9px]">
-              <Link href="#features" className="hover:text-emerald-400 transition-colors">Features</Link>
-              <Link href="#pricing" className="hover:text-emerald-400 transition-colors">Pricing</Link>
-            </div>
-          </div>
-          <div className="flex flex-col gap-3">
-            <span className="text-[9px] font-black uppercase tracking-[0.4em] text-emerald-500/50">Contact</span>
-            <div className="text-white/50 font-bold uppercase tracking-widest text-[9px] leading-loose">
-              {globalContact?.location || "Ulaanbaatar, MN"}<br />
-              {globalContact?.email || "info@zevtabs.mn"}
-            </div>
-          </div>
-        </div>
-        <div className="max-w-[1400px] mx-auto mt-10 pt-6 border-t border-white/5 flex flex-col md:flex-row justify-between items-center gap-4 text-[8px] font-black uppercase tracking-[0.2em] text-white/20">
-          <p>© {new Date().getFullYear()} RENTLY — All Rights Reserved</p>
-          <div className="flex gap-6">
-            <a href="#" className="hover:text-white transition-colors">Privacy</a>
-            <a href="#" className="hover:text-white transition-colors">Terms</a>
-          </div>
-        </div>
-      </footer>
     </main>
   );
 }
