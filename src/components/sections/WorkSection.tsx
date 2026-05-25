@@ -265,7 +265,6 @@ function ThreeDCarousel({
                 cursor: p.videoUrl ? "pointer" : "default",
               }}
               onMouseEnter={(e) => handleHover(i, e.clientX, e.clientY)}
-              onMouseLeave={() => handleHover(null)}
               onClick={() => p.videoUrl && onSelect(p)}
             >
               <div
