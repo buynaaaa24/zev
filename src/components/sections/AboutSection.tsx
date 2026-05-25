@@ -243,7 +243,6 @@ function QuoteBlock({
       }}
     >
       <blockquote className="text-2xl sm:text-3xl md:text-4xl font-bold text-neutral-800 leading-tight">
-        &ldquo;
         <span
           style={{
             background: "linear-gradient(135deg,#0066CC,#2f77e8)",
@@ -254,7 +253,6 @@ function QuoteBlock({
         >
           {text}
         </span>
-        &rdquo;
       </blockquote>
       <p className="mt-4 text-neutral-400 text-sm">
         — {attribution || "Zevtabs Design Philosophy"}
