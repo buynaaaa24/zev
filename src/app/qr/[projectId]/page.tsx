@@ -11,6 +11,16 @@ import { Montserrat } from "next/font/google";
 
 const montserrat = Montserrat({ subsets: ["latin", "cyrillic"] });
 
+function formatSocialUrl(url: string | undefined | null): string {
+  const u = String(url ?? "").trim();
+  if (!u) return "";
+  if (/^https?:\/\//i.test(u)) return u;
+  if (u.startsWith("mailto:")) return u;
+  if (u.startsWith("tel:")) return u;
+  if (u.startsWith("/") || u.startsWith("#")) return u;
+  return `https://${u}`;
+}
+
 interface SocialLink {
   name: string;
   label: string;
@@ -202,6 +212,8 @@ export default function QrProjectPage() {
         }] : [])
       ];
 
+  const resolvedLogoUrl = resolvePublicMediaUrl(projectInfo.logo) || projectInfo.logo;
+
 
   useEffect(() => {
     const canvas = canvasRef.current;
@@ -305,7 +317,7 @@ export default function QrProjectPage() {
             
             <div className={`relative w-[120px] h-[120px] bg-[#0A0C10]/80 backdrop-blur-md border border-white/10 rounded-[36px] p-5 shadow-[0_20px_50px_rgba(0,0,0,0.5)] flex items-center justify-center overflow-hidden z-10`}>
               <Image
-                src={projectInfo.logo}
+                src={resolvedLogoUrl}
                 alt={projectInfo.name}
                 width={90}
                 height={90}
@@ -409,7 +421,7 @@ export default function QrProjectPage() {
                   <motion.a
                     key={idx}
                     whileTap={{ scale: 0.98 }}
-                    href={item.url}
+                    href={formatSocialUrl(item.url)}
                     target="_blank"
                     rel="noreferrer"
                     className="flex items-center gap-4 p-3 px-4 bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-2xl text-white hover:bg-white/[0.06] transition-all duration-300 outline-none"
