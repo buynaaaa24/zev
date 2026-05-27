@@ -184,7 +184,7 @@ export type PosEaseSections = {
   };
   pricing: {
     title: string;
-    tiers: { name: string; price: string; desc: string }[];
+    tiers: { name: string; price: string; desc: string; discounts?: { label: string; color: string }[] }[];
   };
 };
 
