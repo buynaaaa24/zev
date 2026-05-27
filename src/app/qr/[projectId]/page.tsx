@@ -2,6 +2,7 @@
 
 import React, { useEffect, useState, useRef } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { notFound, useParams } from "next/navigation";
 import { isAndroid, isIOS } from "react-device-detect";
 import { FaApple, FaGooglePlay, FaFacebook, FaInstagram } from "react-icons/fa";
@@ -9,6 +10,14 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Montserrat } from "next/font/google";
 
 const montserrat = Montserrat({ subsets: ["latin", "cyrillic"] });
+
+interface SocialLink {
+  name: string;
+  label: string;
+  url: string;
+  icon: string;
+  color?: string;
+}
 
 interface ProjectData {
   name: string;
@@ -22,6 +31,10 @@ interface ProjectData {
   logo: string;
   color: string;
   glow: string;
+  hideDescription?: boolean;
+  hideAppLinks?: boolean;
+  hideSocial?: boolean;
+  socialLinks?: SocialLink[];
 }
 
 const PROJECTS_DATA: Record<string, ProjectData> = {
@@ -123,7 +136,7 @@ const PROJECTS_DATA: Record<string, ProjectData> = {
   },
 };
 
-import { getApiBaseUrl } from "@/lib/api";
+import { getApiBaseUrl, resolvePublicMediaUrl } from "@/lib/api";
 
 export default function QrProjectPage() {
   const params = useParams();
@@ -169,6 +182,25 @@ export default function QrProjectPage() {
       ...(dynamicData?.description || {}),
     }
   };
+
+  const rawSocialLinks = projectInfo.socialLinks && projectInfo.socialLinks.length > 0
+    ? projectInfo.socialLinks
+    : [
+        ...(projectInfo.facebook ? [{
+          name: "Facebook",
+          label: projectInfo.facebookName || "Facebook",
+          url: projectInfo.facebook,
+          icon: "facebook",
+          color: "#1877F2"
+        }] : []),
+        ...(projectInfo.instagram ? [{
+          name: "Instagram",
+          label: projectInfo.instagramName || "Instagram",
+          url: projectInfo.instagram,
+          icon: "instagram",
+          color: "#E4405F"
+        }] : [])
+      ];
 
 
   useEffect(() => {
@@ -299,15 +331,17 @@ export default function QrProjectPage() {
               {projectInfo.name}
             </motion.h1>
             <AnimatePresence mode="wait">
-              <motion.p 
-                key={lang}
-                initial={{ opacity: 0, x: 10 }}
-                animate={{ opacity: 1, x: 0 }}
-                exit={{ opacity: 0, x: -10 }}
-                className="text-[#A1A1AA] text-[15px] leading-relaxed font-medium mx-auto max-w-[280px]"
-              >
-                {projectInfo.description[lang]}
-              </motion.p>
+              {!projectInfo.hideDescription && (
+                <motion.p 
+                  key={lang}
+                  initial={{ opacity: 0, x: 10 }}
+                  animate={{ opacity: 1, x: 0 }}
+                  exit={{ opacity: 0, x: -10 }}
+                  className="text-[#A1A1AA] text-[15px] leading-relaxed font-medium mx-auto max-w-[280px]"
+                >
+                  {projectInfo.description[lang]}
+                </motion.p>
+              )}
             </AnimatePresence>
           </motion.div>
         </div>
@@ -319,80 +353,144 @@ export default function QrProjectPage() {
           transition={{ delay: 0.4, duration: 0.6 }}
           className="flex flex-col w-full gap-4 mt-auto"
         >
-          <div className="w-full relative mb-4">
-            <motion.button
-              whileHover={{ scale: 1.02, y: -2 }}
-              whileTap={{ scale: 0.96 }}
-              animate={{
-                boxShadow: ["0 0 0px rgba(0,0,0,0)", "0 0 25px rgba(255,255,255,0.1)", "0 0 0px rgba(0,0,0,0)"]
-              }}
-              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
-              onClick={handleSmartDownload}
-              className={`group relative w-full h-[64px] rounded-[22px] font-bold text-[18px] flex items-center justify-center gap-3 overflow-hidden shadow-2xl ${projectInfo.glow} outline-none`}
-            >
-              <div className={`absolute inset-0 bg-gradient-to-r ${projectInfo.color} opacity-100 group-hover:opacity-90 transition-opacity duration-300`} />
-              <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/30 opacity-40 animate-shine" />
-              <AnimatePresence mode="wait">
-                <motion.span 
-                  key={lang}
-                  initial={{ opacity: 0, y: 5 }}
-                  animate={{ opacity: 1, y: 0 }}
-                  exit={{ opacity: 0, y: -5 }}
-                  className="relative z-10 tracking-wide text-white drop-shadow-md font-bold uppercase"
-                >
-                  {t[lang].download}
-                </motion.span>
-              </AnimatePresence>
-              <div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/10 ml-1">
-                {isIOS ? <FaApple className="text-white text-lg" /> : <FaGooglePlay className="text-white text-[14px]" />}
-              </div>
-            </motion.button>
-          </div>
+          {!projectInfo.hideAppLinks && (
+            <div className="w-full relative mb-4">
+              <motion.button
+                whileHover={{ scale: 1.02, y: -2 }}
+                whileTap={{ scale: 0.96 }}
+                animate={{
+                  boxShadow: ["0 0 0px rgba(0,0,0,0)", "0 0 25px rgba(255,255,255,0.1)", "0 0 0px rgba(0,0,0,0)"]
+                }}
+                transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+                onClick={handleSmartDownload}
+                className={`group relative w-full h-[64px] rounded-[22px] font-bold text-[18px] flex items-center justify-center gap-3 overflow-hidden shadow-2xl ${projectInfo.glow} outline-none`}
+              >
+                <div className={`absolute inset-0 bg-gradient-to-r ${projectInfo.color} opacity-100 group-hover:opacity-90 transition-opacity duration-300`} />
+                <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/30 opacity-40 animate-shine" />
+                <AnimatePresence mode="wait">
+                  <motion.span 
+                    key={lang}
+                    initial={{ opacity: 0, y: 5 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    exit={{ opacity: 0, y: -5 }}
+                    className="relative z-10 tracking-wide text-white drop-shadow-md font-bold uppercase"
+                  >
+                    {t[lang].download}
+                  </motion.span>
+                </AnimatePresence>
+                <div className="relative z-10 flex items-center justify-center w-8 h-8 rounded-full bg-white/20 backdrop-blur-sm border border-white/10 ml-1">
+                  {isIOS ? <FaApple className="text-white text-lg" /> : <FaGooglePlay className="text-white text-[14px]" />}
+                </div>
+              </motion.button>
+            </div>
+          )}
 
-          {/* Social Links (Full Rows with Names) */}
-          {(projectInfo.facebook || projectInfo.instagram) && (
-            <div className="flex flex-col w-full gap-3 mb-10">
-              {projectInfo.facebook && (
-                <motion.a
-                  whileTap={{ scale: 0.98 }}
-                  href={projectInfo.facebook}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-4 p-3 px-4 bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-2xl text-white hover:bg-white/[0.06] transition-all duration-300 outline-none"
-                >
-                  <div className="w-11 h-11 bg-[#1877F2] rounded-xl flex items-center justify-center shadow-lg">
-                    <FaFacebook className="text-[24px]" />
-                  </div>
-                  <div className="flex flex-col items-start pt-0.5">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#1877F2] font-black leading-none mb-1">Facebook</span>
-                    <span className="text-[14px] font-bold text-white/90 leading-tight">
-                      {projectInfo.facebookName}
-                    </span>
-                  </div>
-                </motion.a>
-              )}
-              {projectInfo.instagram && (
-                <motion.a
-                  whileTap={{ scale: 0.98 }}
-                  href={projectInfo.instagram}
-                  target="_blank"
-                  rel="noreferrer"
-                  className="flex items-center gap-4 p-3 px-4 bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-2xl text-white hover:bg-white/[0.06] transition-all duration-300 outline-none"
-                >
-                  <div className="w-11 h-11 bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888] rounded-xl flex items-center justify-center shadow-lg">
-                    <FaInstagram className="text-[26px]" />
-                  </div>
-                  <div className="flex flex-col items-start pt-0.5">
-                    <span className="text-[10px] uppercase tracking-[0.2em] text-[#E4405F] font-black leading-none mb-1">Instagram</span>
-                    <span className="text-[14px] font-bold text-white/90 leading-tight">
-                      {projectInfo.instagramName}
-                    </span>
-                  </div>
-                </motion.a>
-              )}
+          {/* Social Links (Dynamic Loop) */}
+          {!projectInfo.hideSocial && rawSocialLinks.length > 0 && (
+            <div className="flex flex-col w-full gap-3 mb-6">
+              {rawSocialLinks.map((item, idx) => {
+                const isFb = item.icon === "facebook";
+                const isInsta = item.icon === "instagram";
+                
+                let IconComponent = null;
+                let iconBgClass = "";
+                
+                if (isFb) {
+                  IconComponent = <FaFacebook className="text-[24px]" />;
+                  iconBgClass = "bg-[#1877F2]";
+                } else if (isInsta) {
+                  IconComponent = <FaInstagram className="text-[26px]" />;
+                  iconBgClass = "bg-gradient-to-tr from-[#f09433] via-[#e6683c] to-[#bc1888]";
+                }
+
+                const resolvedIconSrc = resolvePublicMediaUrl(item.icon);
+
+                return (
+                  <motion.a
+                    key={idx}
+                    whileTap={{ scale: 0.98 }}
+                    href={item.url}
+                    target="_blank"
+                    rel="noreferrer"
+                    className="flex items-center gap-4 p-3 px-4 bg-white/[0.03] backdrop-blur-md border border-white/5 rounded-2xl text-white hover:bg-white/[0.06] transition-all duration-300 outline-none"
+                  >
+                    <div 
+                      className={`w-11 h-11 rounded-xl flex items-center justify-center shadow-lg overflow-hidden shrink-0 ${iconBgClass}`}
+                      style={!isFb && !isInsta && item.color ? { backgroundColor: item.color } : undefined}
+                    >
+                      {IconComponent ? (
+                        IconComponent
+                      ) : resolvedIconSrc ? (
+                        <img src={resolvedIconSrc} alt={item.name} className="w-full h-full object-cover" />
+                      ) : (
+                        <span className="text-[15px] font-black uppercase">{item.name.slice(0, 2)}</span>
+                      )}
+                    </div>
+                    <div className="flex flex-col items-start pt-0.5">
+                      <span 
+                        className="text-[10px] uppercase tracking-[0.2em] font-black leading-none mb-1"
+                        style={!isFb && !isInsta && item.color ? { color: item.color } : (isFb ? { color: "#1877F2" } : (isInsta ? { color: "#E4405F" } : undefined))}
+                      >
+                        {item.name}
+                      </span>
+                      <span className="text-[14px] font-bold text-white/90 leading-tight">
+                        {item.label}
+                      </span>
+                    </div>
+                  </motion.a>
+                );
+              })}
             </div>
           )}
         </motion.div>
+
+        {/* Amarhome Promotional Banner (Shows up in all OTHER QR pages) */}
+        {projectId !== "amarhome" && (
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.6, duration: 0.6 }}
+            className="w-full mb-6"
+          >
+            <Link
+              href="/qr/amarhome"
+              className="group relative flex items-center gap-4 p-4 bg-gradient-to-r from-blue-950/50 to-indigo-950/50 backdrop-blur-md border border-blue-500/20 rounded-[24px] text-white hover:border-blue-500/40 hover:from-blue-900/60 hover:to-indigo-900/60 transition-all duration-300 shadow-[0_15px_40px_-15px_rgba(30,58,138,0.5)] overflow-hidden"
+            >
+              {/* Glowing Background Light */}
+              <div className="absolute top-0 right-0 w-24 h-24 bg-blue-500/20 rounded-full blur-2xl pointer-events-none group-hover:bg-blue-500/30 transition-all duration-500" />
+              
+              {/* Shine effect */}
+              <div className="absolute top-0 -inset-full h-full w-1/2 z-5 block transform -skew-x-12 bg-gradient-to-r from-transparent to-white/10 opacity-30 animate-shine" />
+
+              <div className="relative w-12 h-12 bg-[#0A0C10]/95 border border-white/10 rounded-2xl p-2.5 shadow-lg flex items-center justify-center overflow-hidden shrink-0 z-10 group-hover:scale-105 transition-transform duration-300">
+                <img
+                  src="/amarhome-logo.jpg"
+                  alt="Amarhome"
+                  className="w-full h-full object-contain drop-shadow-lg"
+                />
+              </div>
+              
+              <div className="flex-1 flex flex-col items-start z-10">
+                <span className="text-[9px] uppercase tracking-[0.25em] text-blue-400 font-black leading-none mb-1">
+                  Ухаалаг гэрийн систем
+                </span>
+                <span className="text-[14px] font-black text-white leading-tight">
+                  AMARHOME СӨХ апп татах
+                </span>
+                <span className="text-[11px] text-slate-400 font-medium mt-0.5 group-hover:text-slate-300 transition-colors">
+                  Төлбөр удирдах & ухаалаг СӨХ
+                </span>
+              </div>
+              
+              {/* Arrow */}
+              <div className="w-8 h-8 rounded-full bg-white/5 group-hover:bg-blue-500/20 flex items-center justify-center shrink-0 border border-white/5 transition-all duration-300">
+                <svg className="w-4 h-4 text-white/50 group-hover:text-blue-400 transition-colors" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={3}>
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M9 5l7 7-7 7" />
+                </svg>
+              </div>
+            </Link>
+          </motion.div>
+        )}
 
         {/* Branding Footer */}
         <motion.div 
