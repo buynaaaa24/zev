@@ -21,6 +21,7 @@ interface LeadFormSectionProps {
   phone?: string;
   locationLabel?: string;
   location?: string;
+  locationUrl?: string;
   id?: string;
 }
 
@@ -36,6 +37,7 @@ export default function LeadFormSection({
   phone,
   locationLabel = "Location",
   location,
+  locationUrl,
   id = "kholbooBarikh"
 }: LeadFormSectionProps) {
   const [form, setForm] = useState({
@@ -149,15 +151,32 @@ export default function LeadFormSection({
                 </a>
               )}
               {location && (
-                <div className="flex items-center gap-4 w-fit">
-                  <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center">
-                    <svg className="w-5 h-5" style={{ color: accentColor }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                locationUrl ? (
+                  <a
+                    href={locationUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center gap-4 group cursor-pointer w-fit"
+                  >
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center group-hover:bg-white/10 transition-colors shrink-0">
+                      <svg className="w-5 h-5" style={{ color: accentColor }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    </div>
+                    <div>
+                      <p className="text-white/30 text-xs font-bold uppercase tracking-widest mb-0.5">{locationLabel}</p>
+                      <p className="text-white font-bold tracking-tight group-hover:text-white/80 transition-colors">{location}</p>
+                    </div>
+                  </a>
+                ) : (
+                  <div className="flex items-center gap-4 w-fit">
+                    <div className="w-12 h-12 rounded-2xl bg-white/5 border border-white/10 flex items-center justify-center shrink-0">
+                      <svg className="w-5 h-5" style={{ color: accentColor }} fill="none" viewBox="0 0 24 24" stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17.657 16.657L13.414 20.9a1.998 1.998 0 01-2.827 0l-4.244-4.243a8 8 0 1111.314 0z" /><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M15 11a3 3 0 11-6 0 3 3 0 016 0z" /></svg>
+                    </div>
+                    <div>
+                      <p className="text-white/30 text-xs font-bold uppercase tracking-widest mb-0.5">{locationLabel}</p>
+                      <p className="text-white font-bold tracking-tight">{location}</p>
+                    </div>
                   </div>
-                  <div>
-                    <p className="text-white/30 text-xs font-bold uppercase tracking-widest mb-0.5">{locationLabel}</p>
-                    <p className="text-white font-bold tracking-tight">{location}</p>
-                  </div>
-                </div>
+                )
               )}
             </div>
           </motion.div>
@@ -213,7 +232,7 @@ export default function LeadFormSection({
                           value={form.utas}
                           onChange={handleChange}
                           placeholder="8 оронтой дугаар"
-                          className={`w-full bg-white/5 border ${error.utas ? 'border-red-500' : 'border-white/10'} rounded-2xl px-6 py-4 text-white placeholder:text-white/10 outline-none focus:border-white/30 transition-all`}
+                          className={`w-full bg-white/5 border ${error.utas ? 'border-red-500' : 'border-white/10'} rounded-2xl px-6 py-4 text-white placeholder:text-white/35 placeholder:text-sm outline-none focus:border-white/30 transition-all`}
                         />
                       </div>
                       <div className="space-y-2">
@@ -223,7 +242,7 @@ export default function LeadFormSection({
                           value={form.mail}
                           onChange={handleChange}
                           placeholder="example@mail.mn"
-                          className={`w-full bg-white/5 border ${error.mail ? 'border-red-500' : 'border-white/10'} rounded-2xl px-6 py-4 text-white placeholder:text-white/10 outline-none focus:border-white/30 transition-all`}
+                          className={`w-full bg-white/5 border ${error.mail ? 'border-red-500' : 'border-white/10'} rounded-2xl px-6 py-4 text-white placeholder:text-white/35 placeholder:text-sm outline-none focus:border-white/30 transition-all`}
                         />
                       </div>
                     </div>
@@ -236,7 +255,7 @@ export default function LeadFormSection({
                         onChange={handleChange}
                         rows={4}
                         placeholder="Талбай, байршил, зогсоолын тоо гэх мэт..."
-                        className={`w-full bg-white/5 border ${error.tailbar ? 'border-red-500' : 'border-white/10'} rounded-2xl px-6 py-4 text-white placeholder:text-white/10 outline-none focus:border-white/30 transition-all resize-none`}
+                        className={`w-full bg-white/5 border ${error.tailbar ? 'border-red-500' : 'border-white/10'} rounded-2xl px-6 py-4 text-white placeholder:text-white/35 placeholder:text-sm outline-none focus:border-white/30 transition-all resize-none`}
                       />
                     </div>
 

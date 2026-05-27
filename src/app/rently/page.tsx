@@ -5,6 +5,7 @@ import RentlyClient from "./RentlyClient";
 export const metadata: Metadata = {
   title: "Rently",
   description: "Түрээсийн удирдлагын цогц систем",
+  icons: { icon: "/images/rently.png", apple: "/images/rently.png" },
 };
 
 export default async function RentlyPage() {

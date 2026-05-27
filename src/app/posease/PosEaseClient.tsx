@@ -382,6 +382,7 @@ export default function PosEaseClient({
         phone={globalContact?.phone}
         locationLabel={globalContact?.locationLabel}
         location={globalContact?.location}
+        locationUrl={globalContact?.locationUrl}
       />
     </main>
   );

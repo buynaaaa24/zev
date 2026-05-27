@@ -399,6 +399,7 @@ const EMPTY_GLOBAL_CONTACT: GlobalContactInfo = {
   phone: "",
   locationLabel: "Байршил",
   location: "",
+  locationUrl: "",
 };
 
 export async function getGlobalContact(): Promise<GlobalContactInfo> {

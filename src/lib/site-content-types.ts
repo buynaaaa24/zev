@@ -326,6 +326,7 @@ export type GlobalContactInfo = {
   phone: string;
   locationLabel: string;
   location: string;
+  locationUrl?: string;
 };
 
 export type AjluudSections = {

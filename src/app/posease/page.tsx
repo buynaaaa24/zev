@@ -5,6 +5,7 @@ import PosEaseClient from "./PosEaseClient";
 export const metadata: Metadata = {
   title: "PosEase",
   description: "Ultra-modern cloud POS for retail and hospitality.",
+  icons: { icon: "/posease-logo.jpg", apple: "/posease-logo.jpg" },
 };
 
 export default async function PosEasePage() {

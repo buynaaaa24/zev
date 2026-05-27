@@ -1010,6 +1010,7 @@ function CtaSection({ globalContact }: { globalContact?: GlobalContactInfo }) {
       phone={globalContact?.phone || api.phone}
       locationLabel={globalContact?.locationLabel || api.locationLabel}
       location={globalContact?.location || api.location}
+      locationUrl={globalContact?.locationUrl}
     />
   );
 }

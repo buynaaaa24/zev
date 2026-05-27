@@ -229,6 +229,7 @@ export default function AmarHomeClient({ data, globalContact }: { data: AmarHome
         phone={globalContact?.phone}
         locationLabel={globalContact?.locationLabel}
         location={globalContact?.location}
+        locationUrl={globalContact?.locationUrl}
       />
 
     </main>
