@@ -28,6 +28,10 @@ const nextConfig = {
         source: "/api/:path*",
         destination: `${origin}/api/:path*`,
       },
+      {
+        source: "/socket.io/:path*",
+        destination: `${origin}/socket.io/:path*`,
+      },
     ];
   },
   images: {

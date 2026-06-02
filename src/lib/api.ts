@@ -18,9 +18,13 @@ export function getApiBaseUrl(): string {
 
 /**
  * Socket.io is mounted on the HTTP server root (`/socket.io/`), not under `/api/v1`.
- * Always use the direct backend URL for sockets because `next.config.mjs` does not proxy `/socket.io`.
+ * In the browser, returns an empty string to use same-origin relative connections,
+ * routing WebSocket upgrades securely through Next.js proxy rewrite rules.
  */
 export function getSocketBaseUrl(): string {
+  if (typeof window !== "undefined") {
+    return "";
+  }
   let url = (process.env.NEXT_PUBLIC_API_URL ?? DEFAULT_API).trim().replace(/\/+$/, "");
   if (url.endsWith("/api")) {
     url = url.slice(0, -4);
