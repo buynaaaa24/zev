@@ -169,7 +169,7 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
     image: data?.hero?.image || defaults.hero.image,
   };
 
-  const features = (data?.features?.items?.length ? data.features.items : defaults.features.items).filter(i => i.title && i.title.trim() !== "");
+  const features = (data?.features?.items?.length ? data.features.items : defaults.features.items).filter(i => (i.title && i.title.trim() !== "") || i.image);
   const pricing = (data?.pricing?.tiers?.length ? data.pricing.tiers : defaults.pricing.tiers).filter(i => i.name && i.name.trim() !== "");
 
   const additionalSections = [

@@ -192,7 +192,7 @@ export default function PosEaseClient({
 
   // Clean data
   const featuresItems = (data.features.items || []).filter(
-    (i) => i.title && i.title.trim() !== "",
+    (i) => (i.title && i.title.trim() !== "") || i.image,
   );
   const hardwareItems = (data.hardware.items || []).filter(
     (i) => i.name && i.name.trim() !== "",
