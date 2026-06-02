@@ -6,6 +6,7 @@ import { usePosEaseLang } from "@/contexts/PosEaseLangContext";
 import { GlobalContactInfo, PosEaseSections } from "@/lib/site-content-types";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import SplineScene from "@/components/spline/SplineScene";
+import { resolveMediaUrl } from "@/lib/media";
 
 const PINK = "rgb(255, 68, 105)";
 const PINK_GLOW = "rgba(255, 68, 105, 0.5)";
@@ -430,7 +431,7 @@ function FeaturesContent({
             {item.image && (
               <div className="absolute inset-0 z-0">
                 <img
-                  src={item.image}
+                  src={resolveMediaUrl(item.image)}
                   alt={item.title}
                   className="w-full h-full object-cover opacity-30 group-hover:opacity-50 group-hover:scale-110 transition-all duration-[2000ms]"
                 />
@@ -487,7 +488,7 @@ function HardwareContent({
               <div className="absolute inset-0 bg-[#0a0a0a]/60 backdrop-blur-3xl rounded-[60px] border border-white/10 shadow-2xl flex items-center justify-center group-hover:-translate-y-6 transition-transform duration-700 overflow-hidden">
                 {item.image ? (
                   <img
-                    src={item.image}
+                    src={resolveMediaUrl(item.image)}
                     alt={item.name}
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3000ms]"
                   />

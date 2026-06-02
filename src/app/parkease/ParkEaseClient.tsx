@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useParkEaseLang } from "@/contexts/ParkEaseLangContext";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import type { GlobalContactInfo, ParkEaseSections } from "@/lib/site-content-types";
+import { resolveMediaUrl } from "@/lib/media";
 
 const YELLOW = "#f6b414";
 const YELLOW_DARK = "#d99a0e";
@@ -606,7 +607,7 @@ function PaymentSection() {
                 <div className="w-8 h-8 sm:w-10 sm:h-10 rounded-lg sm:rounded-xl bg-white/8 flex items-center justify-center mb-2 sm:mb-3 overflow-hidden">
                   {bank.image ? (
                     <img
-                      src={bank.image}
+                      src={resolveMediaUrl(bank.image)}
                       alt={bank.name}
                       className="w-full h-full object-contain p-1"
                     />

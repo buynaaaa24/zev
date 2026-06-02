@@ -6,6 +6,7 @@ import { AmarHomeSections, GlobalContactInfo } from "@/lib/site-content-types";
 import { ArrowRight, ChevronRight, Plus } from "lucide-react";
 import { useAmarHomeLang } from "@/contexts/AmarHomeLangContext";
 import LeadFormSection from "../../components/sections/LeadFormSection";
+import { resolveMediaUrl } from "@/lib/media";
 
 const DEFAULTS: { en: AmarHomeSections; mn: AmarHomeSections } = {
   en: {
@@ -251,7 +252,7 @@ function FeatureRow({ item, index }: { item: any; index: number }) {
           <div className="absolute inset-0 bg-emerald-500/20 blur-[60px] rounded-full" />
           <div className="relative aspect-[16/10] rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group">
              {item.image ? (
-                <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" />
+                <img src={resolveMediaUrl(item.image)} alt={item.title} className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" />
              ) : (
                 <div className="w-full h-full bg-neutral-900 flex items-center justify-center">
                    <ChevronRight size={60} className="text-white/5" />
@@ -269,7 +270,7 @@ function HardwareSpotlight({ item, index }: { item: any; index: number }) {
     <div ref={ref} className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: `${index * 150}ms` }}>
        <div className="relative aspect-[4/3] md:aspect-square rounded-[24px] md:rounded-[40px] bg-neutral-900/40 border border-white/10 mb-4 md:mb-6 overflow-hidden group">
           {item.image ? (
-             <img src={item.image} alt={item.name} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-100 transition-all duration-700" />
+             <img src={resolveMediaUrl(item.image)} alt={item.name} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-100 transition-all duration-700" />
           ) : (
              <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
           )}

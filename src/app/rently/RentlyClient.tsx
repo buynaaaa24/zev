@@ -7,6 +7,7 @@ import { useRentlyLang } from "@/contexts/RentlyLangContext";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import { getApiBaseUrl } from "@/lib/api";
 import { ArrowRight, ChevronRight, Plus } from "lucide-react";
+import { resolveMediaUrl } from "@/lib/media";
 
 const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
   en: {
@@ -232,7 +233,7 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
               <div className="absolute inset-0 bg-emerald-500/10 rounded-[32px] sm:rounded-[48px] blur-[40px] sm:blur-[60px]" />
               <div className="relative h-full w-full rounded-[32px] sm:rounded-[48px] border border-white/10 bg-neutral-900/20 backdrop-blur-3xl overflow-hidden shadow-2xl p-2 sm:p-3">
                 {hero.image ? (
-                  <img src={hero.image} alt="Hero" className="w-full h-full object-cover rounded-[24px] sm:rounded-[40px]" />
+                  <img src={resolveMediaUrl(hero.image)} alt="Hero" className="w-full h-full object-cover rounded-[24px] sm:rounded-[40px]" />
                 ) : (
                   <div className="w-full h-full bg-[#0a0a0a] rounded-[24px] sm:rounded-[40px] flex flex-col p-6 sm:p-12">
                     <div className="flex justify-between items-start mb-12">
@@ -338,7 +339,7 @@ function FeatureRow({ item, index }: { item: any; index: number }) {
         <div className="absolute inset-0 bg-emerald-500/20 blur-[60px] rounded-full" />
         <div className="relative aspect-[16/10] rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group">
           {item.image ? (
-            <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" />
+            <img src={resolveMediaUrl(item.image)} alt={item.title} className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" />
           ) : (
             <div className="w-full h-full bg-neutral-900 flex items-center justify-center">
               <ChevronRight size={60} className="text-white/5" />
