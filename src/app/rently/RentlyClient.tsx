@@ -375,7 +375,21 @@ function PricingTier({ tier, index, totalCount }: { tier: any; index: number; to
   const isMiddle = totalCount === 3 && index === 1;
   return (
     <div ref={ref} className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: `${index * 150}ms` }}>
-      <div className={`p-6 md:p-8 rounded-[20px] md:rounded-[24px] h-full flex flex-col transition-all duration-700 ${isMiddle ? "bg-emerald-600 shadow-[0_0_40px_rgba(6,78,59,0.3)] md:scale-105" : "bg-white/5 border border-white/10 hover:bg-white/[0.08]"}`}>
+      <div className={`relative p-6 md:p-8 rounded-[20px] md:rounded-[24px] h-full flex flex-col transition-all duration-700 ${isMiddle ? "bg-emerald-600 shadow-[0_0_40px_rgba(6,78,59,0.3)] md:scale-105" : "bg-white/5 border border-white/10 hover:bg-white/[0.08]"}`}>
+        {/* Discount badges — top-right corner */}
+        {tier.discounts && tier.discounts.length > 0 && (
+          <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
+            {tier.discounts.map((d: { label: string; color?: string }, di: number) => (
+              <div
+                key={di}
+                className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap"
+                style={{ backgroundColor: d.color || "#7c3aed" }}
+              >
+                {d.label}
+              </div>
+            ))}
+          </div>
+        )}
         <div className={`w-8 h-8 rounded-lg flex items-center justify-center mb-6 ${isMiddle ? "bg-white/20" : "bg-emerald-500/20"}`}>
           <Plus size={14} className={isMiddle ? "text-white" : "text-emerald-400"} />
         </div>

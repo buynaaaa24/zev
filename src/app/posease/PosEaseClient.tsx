@@ -547,13 +547,13 @@ function PricingContent({
           >
             {/* Discount badges — top-right corner */}
             {tier.discounts && tier.discounts.length > 0 && (
-              <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-10">
+              <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
                 {tier.discounts.map(
-                  (d: { label: string; color: string }, di: number) => (
+                  (d: { label: string; color?: string }, di: number) => (
                     <div
                       key={di}
-                      className="px-3 py-1.5 rounded-xl text-white text-[11px] font-black shadow-lg whitespace-nowrap"
-                      style={{ backgroundColor: d.color }}
+                      className="px-3 py-1.5 rounded-full text-white text-[11px] font-black shadow-lg uppercase whitespace-nowrap"
+                      style={{ backgroundColor: d.color || "#7c3aed" }}
                     >
                       {d.label}
                     </div>

@@ -2,7 +2,7 @@
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
-import { ArrowRight, X, Play } from "lucide-react";
+import { ArrowRight, X, Play, ArrowUpRight } from "lucide-react";
 import { PropertiesPageSections } from "@/lib/site-content-types";
 
 import { resolveMediaUrl } from "@/lib/media";
@@ -117,7 +117,7 @@ function VideoTooltip({
         zIndex: 99998,
         pointerEvents: "none",
       }}
-      className="rounded-3xl overflow-hidden border border-white/15 shadow-[0_30px_80px_rgba(0,0,0,0.95)] bg-black/95 backdrop-blur-xl animate-in fade-in duration-200"
+      className="rounded-3xl overflow-hidden border border-white/15 shadow-[0_30px_80px_rgba(0,0,0,0.95)] bg-white/5 backdrop-blur-xl animate-in fade-in duration-200"
     >
       <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
         {isDirect ? (
@@ -139,7 +139,7 @@ function VideoTooltip({
           />
         ) : null}
         {/* play overlay hint */}
-        <div className="absolute inset-0 flex items-center justify-center bg-black/20">
+        <div className="absolute inset-0 flex items-center justify-center bg-white/5">
           <div className="w-12 h-12 rounded-full bg-white/20 border border-white/30 flex items-center justify-center backdrop-blur-sm">
             <Play fill="white" className="ml-0.5" size={18} />
           </div>
@@ -209,7 +209,8 @@ function ThreeDCarousel({
 
   const handleLeave = useCallback(() => {
     setHoveredIdx(null);
-    // lockedIdx and tooltip stay open
+    setLockedIdx(null);
+    pausedRef.current = false;
   }, []);
 
   const closeTooltip = useCallback(() => {
@@ -290,18 +291,17 @@ function ThreeDCarousel({
                 transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) rotateX(23deg)`,
                 opacity: headerVis ? 1 : 0,
                 transition: "opacity 0.4s ease",
-                cursor: p.videoUrl ? "pointer" : "default",
+                cursor: p.redirectUrl ? "pointer" : "default",
               }}
               onMouseEnter={(e) => handleEnter(i, e.clientX, e.clientY)}
               onMouseLeave={handleLeave}
-              onClick={() => p.videoUrl && onSelect(p)}
+              onClick={() => p.redirectUrl && window.open(p.redirectUrl, "_blank")}
             >
               <div
-                className={`w-full h-full relative overflow-hidden rounded-[24px] backdrop-blur-xl transition-all duration-500 ${
-                  isHovered
-                    ? "shadow-[0_30px_100px_rgba(99,102,241,0.45)] scale-[1.13] -translate-y-12"
-                    : "scale-100 translate-y-0"
-                }`}
+                className={`w-full h-full relative overflow-hidden rounded-[24px]  transition-all duration-500 ${isHovered
+                  ? "scale-[1.13] -translate-y-12"
+                  : "scale-100 translate-y-0"
+                  }`}
               >
                 {/* Static media — no hover video on card */}
                 <div className="absolute inset-0 overflow-hidden rounded-[24px]">
@@ -322,47 +322,61 @@ function ThreeDCarousel({
                       className="w-full h-full object-cover"
                     />
                   ) : (
-                    <div className="w-full h-full bg-gradient-to-br from-indigo-900/40 to-black flex items-center justify-center">
+                    <div className="w-full h-full bg-white/5 border border-white/10 flex items-center justify-center">
                       <span className="text-white/10 text-6xl font-black">
                         {i + 1}
                       </span>
                     </div>
                   )}
-                  <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/20 to-transparent z-[15]" />
                 </div>
 
-                {/* Play indicator on hover */}
-                {p.videoUrl && isHovered && (
+                {/* Link indicator on hover (JUMP TO WEB) */}
+                {p.redirectUrl && isHovered && (
                   <div className="absolute inset-0 z-20 flex items-center justify-center">
                     <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center backdrop-blur-xl">
-                      <Play fill="white" className="ml-0.5" size={14} />
+                      <ArrowUpRight className="text-white" size={16} />
                     </div>
                   </div>
                 )}
 
                 {/* Info — visible on hover */}
                 <div
-                  className={`absolute bottom-0 inset-x-0 z-20 p-3 transition-all duration-500 ${
-                    isHovered
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-3"
-                  }`}
+                  className={`absolute bottom-0 inset-x-0 z-20 p-3 transition-all duration-500 ${isHovered
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-3"
+                    }`}
                 >
-                  <span className="inline-block px-2 py-0.5 rounded-full bg-black/50 border border-white/20 backdrop-blur-sm text-white text-[9px] font-bold uppercase tracking-wider mb-1">
+                  <span className="inline-block px-2 py-0.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm text-white text-[9px] font-bold uppercase tracking-wider mb-1">
                     {p.category}
                   </span>
-                  <h3 className="text-white text-sm font-black tracking-tight leading-tight">
+                  <h3 className="text-white text-sm font-black tracking-tight leading-tight mb-1">
                     {p.title}
                   </h3>
-                  {p.redirectUrl && (
-                    <a
-                      href={p.redirectUrl}
-                      onClick={(e) => e.stopPropagation()}
-                      className="mt-1.5 inline-flex items-center gap-1 text-indigo-400 text-[10px] font-bold hover:text-white transition-colors"
-                    >
-                      {ctaLabel} <ArrowRight size={10} />
-                    </a>
-                  )}
+                  <div className="flex flex-wrap gap-x-3 gap-y-1">
+                    {p.redirectUrl && (
+                      <a
+                        href={p.redirectUrl}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        onClick={(e) => e.stopPropagation()}
+                        className="inline-flex items-center gap-1 text-indigo-400 text-[10px] font-bold hover:text-white transition-colors"
+                      >
+                        Үзэх <ArrowUpRight size={10} />
+                      </a>
+                    )}
+                    {p.videoUrl && (
+                      <button
+                        type="button"
+                        onClick={(e) => {
+                          e.stopPropagation();
+                          onSelect(p);
+                        }}
+                        className="inline-flex items-center gap-1 text-indigo-400 text-[10px] font-bold hover:text-white transition-colors"
+                      >
+                        Бичлэг үзэх <Play size={10} fill="currentColor" />
+                      </button>
+                    )}
+                  </div>
                 </div>
 
                 {/* Compact title when not hovered */}
@@ -489,13 +503,13 @@ export default function WorkSection({
   const displayProjects: Project[] =
     properties.items.length > 0
       ? properties.items.map((item) => ({
-          id: item.id,
-          title: item.name,
-          category: item.category,
-          image: item.image,
-          videoUrl: item.videoUrl,
-          redirectUrl: item.redirectUrl,
-        }))
+        id: item.id,
+        title: item.name,
+        category: item.category,
+        image: item.image,
+        videoUrl: item.videoUrl,
+        redirectUrl: item.redirectUrl,
+      }))
       : DEFAULT_PROJECTS;
 
   useEffect(() => {
@@ -637,11 +651,10 @@ export default function WorkSection({
 
             <div className="relative flex-1 animate-in zoom-in-95 duration-300 flex items-center justify-center p-4 sm:p-10 pb-32">
               <div
-                className={`relative w-full overflow-hidden bg-black rounded-[32px] shadow-[0_0_100px_rgba(0,0,0,0.8)] ring-1 ring-white/10 ${
-                  videoData.type === "youtube-short"
-                    ? "max-w-[400px] h-[80vh]"
-                    : "max-w-6xl aspect-video"
-                }`}
+                className={`relative w-full overflow-hidden bg-black rounded-[32px] shadow-[0_0_100px_rgba(0,0,0,0.8)] ring-1 ring-white/10 ${videoData.type === "youtube-short"
+                  ? "max-w-[400px] h-[80vh]"
+                  : "max-w-6xl aspect-video"
+                  }`}
                 style={{
                   transform: "translateZ(0)",
                   WebkitTransform: "translateZ(0)",

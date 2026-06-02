@@ -390,7 +390,7 @@ export const translations = {
       location: "Улаанбаатар, Монгол",
     },
     chatbot: {
-      title: "FoodCity Туслах",
+      title: "Зэвтабс туслах",
       status: {
         online: "Онлайн",
         connecting: "Холбогдож байна...",
@@ -826,7 +826,7 @@ export const translations = {
       location: "Ulaanbaatar, Mongolia",
     },
     chatbot: {
-      title: "FoodCity Assistant",
+      title: "Zevtabs Assistant",
       status: {
         online: "Online",
         connecting: "Connecting...",

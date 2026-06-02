@@ -18,8 +18,8 @@ type ChatbotConfig = {
   restartLabel: string;
 };
 
-const GUEST_KEY = "foodcity_guest_id";
-const CONV_KEY = "foodcity_conversation_id";
+const GUEST_KEY = "zevtabs_guest_id";
+const CONV_KEY = "zevtabs_conversation_id";
 
 function getDefaultConfig(t: Translations): ChatbotConfig {
   return {
@@ -254,6 +254,7 @@ export default function ChatBot() {
   }, [base, defaultConfig]);
 
   const bootstrapConversation = useCallback(async () => {
+    setReady(false);
     setError(null);
     const guestId = getOrCreateGuestId();
     let convId = localStorage.getItem(CONV_KEY);
@@ -299,6 +300,20 @@ export default function ChatBot() {
       setReady(false);
     }
   }, [base, t]);
+
+  const handleResetChat = useCallback(async () => {
+    localStorage.removeItem(CONV_KEY);
+    localStorage.removeItem(GUEST_KEY);
+    seenIds.current.clear();
+    setMessages([]);
+    setActiveChoices(config.rootChoices);
+    void bootstrapConversation();
+  }, [config.rootChoices, bootstrapConversation]);
+
+  const resetChatRef = useRef(handleResetChat);
+  useEffect(() => {
+    resetChatRef.current = handleResetChat;
+  }, [handleResetChat]);
 
   /** Preload CMS chatbot config as soon as the widget mounts (not only when the panel opens). */
   useEffect(() => {
@@ -352,7 +367,16 @@ export default function ChatBot() {
       setMessages((prev) => [...prev, m]);
     }
 
+    function onUpdate(payload: { conversationId?: string; status?: string }) {
+      const convId = localStorage.getItem(CONV_KEY);
+      if (!payload || payload.conversationId !== convId) return;
+      if (payload.status === "closed") {
+        void resetChatRef.current();
+      }
+    }
+
     s.on("message:new", onNew);
+    s.on("conversation:update", onUpdate);
     s.on("connect", () => {
       setSocketLive(true);
       emitJoin();
@@ -362,6 +386,7 @@ export default function ChatBot() {
 
     return () => {
       s.off("message:new", onNew);
+      s.off("conversation:update", onUpdate);
       s.disconnect();
       socketRef.current = null;
       setSocketLive(false);
