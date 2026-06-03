@@ -183,8 +183,14 @@ export type PosEaseSections = {
     items: { name: string; desc: string; label: string; image?: string }[];
   };
   pricing: {
+    label: string;
     title: string;
-    tiers: { name: string; price: string; desc: string; discounts?: { label: string; color?: string }[] }[];
+    desc: string;
+    mostPopular: string;
+    ctaBtn: string;
+    note: string;
+    quoteBtn: string;
+    tiers: { name: string; price: string; features: string[]; discounts?: { label: string; color?: string }[] }[];
   };
 };
 
@@ -206,8 +212,14 @@ export type AmarHomeSections = {
     items: { name: string; desc: string; label: string; image?: string }[];
   };
   pricing: {
+    label: string;
     title: string;
-    tiers: { name: string; price: string; desc: string; discounts?: { label: string; color?: string }[] }[];
+    desc: string;
+    mostPopular: string;
+    ctaBtn: string;
+    note: string;
+    quoteBtn: string;
+    tiers: { name: string; price: string; features: string[]; discounts?: { label: string; color?: string }[] }[];
   };
 };
 
@@ -244,8 +256,14 @@ export type RentlySections = {
     image?: string;
   };
   pricing: {
+    label: string;
     title: string;
-    tiers: { name: string; price: string; desc: string; discounts?: { label: string; color?: string }[] }[];
+    desc: string;
+    mostPopular: string;
+    ctaBtn: string;
+    note: string;
+    quoteBtn: string;
+    tiers: { name: string; price: string; features: string[]; discounts?: { label: string; color?: string }[] }[];
   };
   cta?: {
     title?: string;

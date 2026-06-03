@@ -72,11 +72,17 @@ const DEFAULTS: { en: PosEaseSections; mn: PosEaseSections } = {
       ],
     },
     pricing: {
+      label: "Pricing",
       title: "Simple. Transparent.",
+      desc: "Choose the plan that fits your business.",
+      mostPopular: "Most Popular",
+      ctaBtn: "Get Started",
+      note: "Need something custom?",
+      quoteBtn: "Contact us →",
       tiers: [
-        { name: "Solo", price: "Free", desc: "For single terminal shops." },
-        { name: "Studio", price: "$49", desc: "For growing businesses." },
-        { name: "Enterprise", price: "Custom", desc: "For global scale." },
+        { name: "Solo", price: "Free", features: ["Single terminal", "Basic sales reports", "Email support"], discounts: [] },
+        { name: "Studio", price: "$49", features: ["Up to 5 terminals", "Advanced reports", "Priority support", "Cloud sync"], discounts: [] },
+        { name: "Enterprise", price: "Custom", features: ["Unlimited terminals", "Custom integrations", "24/7 support", "Dedicated manager"], discounts: [] },
       ],
     },
   },
@@ -139,15 +145,17 @@ const DEFAULTS: { en: PosEaseSections; mn: PosEaseSections } = {
       ],
     },
     pricing: {
+      label: "Үнэ тариф",
       title: "Энгийн. Ил тод.",
+      desc: "Бизнестээ тохирох багцаа сонгоно уу.",
+      mostPopular: "Хамгийн алдартай",
+      ctaBtn: "Эхлэх",
+      note: "Тусгай шийдэл хэрэгтэй юу?",
+      quoteBtn: "Холбоо барих →",
       tiers: [
-        { name: "Solo", price: "Үнэгүй", desc: "Ганц салбартай дэлгүүрт." },
-        { name: "Studio", price: "$49", desc: "Өсөн нэмэгдэж буй бизнест." },
-        {
-          name: "Enterprise",
-          price: "Захиалгат",
-          desc: "Дэлхийн хэмжээний бизнест.",
-        },
+        { name: "Solo", price: "Үнэгүй", features: ["Ганц терминал", "Үндсэн борлуулалтын тайлан", "Имэйл дэмжлэг"], discounts: [] },
+        { name: "Studio", price: "$49", features: ["5 хүртэлх терминал", "Дэлгэрэнгүй тайлан", "Тэргүүлэх дэмжлэг", "Үүлэн синк"], discounts: [] },
+        { name: "Enterprise", price: "Захиалгат", features: ["Хязгааргүй терминал", "Тусгай интеграц", "24/7 дэмжлэг", "Хувийн менежер"], discounts: [] },
       ],
     },
   },
@@ -364,11 +372,11 @@ export default function PosEaseClient({
 
       {/* ── Pricing ── */}
       {pricingTiers.length > 0 && (
-        <section id="pricing" className="py-24 sm:py-40 relative z-10 px-6">
+        <section id="pricing" className="py-14 sm:py-24 lg:py-32 relative z-10 px-6">
           <PricingContent
-            title={data.pricing.title}
+            pricing={data.pricing}
+            defaults={defaults.pricing}
             tiers={pricingTiers}
-            gridClass={getGridCols(pricingTiers.length)}
           />
         </section>
       )}
@@ -517,80 +525,107 @@ function HardwareContent({
   );
 }
 
+const ACCENT = "rgb(255,68,105)";
+const ACCENT_HEX = "#ff4469";
+
 function PricingContent({
-  title,
+  pricing,
+  defaults,
   tiers,
-  gridClass,
 }: {
-  title: string;
+  pricing: any;
+  defaults: any;
   tiers: any[];
-  gridClass: string;
 }) {
   const { ref, visible } = useReveal();
+  const highlight = tiers.length === 3 ? [false, true, false] : tiers.map((_, i) => i === Math.floor(tiers.length / 2) && tiers.length > 1);
+  const label = pricing.label || defaults.label;
+  const title = pricing.title || defaults.title;
+  const desc = pricing.desc || defaults.desc;
+  const mostPopular = pricing.mostPopular || defaults.mostPopular;
+  const ctaBtn = pricing.ctaBtn || defaults.ctaBtn;
+  const note = pricing.note || defaults.note;
+  const quoteBtn = pricing.quoteBtn || defaults.quoteBtn;
+
   return (
-    <div ref={ref} className="max-w-[1200px] mx-auto text-center">
-      <h2
-        className={`display-lg text-white mb-24 transition-all duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}
-      >
-        {title}
-      </h2>
-      <div className={`grid ${gridClass} gap-10`}>
+    <div ref={ref} className="max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16">
+      <div className={`text-center mb-10 sm:mb-14 lg:mb-20 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}>
+        {label && (
+          <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: ACCENT }}>
+            {label}
+          </p>
+        )}
+        <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white mb-4 sm:mb-6">
+          {title}
+        </h2>
+        {desc && <p className="text-white/40 text-base sm:text-lg max-w-lg mx-auto leading-relaxed font-light">{desc}</p>}
+      </div>
+
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:items-start">
         {tiers.map((tier, i) => (
           <div
             key={i}
-            className={`
-              relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start
-              ${tiers.length === 3 && i === 1 ? "border-[rgb(255,68,105)]/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(255,68,105,0.15)]" : ""}
-              ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}
-              hover:border-[rgb(255,68,105)]/30 hover:-translate-y-2 transition-all duration-500
-            `}
-            style={{ transitionDelay: `${i * 150}ms` }}
+            className={`relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${highlight[i] ? "bg-neutral-900 md:scale-[1.03] md:-mt-2" : "bg-white/5 border border-white/10"}`}
+            style={{
+              transitionDelay: visible ? `${i * 100}ms` : "0ms",
+              ...(highlight[i] ? { border: `2px solid ${ACCENT_HEX}72`, boxShadow: `0 20px 60px ${ACCENT_HEX}1f` } : {}),
+            }}
           >
-            {/* Discount badges — top-right corner */}
             {tier.discounts && tier.discounts.length > 0 && (
               <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
-                {tier.discounts.map(
-                  (d: { label: string; color?: string }, di: number) => (
-                    <div
-                      key={di}
-                      className="px-3 py-1.5 rounded-full text-white text-[11px] font-black shadow-lg uppercase whitespace-nowrap"
-                      style={{ backgroundColor: d.color || "#7c3aed" }}
-                    >
-                      {d.label}
-                    </div>
-                  ),
-                )}
+                {tier.discounts.map((d: { label: string; color?: string }, di: number) => (
+                  <div key={di} className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap" style={{ backgroundColor: d.color || "#7c3aed" }}>
+                    {d.label}
+                  </div>
+                ))}
               </div>
             )}
-            <div
-              className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${tiers.length === 3 && i === 1 ? "bg-[rgb(255,68,105)]" : "bg-white/5 border border-white/10"}`}
-            >
-              <span
-                className={`text-[10px] font-black uppercase tracking-[0.3em] ${tiers.length === 3 && i === 1 ? "text-white" : "text-[rgb(255,68,105)]"}`}
-              >
+            {highlight[i] && mostPopular && (
+              <div className="absolute -top-3 left-1/2 -translate-x-1/2">
+                <span className="text-[11px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wide" style={{ background: ACCENT, color: "#fff", boxShadow: `0 4px 14px ${ACCENT_HEX}66` }}>
+                  {mostPopular}
+                </span>
+              </div>
+            )}
+            <div className="mb-5 sm:mb-6">
+              <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: highlight[i] ? ACCENT : "#888" }}>
                 {tier.name}
-              </span>
+              </p>
+              <p className={`text-[13px] mb-3 ${highlight[i] ? "text-white/40" : "text-white/30"}`}>{tier.price}</p>
             </div>
-            <p className="text-white text-4xl sm:text-5xl md:text-6xl font-black mb-4 sm:mb-8 tracking-tighter">
-              {tier.price}
-            </p>
-            <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">
-              {tier.desc}
-            </p>
+            {(tier.features || []).length > 0 && (
+              <ul className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8">
+                {(tier.features as string[]).map((f, j) => (
+                  <li key={j} className={`flex items-start gap-2.5 text-sm sm:text-[14px] ${highlight[i] ? "text-white/70" : "text-white/50"}`}>
+                    <svg className="w-4 h-4 mt-0.5 shrink-0" style={{ color: ACCENT }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                    </svg>
+                    {f}
+                  </li>
+                ))}
+              </ul>
+            )}
             <Link
               href="#kholbooBarikh"
-              className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl
-                ${
-                  tiers.length === 3 && i === 1
-                    ? "bg-white text-black hover:bg-[rgb(255,68,105)] hover:text-white shadow-pink-500/20"
-                    : "bg-[rgb(255,68,105)] text-white hover:bg-white hover:text-black shadow-pink-500/30"
-                }`}
+              className={`block text-center text-[14px] font-semibold py-3 rounded-xl sm:rounded-2xl transition-all duration-300 ${highlight[i] ? "" : "bg-white/5 border border-white/10 text-white hover:bg-white/10"}`}
+              style={highlight[i] ? { background: ACCENT, color: "#fff", boxShadow: `0 8px 24px ${ACCENT_HEX}4d` } : {}}
             >
-              Get Started
+              {ctaBtn || "Get Started"}
             </Link>
           </div>
         ))}
       </div>
+
+      {(note || quoteBtn) && (
+        <p className={`text-center text-white/30 text-sm mt-8 sm:mt-10 transition-all duration-700 ${visible ? "opacity-100" : "opacity-0"}`} style={{ transitionDelay: "0.35s" }}>
+          {note}{" "}
+          {quoteBtn && (
+            <Link href="#kholbooBarikh" className="font-medium hover:underline" style={{ color: ACCENT }}>
+              {quoteBtn}
+            </Link>
+          )}
+        </p>
+      )}
     </div>
   );
 }

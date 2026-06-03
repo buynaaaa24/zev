@@ -113,17 +113,18 @@ const EMPTY_TEAM_PAGE: TeamPageSections = {
   members: [],
   cta: { title: "", subtitle: "", buttonLabel: "", buttonHref: "" },
 };
+const EMPTY_PRICING = { label: "", title: "", desc: "", mostPopular: "", ctaBtn: "", note: "", quoteBtn: "", tiers: [] };
 const EMPTY_POSEASE: PosEaseSections = {
   hero: { title: "", titleAccent: "", desc: "", cta: "" },
   features: { title: "", desc: "", items: [] },
   hardware: { title: "", items: [] },
-  pricing: { title: "", tiers: [] },
+  pricing: { ...EMPTY_PRICING },
 };
 const EMPTY_AMARHOME: AmarHomeSections = {
   hero: { title: "", titleAccent: "", desc: "", cta: "" },
   features: { title: "", desc: "", items: [] },
   hardware: { title: "", items: [] },
-  pricing: { title: "", tiers: [] },
+  pricing: { ...EMPTY_PRICING },
 };
 const EMPTY_RENTLY: RentlySections = {
   hero: { title: "", titleAccent: "", desc: "", cta: "", secondary: "" },
@@ -131,7 +132,7 @@ const EMPTY_RENTLY: RentlySections = {
   notifications: { title: "", desc: "" },
   penalties: { title: "", desc: "" },
   costs: { title: "", desc: "" },
-  pricing: { title: "", tiers: [] },
+  pricing: { ...EMPTY_PRICING },
 };
 
 const REVALIDATE_SECONDS = 60;
@@ -287,7 +288,13 @@ export async function getPosEaseSections(lang: string = "mn", siteId: string = "
     pricing: {
       ...EMPTY_POSEASE.pricing,
       ...asRecord(patch.pricing),
-      tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
+      tiers: Array.isArray(asRecord(patch.pricing).tiers)
+        ? (asRecord(patch.pricing).tiers as any[]).map((t: any) => ({
+            ...t,
+            features: Array.isArray(t.features) ? t.features : [],
+            discounts: Array.isArray(t.discounts) ? t.discounts : [],
+          }))
+        : [],
     },
   };
 }
@@ -308,7 +315,13 @@ export async function getAmarHomeSections(lang: string = "mn", siteId: string = 
     pricing: {
       ...EMPTY_AMARHOME.pricing,
       ...asRecord(patch.pricing),
-      tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
+      tiers: Array.isArray(asRecord(patch.pricing).tiers)
+        ? (asRecord(patch.pricing).tiers as any[]).map((t: any) => ({
+            ...t,
+            features: Array.isArray(t.features) ? t.features : [],
+            discounts: Array.isArray(t.discounts) ? t.discounts : [],
+          }))
+        : [],
     },
   };
 }
@@ -328,7 +341,13 @@ export async function getRentlySections(lang: string = "mn", siteId: string = "z
     pricing: {
       ...EMPTY_RENTLY.pricing,
       ...asRecord(patch.pricing),
-      tiers: Array.isArray(asRecord(patch.pricing).tiers) ? (asRecord(patch.pricing).tiers as any) : [],
+      tiers: Array.isArray(asRecord(patch.pricing).tiers)
+        ? (asRecord(patch.pricing).tiers as any[]).map((t: any) => ({
+            ...t,
+            features: Array.isArray(t.features) ? t.features : [],
+            discounts: Array.isArray(t.discounts) ? t.discounts : [],
+          }))
+        : [],
     },
   };
 }
