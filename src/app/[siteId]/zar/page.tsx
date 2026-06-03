@@ -43,5 +43,5 @@ export default async function ZarPage({ params }: { params: Promise<{ siteId: st
     getZarPageSections(lang, siteId),
   ]);
 
-  return <ZarClient jobs={jobs} ads={ads} lang={lang} header={pageData.header} />;
+  return <ZarClient jobs={jobs} ads={ads} lang={lang} header={pageData} />;
 }

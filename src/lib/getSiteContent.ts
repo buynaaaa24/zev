@@ -108,6 +108,10 @@ const EMPTY_SALES_PAGE: SalesPageSections = {
 };
 const EMPTY_ZAR_PAGE: ZarPageSections = {
   header: { eyebrow: "", title: "", intro: "" },
+  jobsHeader: { eyebrow: "", title: "", intro: "" },
+  salesHeader: { eyebrow: "", title: "", intro: "" },
+  jobsTabLabel: "",
+  salesTabLabel: "",
 };
 const EMPTY_JOBS_PAGE: JobsPageSections = {
   header: { title: "", intro: "" },
@@ -260,8 +264,13 @@ export async function getSalesPageSections(lang: string = "mn", siteId: string =
 
 export async function getZarPageSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<ZarPageSections> {
   const patch = asRecord(await fetchSitePageSections("zar-page", lang, siteId));
+  const emptySubHeader = { eyebrow: "", title: "", intro: "" };
   return {
-    header: { ...EMPTY_ZAR_PAGE.header, ...asRecord(patch.header) },
+    header: { eyebrow: "", title: "", intro: "", ...asRecord(patch.header) } as ZarPageSections["header"],
+    jobsHeader: { ...emptySubHeader, ...asRecord(patch.jobsHeader) } as ZarPageSections["header"],
+    salesHeader: { ...emptySubHeader, ...asRecord(patch.salesHeader) } as ZarPageSections["header"],
+    jobsTabLabel: typeof patch.jobsTabLabel === "string" ? patch.jobsTabLabel : "",
+    salesTabLabel: typeof patch.salesTabLabel === "string" ? patch.salesTabLabel : "",
   };
 }
 

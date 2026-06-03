@@ -16,6 +16,7 @@ import {
   ArrowRight
 } from "lucide-react";
 import { resolvePublicMediaUrl } from "@/lib/api";
+import type { ZarPageSections } from "@/lib/site-content-types";
 
 export type JobItem = {
   id: string;
@@ -47,11 +48,7 @@ interface ZarClientProps {
   jobs: JobItem[];
   ads: SalesAdItem[];
   lang: string;
-  header?: {
-    eyebrow?: string;
-    title?: string;
-    intro?: string;
-  };
+  header?: ZarPageSections;
 }
 
 const texts = {
@@ -123,6 +120,18 @@ export default function ZarClient({ jobs, ads, lang, header }: ZarClientProps) {
   const [selectedJob, setSelectedJob] = useState<JobItem | null>(null);
   const [selectedAd, setSelectedAd] = useState<SalesAdItem | null>(null);
 
+  // Resolve headers based on active tab
+  const activeHeader = activeTab === "jobs"
+    ? (header?.jobsHeader?.title ? header.jobsHeader : header?.header)
+    : (header?.salesHeader?.title ? header.salesHeader : header?.header);
+
+  const pageTitle = activeHeader?.title || t.title;
+  const pageSubtitle = activeHeader?.intro || t.subtitle;
+  const pageEyebrow = activeHeader?.eyebrow || (activeTab === "jobs" ? (header?.jobsTabLabel || t.jobsTab) : (header?.salesTabLabel || t.salesTab));
+
+  const jobsTabLabel = header?.jobsTabLabel || t.jobsTab;
+  const salesTabLabel = header?.salesTabLabel || t.salesTab;
+
   // Reset page of search query on tab switch
   useEffect(() => {
     setSearchQuery("");
@@ -183,13 +192,13 @@ export default function ZarClient({ jobs, ads, lang, header }: ZarClientProps) {
         <div className="relative mx-auto max-w-6xl px-4 text-center">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-400">
             {activeTab === "jobs" ? <Briefcase className="h-3.5 w-3.5" /> : <Megaphone className="h-3.5 w-3.5" />}
-            {header?.eyebrow || (activeTab === "jobs" ? t.jobsTab : t.salesTab)}
+            {pageEyebrow}
           </span>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-            <span className="gradient-text">{header?.title || t.title}</span>
+            <span className="gradient-text">{pageTitle}</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-gray-400 sm:text-lg">
-            {header?.intro || t.subtitle}
+            {pageSubtitle}
           </p>
         </div>
       </section>
@@ -208,7 +217,7 @@ export default function ZarClient({ jobs, ads, lang, header }: ZarClientProps) {
               }`}
             >
               <Briefcase className="h-4 w-4 shrink-0" />
-              <span>{t.jobsTab}</span>
+              <span>{jobsTabLabel}</span>
               {jobs.length > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 text-[10px] md:text-xs bg-slate-200 text-slate-700 rounded-full font-bold">
                   {jobs.length}
@@ -224,7 +233,7 @@ export default function ZarClient({ jobs, ads, lang, header }: ZarClientProps) {
               }`}
             >
               <Megaphone className="h-4 w-4 shrink-0" />
-              <span>{t.salesTab}</span>
+              <span>{salesTabLabel}</span>
               {ads.length > 0 && (
                 <span className="ml-1 px-1.5 py-0.5 text-[10px] md:text-xs bg-slate-200 text-slate-700 rounded-full font-bold">
                   {ads.length}

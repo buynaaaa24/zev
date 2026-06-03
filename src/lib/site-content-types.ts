@@ -136,6 +136,18 @@ export type ZarPageSections = {
     title: string;
     intro: string;
   };
+  jobsHeader?: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+  };
+  salesHeader?: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+  };
+  jobsTabLabel?: string;
+  salesTabLabel?: string;
 };
 
 /** /jobs listing page copy (site page id: `jobs-page`) */
@@ -271,6 +283,7 @@ export type ParkEaseSections = {
     desc: string;
     cta1: string;
     cta2: string;
+    cta2Link?: string;
     image?: string;
     stats: { value: string; label: string }[];
   };

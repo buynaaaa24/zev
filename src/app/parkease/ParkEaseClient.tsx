@@ -237,110 +237,143 @@ function HeroSection() {
         aria-hidden
       />
 
-      <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16 pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-44">
-        <div
-          className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[11px] sm:text-xs font-medium tracking-wider uppercase mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-        >
-          <span
-            className="w-1.5 h-1.5 rounded-full animate-pulse"
-            style={{ background: YELLOW }}
-          />
-          {api.eyebrow}
-        </div>
-
-        <h1
-          className={`font-black tracking-tight leading-[1.06] mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-          style={{ transitionDelay: ".15s" }}
-        >
-          <span className="block text-white text-[36px] sm:text-5xl md:text-6xl lg:text-[84px]">
-            {api.title1}
-          </span>
-          <span
-            className="block text-[36px] sm:text-5xl md:text-6xl lg:text-[84px]"
-            style={{
-              background:
-                "linear-gradient(135deg,#fff 0%,#ffe48a 45%,#f6b414 100%)",
-              WebkitBackgroundClip: "text",
-              WebkitTextFillColor: "transparent",
-              backgroundClip: "text",
-              transition: "opacity .35s ease, transform .35s ease",
-              opacity: wordVisible ? 1 : 0,
-              transform: wordVisible ? "translateY(0)" : "translateY(12px)",
-            }}
+      <div className={`hero-content relative z-10 w-full max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16 pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-44 ${api.image ? "flex flex-col lg:flex-row items-center gap-10 lg:gap-16" : ""}`}>
+        {/* Text column */}
+        <div className={api.image ? "flex-1 min-w-0" : ""}>
+          <div
+            className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[11px] sm:text-xs font-medium tracking-wider uppercase mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
-            {words[wordIdx]}
-          </span>
-        </h1>
+            <span
+              className="w-1.5 h-1.5 rounded-full animate-pulse"
+              style={{ background: YELLOW }}
+            />
+            {api.eyebrow}
+          </div>
 
-        <p
-          className={`text-white/45 text-base sm:text-lg md:text-xl leading-relaxed max-w-xl sm:max-w-2xl mb-8 sm:mb-12 font-light transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-          style={{ transitionDelay: ".3s" }}
-        >
-          {api.desc}
-        </p>
-
-        <div
-          className={`flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-          style={{ transitionDelay: ".44s" }}
-        >
-          <a
-            href="#kholbooBarikh"
-            onClick={handleAnchorScroll}
-            className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-[15px] font-semibold active:scale-[0.97] transition-all duration-300"
-            style={{
-              background: `linear-gradient(90deg,${YELLOW},#ffc93c,${YELLOW})`,
-              backgroundSize: "200%",
-              animation: "shimmer 3s linear infinite",
-              boxShadow: `0 8px 28px ${YELLOW_GLOW}0.35)`,
-              color: "#1a0f00",
-            }}
+          <h1
+            className={`font-black tracking-tight leading-[1.06] mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            style={{ transitionDelay: ".15s" }}
           >
-            {api.cta1}
-            <svg
-              className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke="currentColor"
+            <span className="block text-white text-[36px] sm:text-5xl md:text-6xl lg:text-[84px]">
+              {api.title1}
+            </span>
+            <span
+              className="block text-[36px] sm:text-5xl md:text-6xl lg:text-[84px]"
+              style={{
+                background:
+                  "linear-gradient(135deg,#fff 0%,#ffe48a 45%,#f6b414 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                transition: "opacity .35s ease, transform .35s ease",
+                opacity: wordVisible ? 1 : 0,
+                transform: wordVisible ? "translateY(0)" : "translateY(12px)",
+              }}
             >
-              <path
-                strokeLinecap="round"
-                strokeLinejoin="round"
-                strokeWidth={2}
-                d="M17 8l4 4m0 0l-4 4m4-4H3"
-              />
-            </svg>
-          </a>
-          <button
-            onClick={() =>
-              document
-                .getElementById("how-it-works")
-                ?.scrollIntoView({ behavior: "smooth" })
-            }
-            className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-white/15 text-white text-[15px] font-medium active:scale-[0.97] transition-all duration-300"
+              {words[wordIdx]}
+            </span>
+          </h1>
+
+          <p
+            className={`text-white/45 text-base sm:text-lg md:text-xl leading-relaxed max-w-xl sm:max-w-2xl mb-8 sm:mb-12 font-light transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+            style={{ transitionDelay: ".3s" }}
           >
-            {api.cta2}
-          </button>
+            {api.desc}
+          </p>
+
+          <div
+            className={`flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+            style={{ transitionDelay: ".44s" }}
+          >
+            <a
+              href="#kholbooBarikh"
+              onClick={handleAnchorScroll}
+              className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-[15px] font-semibold active:scale-[0.97] transition-all duration-300"
+              style={{
+                background: `linear-gradient(90deg,${YELLOW},#ffc93c,${YELLOW})`,
+                backgroundSize: "200%",
+                animation: "shimmer 3s linear infinite",
+                boxShadow: `0 8px 28px ${YELLOW_GLOW}0.35)`,
+                color: "#1a0f00",
+              }}
+            >
+              {api.cta1}
+              <svg
+                className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  strokeWidth={2}
+                  d="M17 8l4 4m0 0l-4 4m4-4H3"
+                />
+              </svg>
+            </a>
+            {api.cta2Link ? (
+              <a
+                href={api.cta2Link}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-white/15 text-white text-[15px] font-medium active:scale-[0.97] hover:bg-white/5 transition-all duration-300"
+              >
+                {api.cta2}
+              </a>
+            ) : (
+              <button
+                onClick={() =>
+                  document
+                    .getElementById("how-it-works")
+                    ?.scrollIntoView({ behavior: "smooth" })
+                }
+                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-white/15 text-white text-[15px] font-medium active:scale-[0.97] hover:bg-white/5 transition-all duration-300"
+              >
+                {api.cta2}
+              </button>
+            )}
+          </div>
+
+          <div
+            className={`mt-12 sm:mt-20 pt-8 sm:pt-10 border-t border-white/8 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+            style={{ transitionDelay: ".6s" }}
+          >
+            {api.stats.map((stat, i) => (
+              <div key={i} className="cursor-default">
+                <div
+                  className="text-xl sm:text-2xl lg:text-3xl font-black text-white mb-1 transition-colors duration-300"
+                  onMouseEnter={(e) => (e.currentTarget.style.color = YELLOW)}
+                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+                >
+                  {stat.value}
+                </div>
+                <div className="text-white/30 text-[11px] sm:text-xs uppercase tracking-wider font-medium">
+                  {stat.label}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        <div
-          className={`mt-12 sm:mt-20 pt-8 sm:pt-10 border-t border-white/8 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-          style={{ transitionDelay: ".6s" }}
-        >
-          {api.stats.map((stat, i) => (
-            <div key={i} className="cursor-default">
-              <div
-                className="text-xl sm:text-2xl lg:text-3xl font-black text-white mb-1 transition-colors duration-300"
-                onMouseEnter={(e) => (e.currentTarget.style.color = YELLOW)}
-                onMouseLeave={(e) => (e.currentTarget.style.color = "")}
-              >
-                {stat.value}
-              </div>
-              <div className="text-white/30 text-[11px] sm:text-xs uppercase tracking-wider font-medium">
-                {stat.label}
-              </div>
-            </div>
-          ))}
-        </div>
+        {/* Hero image column */}
+        {api.image && (
+          <div
+            className={`relative w-full lg:w-[45%] shrink-0 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            style={{ transitionDelay: ".5s" }}
+          >
+            <div
+              className="absolute -inset-6 rounded-3xl opacity-30 blur-2xl"
+              style={{ background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.5), transparent 70%)` }}
+              aria-hidden
+            />
+            <img
+              src={resolveMediaUrl(api.image)}
+              alt=""
+              className="relative z-10 w-full h-auto max-h-[500px] object-contain drop-shadow-2xl rounded-2xl"
+            />
+          </div>
+        )}
       </div>
 
       <div
