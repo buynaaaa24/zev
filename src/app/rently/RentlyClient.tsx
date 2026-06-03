@@ -39,16 +39,10 @@ const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
       desc: "Accurately calculate all types of utility costs such as heating, electricity, fresh water, and waste.",
     },
     pricing: {
-      label: "Pricing Plans",
       title: "Pricing Plans",
-      desc: "Choose the right plan for your property.",
-      mostPopular: "Most Popular",
-      ctaBtn: "Get Started",
-      note: "Need a custom solution?",
-      quoteBtn: "Contact us →",
       tiers: [
-        { name: "Basic Plan", price: "100,000₮ / month", features: ["Up to 50 tenants", "Payment monitoring", "Email notifications", "Basic reports"], discounts: [] },
-        { name: "Business Plan", price: "250,000₮ / month", features: ["Unlimited tenants", "SMS + Email notifications", "Advanced reports", "Penalty calculation", "Utility cost tracking"], discounts: [] },
+        { name: "Basic Plan", price: "100,000₮ / month", desc: "Designed for small properties and retail spaces. Up to 50 tenants." },
+        { name: "Business Plan", price: "250,000₮ / month", desc: "Designed for offices and large malls. Unlimited tenants, SMS service included." },
       ],
     },
   },
@@ -82,16 +76,10 @@ const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
       desc: "Дулаан, цахилгаан, цэвэр ус, хог зэрэг бүх төрлийн ашиглалтын зардлыг үнэн зөвөөр тооцоолох.",
     },
     pricing: {
-      label: "Үнэ тариф",
       title: "Үнэ тариф",
-      desc: "Объектдоо тохирсон багцаа сонгоно уу.",
-      mostPopular: "Хамгийн алдартай",
-      ctaBtn: "Эхлэх",
-      note: "Тусгай шийдэл хэрэгтэй юу?",
-      quoteBtn: "Холбоо барих →",
       tiers: [
-        { name: "Энгийн багц", price: "100,000₮ / сар", features: ["50 хүртэлх түрээслэгч", "Төлбөрийн хяналт", "Имэйл мэдэгдэл", "Үндсэн тайлан"], discounts: [] },
-        { name: "Бизнес багц", price: "250,000₮ / сар", features: ["Хязгааргүй түрээслэгч", "SMS + Имэйл мэдэгдэл", "Дэлгэрэнгүй тайлан", "Алданги тооцоолол", "Ашиглалтын зардал хяналт"], discounts: [] },
+        { name: "Энгийн багц", price: "100,000₮ / сар", desc: "Жижиг обьект болон худалдааны төвд зориулагдсан багц. 50 хүртэлх түрээслэгчтэй." },
+        { name: "Бизнес багц", price: "250,000₮ / сар", desc: "Оффис болон томоохон худалдааны төвд зориулагдсан. Хязгааргүй түрээслэгчтэй, SMS үйлчилгээ багтсан." },
       ],
     },
   }
@@ -189,6 +177,12 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
     { name: data?.penalties?.title || defaults.penalties.title, desc: data?.penalties?.desc || defaults.penalties.desc, label: lang === 'mn' ? "Журам" : "Rule" },
     { name: data?.costs?.title || defaults.costs.title, desc: data?.costs?.desc || defaults.costs.desc, label: lang === 'mn' ? "Зардал" : "Cost" },
   ];
+
+  const getGridCols = (count: number) => {
+    if (count === 1) return "grid-cols-1 max-w-lg mx-auto";
+    if (count === 2) return "grid-cols-1 md:grid-cols-2 max-w-4xl mx-auto";
+    return "grid-cols-1 md:grid-cols-2 lg:grid-cols-3";
+  };
 
   return (
     <main className="bg-[#050505] selection:bg-emerald-600 selection:text-white min-h-screen relative overflow-hidden font-sans">
@@ -296,42 +290,17 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
 
       {/* PRICING */}
       {pricing.length > 0 && (
-        <section id="pricing" className="py-14 sm:py-24 lg:py-32 relative z-10">
-          <div className="max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16">
-            <div className="text-center mb-10 sm:mb-14 lg:mb-20">
-              {(data?.pricing?.label || defaults.pricing.label) && (
-                <p className="text-sm font-semibold uppercase tracking-widest mb-3" style={{ color: RE_ACCENT }}>
-                  {data?.pricing?.label || defaults.pricing.label}
-                </p>
-              )}
-              <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white mb-4 sm:mb-6">
-                {data?.pricing?.title || defaults.pricing.title}
-              </h2>
-              {(data?.pricing?.desc || defaults.pricing.desc) && (
-                <p className="text-white/40 text-base sm:text-lg max-w-lg mx-auto leading-relaxed font-light">
-                  {data?.pricing?.desc || defaults.pricing.desc}
-                </p>
-              )}
+        <section id="pricing" className="py-12 md:py-24 relative z-10 px-6">
+          <div className="max-w-[1200px] mx-auto">
+            <div className="text-center mb-12 md:mb-20">
+              <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter mb-8">{data?.pricing?.title || defaults.pricing.title}</h2>
+              <div className="w-12 h-1 bg-emerald-500 mx-auto rounded-full" />
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:items-start">
+            <div className={`grid ${getGridCols(pricing.length)} gap-8`}>
               {pricing.map((tier, i) => (
-                <PricingTier
-                  key={i} tier={tier} index={i} totalCount={pricing.length}
-                  mostPopular={data?.pricing?.mostPopular || defaults.pricing.mostPopular}
-                  ctaBtn={data?.pricing?.ctaBtn || defaults.pricing.ctaBtn}
-                />
+                <PricingTier key={i} tier={tier} index={i} totalCount={pricing.length} />
               ))}
             </div>
-            {(data?.pricing?.note || defaults.pricing.note) && (
-              <p className="text-center text-white/30 text-sm mt-8 sm:mt-10">
-                {data?.pricing?.note || defaults.pricing.note}{" "}
-                {(data?.pricing?.quoteBtn || defaults.pricing.quoteBtn) && (
-                  <Link href="#kholbooBarikh" className="font-medium hover:underline" style={{ color: RE_ACCENT }}>
-                    {data?.pricing?.quoteBtn || defaults.pricing.quoteBtn}
-                  </Link>
-                )}
-              </p>
-            )}
           </div>
         </section>
       )}
@@ -400,63 +369,30 @@ function SpotlightCard({ item, index }: { item: any; index: number }) {
   );
 }
 
-const RE_ACCENT = "#10b981";
-const RE_GLOW = "rgba(16,185,129,";
-
-function PricingTier({ tier, index, totalCount, mostPopular, ctaBtn }: { tier: any; index: number; totalCount: number; mostPopular: string; ctaBtn: string }) {
+function PricingTier({ tier, index, totalCount }: { tier: any; index: number; totalCount: number }) {
   const { ref, visible } = useReveal();
-  const isMiddle = totalCount === 3 ? index === 1 : index === Math.floor(totalCount / 2) && totalCount > 1;
-
+  const isMiddle = totalCount === 3 && index === 1;
   return (
-    <div
-      ref={ref}
-      className={`relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${isMiddle ? "bg-neutral-900 md:scale-[1.03] md:-mt-2" : "bg-white/5 border border-white/10"}`}
-      style={{
-        transitionDelay: visible ? `${index * 100}ms` : "0ms",
-        ...(isMiddle ? { border: `2px solid ${RE_GLOW}0.45)`, boxShadow: `0 20px 60px ${RE_GLOW}0.12)` } : {}),
-      }}
-    >
-      {tier.discounts && tier.discounts.length > 0 && (
-        <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
-          {tier.discounts.map((d: { label: string; color?: string }, di: number) => (
-            <div key={di} className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap" style={{ backgroundColor: d.color || "#7c3aed" }}>
-              {d.label}
-            </div>
-          ))}
+    <div ref={ref} className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: `${index * 150}ms` }}>
+      <div className={`relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}>
+        {tier.discounts && tier.discounts.length > 0 && (
+          <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
+            {tier.discounts.map((d: { label: string; color?: string }, di: number) => (
+              <div key={di} className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap" style={{ backgroundColor: d.color || "#7c3aed" }}>
+                {d.label}
+              </div>
+            ))}
+          </div>
+        )}
+        <div className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${isMiddle ? "bg-emerald-500" : "bg-white/5 border border-white/10"}`}>
+          <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${isMiddle ? "text-white" : "text-emerald-400"}`}>{tier.name}</span>
         </div>
-      )}
-      {isMiddle && mostPopular && (
-        <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-          <span className="text-[11px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wide" style={{ background: RE_ACCENT, color: "#fff", boxShadow: `0 4px 14px ${RE_GLOW}0.4)` }}>
-            {mostPopular}
-          </span>
-        </div>
-      )}
-      <div className="mb-5 sm:mb-6">
-        <p className="text-xs font-semibold uppercase tracking-widest mb-1" style={{ color: isMiddle ? RE_ACCENT : "#888" }}>
-          {tier.name}
-        </p>
-        <p className={`text-[13px] mb-3 ${isMiddle ? "text-white/40" : "text-white/30"}`}>{tier.price}</p>
+        <p className="text-white text-4xl sm:text-5xl md:text-6xl font-black mb-4 sm:mb-8 tracking-tighter">{tier.price}</p>
+        <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">{tier.desc}</p>
+        <Link href="#kholbooBarikh" className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl ${isMiddle ? "bg-white text-black hover:bg-emerald-500 hover:text-white" : "bg-emerald-500 text-white hover:bg-white hover:text-black"}`}>
+          Get Started
+        </Link>
       </div>
-      {(tier.features || []).length > 0 && (
-        <ul className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8">
-          {(tier.features as string[]).map((f, j) => (
-            <li key={j} className={`flex items-start gap-2.5 text-sm sm:text-[14px] ${isMiddle ? "text-white/70" : "text-white/50"}`}>
-              <svg className="w-4 h-4 mt-0.5 shrink-0" style={{ color: RE_ACCENT }} fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-              </svg>
-              {f}
-            </li>
-          ))}
-        </ul>
-      )}
-      <Link
-        href="#kholbooBarikh"
-        className={`block text-center text-[14px] font-semibold py-3 rounded-xl sm:rounded-2xl transition-all duration-300 ${isMiddle ? "" : "bg-white/5 border border-white/10 text-white hover:bg-white/10"}`}
-        style={isMiddle ? { background: RE_ACCENT, color: "#fff", boxShadow: `0 8px 24px ${RE_GLOW}0.3)` } : {}}
-      >
-        {ctaBtn || "Get Started"}
-      </Link>
     </div>
   );
 }
