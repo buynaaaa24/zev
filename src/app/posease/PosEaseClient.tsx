@@ -535,7 +535,7 @@ function PricingContent({
           <div
             key={i}
             className={`
-              relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start
+              relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start overflow-hidden
               ${tiers.length === 3 && i === 1 ? "border-[rgb(255,68,105)]/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(255,68,105,0.15)]" : ""}
               ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}
               hover:border-[rgb(255,68,105)]/30 hover:-translate-y-2 transition-all duration-500
@@ -566,7 +566,7 @@ function PricingContent({
                 {tier.name}
               </span>
             </div>
-            <p className="text-white text-4xl sm:text-5xl md:text-6xl font-black mb-4 sm:mb-8 tracking-tighter">
+            <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-8 tracking-tighter break-all w-full">
               {tier.price}
             </p>
             <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">

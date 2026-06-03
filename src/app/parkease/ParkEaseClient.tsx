@@ -6,6 +6,7 @@ import { useParkEaseLang } from "@/contexts/ParkEaseLangContext";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import type { GlobalContactInfo, ParkEaseSections } from "@/lib/site-content-types";
 import { resolveMediaUrl } from "@/lib/media";
+import { ChevronRight } from "lucide-react";
 
 const YELLOW = "#f6b414";
 const YELLOW_DARK = "#d99a0e";
@@ -642,142 +643,162 @@ function PaymentSection() {
 }
 
 /* ── Features ────────────────────────────────────────────── */
+const FEATURE_ICONS = [
+  // 1. Auto Barrier
+  <svg key={0} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+  </svg>,
+  // 2. Payments / qPay
+  <svg key={1} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+  </svg>,
+  // 3. Sticker QR
+  <svg key={2} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+  </svg>,
+  // 4. 24/7 support
+  <svg key={3} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>,
+  // 5. Analytics
+  <svg key={4} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
+  </svg>,
+  // 6. Automated Staff-free
+  <svg key={5} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
+  </svg>
+];
+
 function FeaturesSection() {
   const { lang } = useParkEaseLang();
   const api = useContext(AdminCtx)[lang].features;
   const { ref, visible } = useReveal();
 
-  const icons = [
-    <svg
-      key={0}
-      className="w-5 h-5 sm:w-6 sm:h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>,
-    <svg
-      key={1}
-      className="w-5 h-5 sm:w-6 sm:h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M13 10V3L4 14h7v7l9-11h-7z"
-      />
-    </svg>,
-    <svg
-      key={2}
-      className="w-5 h-5 sm:w-6 sm:h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
-      />
-    </svg>,
-    <svg
-      key={3}
-      className="w-5 h-5 sm:w-6 sm:h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M8 11V7a4 4 0 118 0m-4 8v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2z"
-      />
-    </svg>,
-    <svg
-      key={4}
-      className="w-5 h-5 sm:w-6 sm:h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0z"
-      />
-    </svg>,
-    <svg
-      key={5}
-      className="w-5 h-5 sm:w-6 sm:h-6"
-      fill="none"
-      viewBox="0 0 24 24"
-      stroke="currentColor"
-    >
-      <path
-        strokeLinecap="round"
-        strokeLinejoin="round"
-        strokeWidth={1.5}
-        d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"
-      />
-    </svg>,
-  ];
+  const features = (api.items || []).filter(
+    (item) => (item.title && item.title.trim() !== "") || item.image
+  );
+
+  if (features.length === 0) return null;
 
   return (
     <section id="features" className="bg-neutral-50 py-14 sm:py-24 lg:py-32">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16">
         <div ref={ref}>
           <div
-            className={`text-center mb-10 sm:mb-14 lg:mb-20 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+            className={`text-center mb-16 md:mb-24 transition-all duration-700 ${
+              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
           >
             <p
-              className="text-sm font-semibold uppercase tracking-widest mb-3"
+              className="text-[36px] sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
               style={{ color: YELLOW_DARK }}
             >
               {api.label}
             </p>
-            <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-neutral-900 mb-4 sm:mb-6">
+            <h2
+              className="text-[36px] sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
+              style={{
+                background: "linear-gradient(135deg,#1a1a1a 0%,#3d3d3d 40%,#f6b414 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
               {api.title}
             </h2>
+            <div className="flex items-center justify-center gap-3 mb-4 sm:mb-6">
+              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.3)" }} />
+              <div className="w-2 h-2 rounded-full" style={{ background: YELLOW }} />
+              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.3)" }} />
+            </div>
             <p className="text-neutral-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">
               {api.desc}
             </p>
           </div>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-5">
-            {api.items.map((f, i) => (
-              <div
-                key={i}
-                className={`bg-white rounded-2xl sm:rounded-3xl p-5 sm:p-7 border border-neutral-100 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
-                style={{ transitionDelay: visible ? `${i * 80}ms` : "0ms" }}
-              >
+
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 auto-rows-auto">
+            {features.map((item, idx) => {
+              const hasImage = !!item.image;
+              const isLarge = item.size === "large";
+              const isMedium = item.size === "medium";
+              
+              return (
                 <div
-                  className="w-10 h-10 sm:w-11 sm:h-11 rounded-xl flex items-center justify-center mb-4 sm:mb-5"
-                  style={{
-                    background: `${YELLOW_GLOW}0.1)`,
-                    color: YELLOW_DARK,
-                  }}
+                  key={idx}
+                  className={`
+                    group relative rounded-3xl p-6 sm:p-8 overflow-hidden border transition-all duration-700
+                    ${isLarge ? "md:col-span-2 md:row-span-2 min-h-[360px]" : ""}
+                    ${isMedium ? "md:col-span-2 min-h-[260px]" : ""}
+                    ${!isLarge && !isMedium ? "min-h-[240px]" : ""}
+                    ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}
+                    ${hasImage 
+                      ? "border-neutral-800 text-white bg-neutral-900" 
+                      : "bg-white border-neutral-150 text-neutral-800 hover:border-yellow-500/30 hover:shadow-[0_20px_50px_rgba(246,180,20,0.06)]"
+                    }
+                    hover:-translate-y-1.5
+                  `}
+                  style={{ transitionDelay: `${idx * 80}ms` }}
                 >
-                  {icons[i % icons.length]}
+                  {hasImage && (
+                    <div className="absolute inset-0 z-0">
+                      <img
+                        src={resolveMediaUrl(item.image!)}
+                        alt={item.title}
+                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-[2000ms]"
+                      />
+                      <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/60 to-transparent" />
+                    </div>
+                  )}
+
+                  {!hasImage && (
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                  )}
+
+                  <div className="relative z-10 h-full flex flex-col justify-between">
+                    <div>
+                      {!hasImage && (
+                        <div
+                          className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 shadow-[0_4px_12px_rgba(246,180,20,0.15)]"
+                          style={{
+                            background: `linear-gradient(135deg, ${YELLOW}, #ffc93c)`,
+                            color: "#1a0f00",
+                          }}
+                        >
+                          {FEATURE_ICONS[idx % FEATURE_ICONS.length]}
+                        </div>
+                      )}
+                      
+                      {hasImage && (
+                        <div
+                          className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(255,255,255,0.05)]"
+                        >
+                          {FEATURE_ICONS[idx % FEATURE_ICONS.length]}
+                        </div>
+                      )}
+                    </div>
+                    
+                    <div className="mt-4">
+                      <h3
+                        className={`font-black tracking-tight leading-snug mb-3
+                          ${hasImage ? "text-white" : "text-neutral-900"}
+                          ${isLarge ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xl sm:text-2xl"}
+                        `}
+                      >
+                        {item.title}
+                      </h3>
+                      <p
+                        className={`text-sm sm:text-base font-medium leading-relaxed
+                          \${hasImage ? "text-white/70" : "text-neutral-500"}
+                        `}
+                      >
+                        {item.desc}
+                      </p>
+                    </div>
+                  </div>
                 </div>
-                <h3 className="text-base sm:text-[17px] font-bold text-neutral-900 mb-2 sm:mb-3 leading-snug">
-                  {f.title}
-                </h3>
-                <p className="text-neutral-500 text-sm sm:text-[14px] leading-relaxed">
-                  {f.desc}
-                </p>
-              </div>
-            ))}
+              );
+            })}
           </div>
         </div>
       </div>
@@ -793,6 +814,9 @@ function PricingSection() {
 
   const highlight = [false, true, false];
 
+  const hasTiers = api.tiers.length > 0 && api.tiers.some((t) => t.name?.trim() || t.slots?.trim());
+  if (!hasTiers) return null;
+
   return (
     <section id="pricing" className="bg-white py-14 sm:py-24 lg:py-32">
       <div className="max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16">
@@ -801,14 +825,27 @@ function PricingSection() {
             className={`text-center mb-10 sm:mb-14 lg:mb-20 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
           >
             <p
-              className="text-sm font-semibold uppercase tracking-widest mb-3"
+              className="text-lg font-semibold uppercase tracking-widest mb-4"
               style={{ color: YELLOW_DARK }}
             >
               {api.label}
             </p>
-            <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-neutral-900 mb-4 sm:mb-6">
+            <h2
+              className="text-[36px] sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
+              style={{
+                background: "linear-gradient(135deg,#1a1a1a 0%,#3d3d3d 40%,#f6b414 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+              }}
+            >
               {api.title}
             </h2>
+            <div className="flex items-center justify-center gap-3 mb-4 sm:mb-6">
+              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.5)" }} />
+              <div className="w-2 h-2 rounded-full" style={{ background: YELLOW }} />
+              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.5)" }} />
+            </div>
             <p className="text-neutral-400 text-base sm:text-lg max-w-lg mx-auto leading-relaxed font-light">
               {api.desc}
             </p>
@@ -818,7 +855,7 @@ function PricingSection() {
             {api.tiers.map((tier, i) => (
               <div
                 key={i}
-                className={`relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${highlight[i] ? "bg-neutral-900 md:scale-[1.03] md:-mt-2" : "bg-neutral-50 border border-neutral-150"}`}
+                className={`relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${highlight[i] ? "bg-neutral-900 md:scale-[1.03] md:-mt-2" : "bg-neutral-50 border border-neutral-150"}`}
                 style={{
                   transitionDelay: visible ? `${i * 100}ms` : "0ms",
                   ...(highlight[i]
@@ -865,7 +902,7 @@ function PricingSection() {
                     {tier.name}
                   </p>
                   <p
-                    className={`text-[13px] mb-3 ${highlight[i] ? "text-white/40" : "text-neutral-400"}`}
+                    className={`text-[13px] mb-3 break-all w-full ${highlight[i] ? "text-white/40" : "text-neutral-400"}`}
                   >
                     {tier.slots}
                   </p>
@@ -1040,6 +1077,17 @@ export default function ParkEaseClient({
   initialEn: ParkEaseSections;
   globalContact?: GlobalContactInfo;
 }) {
+  const { lang, setSections } = useParkEaseLang();
+
+  const currentSections = lang === "mn" ? initialMn : initialEn;
+  const features = (currentSections.features?.items || []).filter(
+    (item) => (item.title && item.title.trim() !== "") || item.image
+  );
+
+  useEffect(() => {
+    setSections({ features: features.length > 0 });
+  }, [features.length, setSections]);
+
   return (
     <AdminCtx.Provider value={{ mn: initialMn, en: initialEn }}>
       <HeroSection />

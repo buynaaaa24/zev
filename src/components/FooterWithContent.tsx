@@ -21,14 +21,17 @@ export default async function FooterWithContent({ siteId = "zevtabs" }: { siteId
     accentColor = "rgb(255, 68, 105)";
     logo = "/posease-logo.jpg";
     brandName = "PosEase";
+    trialHref = "/posease/try";
   } else if (siteId === "amarhome") {
-    accentColor = "rgb(255, 68, 105)";
+    accentColor = "#10b981";
     logo = "/amarhome-logo.jpg";
     brandName = "AmarHome";
+    trialHref = "/amarhome/try";
   } else if (siteId === "rently") {
     accentColor = "#10b981";
     logo = "/images/rently.png";
     brandName = "Rently";
+    trialHref = "/rently/try";
   }
 
 

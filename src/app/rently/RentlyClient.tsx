@@ -228,30 +228,32 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
           </div>
 
           <div className={`lg:col-span-6 relative transition-all duration-[1500ms] delay-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-20 scale-95"}`}>
-            <div className="relative aspect-square sm:aspect-video lg:aspect-[4/5] xl:aspect-square animate-float">
-              <div className="absolute inset-0 bg-emerald-500/10 rounded-[32px] sm:rounded-[48px] blur-[40px] sm:blur-[60px]" />
-              <div className="relative h-full w-full rounded-[32px] sm:rounded-[48px] border border-white/10 bg-neutral-900/20 backdrop-blur-3xl overflow-hidden shadow-2xl p-2 sm:p-3">
-                {hero.image ? (
-                  <img src={hero.image} alt="Hero" className="w-full h-full object-cover rounded-[24px] sm:rounded-[40px]" />
-                ) : (
-                  <div className="w-full h-full bg-[#0a0a0a] rounded-[24px] sm:rounded-[40px] flex flex-col p-6 sm:p-12">
-                    <div className="flex justify-between items-start mb-12">
-                      <div className="flex gap-2">
-                        <div className="w-3 h-3 rounded-full bg-emerald-500/40" />
-                        <div className="w-3 h-3 rounded-full bg-white/5" />
-                        <div className="w-3 h-3 rounded-full bg-white/5" />
+            <div className="relative animate-float">
+              {hero.image ? (
+                <img src={hero.image} alt="Hero" className="w-full h-auto object-contain drop-shadow-2xl" />
+              ) : (
+                <div className="relative aspect-square sm:aspect-video lg:aspect-[4/5] xl:aspect-square">
+                  <div className="absolute inset-0 bg-emerald-500/10 rounded-[32px] sm:rounded-[48px] blur-[40px] sm:blur-[60px]" />
+                  <div className="relative h-full w-full rounded-[32px] sm:rounded-[48px] border border-white/10 bg-neutral-900/20 backdrop-blur-3xl overflow-hidden shadow-2xl p-2 sm:p-3">
+                    <div className="w-full h-full bg-[#0a0a0a] rounded-[24px] sm:rounded-[40px] flex flex-col p-6 sm:p-12">
+                      <div className="flex justify-between items-start mb-12">
+                        <div className="flex gap-2">
+                          <div className="w-3 h-3 rounded-full bg-emerald-500/40" />
+                          <div className="w-3 h-3 rounded-full bg-white/5" />
+                          <div className="w-3 h-3 rounded-full bg-white/5" />
+                        </div>
                       </div>
-                    </div>
-                    <div className="space-y-6 flex-1">
-                      <div className="h-[2px] w-full bg-gradient-to-r from-emerald-500/40 to-transparent" />
-                      <div className="grid grid-cols-2 gap-4">
-                        <div className="h-24 rounded-[24px] bg-white/5 animate-pulse" />
-                        <div className="h-24 rounded-[24px] bg-white/5 animate-pulse" />
+                      <div className="space-y-6 flex-1">
+                        <div className="h-[2px] w-full bg-gradient-to-r from-emerald-500/40 to-transparent" />
+                        <div className="grid grid-cols-2 gap-4">
+                          <div className="h-24 rounded-[24px] bg-white/5 animate-pulse" />
+                          <div className="h-24 rounded-[24px] bg-white/5 animate-pulse" />
+                        </div>
                       </div>
                     </div>
                   </div>
-                )}
-              </div>
+                </div>
+              )}
             </div>
           </div>
         </div>
@@ -259,16 +261,16 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
 
       {/* FEATURES */}
       {features.length > 0 && (
-        <section id="features" className="py-12 md:py-24 relative z-10 px-6">
+        <section id="features" className="py-8 md:py-16 relative z-10 px-6">
           <div className="max-w-[1200px] mx-auto">
-            <div className="text-center mb-12 md:mb-20 max-w-2xl mx-auto">
+            <div className="text-center mb-8 md:mb-14 max-w-2xl mx-auto">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter mb-6">
                 {data?.features?.title || defaults.features.title}
               </h2>
               <p className="text-lg text-white/40">{data?.features?.desc || defaults.features.desc}</p>
             </div>
 
-            <div className="space-y-16 md:space-y-24">
+            <div className="space-y-12 md:space-y-16">
               {features.map((item, idx) => (
                 <FeatureRow key={idx} item={item} index={idx} />
               ))}
@@ -278,7 +280,7 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
       )}
 
       {/* ADDITIONAL SECTIONS (Notifications, Penalties, Costs) */}
-      <section id="additional" className="py-12 md:py-24 bg-neutral-900/10 relative z-10">
+      <section id="additional" className="py-8 md:py-16 bg-neutral-900/10 relative z-10">
         <div className="max-w-[1200px] mx-auto px-6">
           <div className={`grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-10`}>
             {additionalSections.map((item, i) => (
@@ -290,9 +292,9 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
 
       {/* PRICING */}
       {pricing.length > 0 && (
-        <section id="pricing" className="py-12 md:py-24 relative z-10 px-6">
+        <section id="pricing" className="py-8 md:py-16 relative z-10 px-6">
           <div className="max-w-[1200px] mx-auto">
-            <div className="text-center mb-12 md:mb-20">
+            <div className="text-center mb-8 md:mb-14">
               <h2 className="text-4xl sm:text-5xl lg:text-6xl font-black text-white tracking-tighter mb-8">{data?.pricing?.title || defaults.pricing.title}</h2>
               <div className="w-12 h-1 bg-emerald-500 mx-auto rounded-full" />
             </div>
@@ -374,7 +376,7 @@ function PricingTier({ tier, index, totalCount }: { tier: any; index: number; to
   const isMiddle = totalCount === 3 && index === 1;
   return (
     <div ref={ref} className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: `${index * 150}ms` }}>
-      <div className={`relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}>
+      <div className={`relative p-6 sm:p-8 md:p-10 rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 overflow-hidden ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}>
         {tier.discounts && tier.discounts.length > 0 && (
           <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
             {tier.discounts.map((d: { label: string; color?: string }, di: number) => (
@@ -387,7 +389,7 @@ function PricingTier({ tier, index, totalCount }: { tier: any; index: number; to
         <div className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${isMiddle ? "bg-emerald-500" : "bg-white/5 border border-white/10"}`}>
           <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${isMiddle ? "text-white" : "text-emerald-400"}`}>{tier.name}</span>
         </div>
-        <p className="text-white text-4xl sm:text-5xl md:text-6xl font-black mb-4 sm:mb-8 tracking-tighter">{tier.price}</p>
+        <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-8 tracking-tighter break-all w-full">{tier.price}</p>
         <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">{tier.desc}</p>
         <Link href="#kholbooBarikh" className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl ${isMiddle ? "bg-white text-black hover:bg-emerald-500 hover:text-white" : "bg-emerald-500 text-white hover:bg-white hover:text-black"}`}>
           Get Started

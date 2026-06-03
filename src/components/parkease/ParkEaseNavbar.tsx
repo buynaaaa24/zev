@@ -6,27 +6,29 @@ import { useParkEaseLang } from "@/contexts/ParkEaseLangContext";
 
 const NAV = {
   en: [
-    { label: "Overview", href: "/parkease" },
-    { label: "How It Works", href: "/parkease#how-it-works" },
-    { label: "Payments", href: "/parkease#payments" },
-    { label: "Pricing", href: "/parkease#pricing" },
+    { label: "Overview", href: "/parkease", key: "overview" },
+    { label: "How It Works", href: "/parkease#how-it-works", key: "how" },
+    { label: "Payments", href: "/parkease#payments", key: "payments" },
+    { label: "Features", href: "/parkease#features", key: "features" },
+    { label: "Pricing", href: "/parkease#pricing", key: "pricing" },
   ],
   mn: [
-    { label: "Танилцуулга", href: "/parkease" },
-    { label: "Хэрхэн ажилладаг", href: "/parkease#how-it-works" },
-    { label: "Төлбөр", href: "/parkease#payments" },
-    { label: "Үнэ тариф", href: "/parkease#pricing" },
+    { label: "Танилцуулга", href: "/parkease", key: "overview" },
+    { label: "Хэрхэн ажилладаг", href: "/parkease#how-it-works", key: "how" },
+    { label: "Төлбөр", href: "/parkease#payments", key: "payments" },
+    { label: "Онцлогууд", href: "/parkease#features", key: "features" },
+    { label: "Үнэ тариф", href: "/parkease#pricing", key: "pricing" },
   ],
 };
-
-const CTA = { en: "Request Trial", mn: "Турших хүсэлт" };
 
 export default function ParkEaseNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [scrolled, setScrolled] = useState(false);
-  const { lang, toggle } = useParkEaseLang();
+  const { lang, toggle, sections } = useParkEaseLang();
 
-  const links = NAV[lang];
+  const links = NAV[lang].filter(
+    (item) => item.key !== "features" || sections.features
+  );
 
   useEffect(() => {
     document.body.style.overflow = menuOpen ? "hidden" : "";
@@ -80,14 +82,6 @@ export default function ParkEaseNavbar() {
 
         {/* Actions */}
         <div className="flex items-center gap-2">
-          {/* Desktop CTA */}
-          <Link
-            href="/parkease/try"
-            className="hidden sm:inline-block text-[11px] font-bold px-4 py-2 rounded-full bg-[#f6b414] text-[#1a0f00] hover:scale-[1.03] active:scale-[0.97] transition-all duration-300"
-          >
-            {CTA[lang]}
-          </Link>
-
           <button
             onClick={toggle}
             className="text-[11px] font-bold px-2.5 py-1.5 rounded-xl border transition-all duration-300 border-white/20 text-white/50 hover:text-white"
@@ -135,16 +129,9 @@ export default function ParkEaseNavbar() {
             </Link>
           ))}
           <div className="pt-6 flex flex-col gap-4">
-            <Link
-              href="/parkease/try"
-              onClick={() => setMenuOpen(false)}
-              className="inline-block text-center text-sm font-bold px-6 py-3 rounded-full bg-[#f6b414] text-[#1a0f00] active:scale-95 transition-all duration-200"
-            >
-              {CTA[lang]}
-            </Link>
             <button
               onClick={toggle}
-              className="text-white/40 text-left text-sm font-medium"
+              className="text-white/40 text-left text-sm font-medium pt-2"
             >
               {lang === "mn" ? "Switch to English" : "Монгол руу шилжих"}
             </button>

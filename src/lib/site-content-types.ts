@@ -288,7 +288,7 @@ export type ParkEaseSections = {
     label: string;
     title: string;
     desc: string;
-    items: { title: string; desc: string }[];
+    items: { title: string; desc: string; size: "small" | "medium" | "large"; image?: string }[];
   };
   pricing: {
     label: string;

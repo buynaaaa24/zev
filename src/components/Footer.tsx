@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import type { FooterSections } from "@/lib/site-content-types";
 import { Translations } from "@/lib/translations";
@@ -65,6 +66,23 @@ export default function Footer({
   trialHref?: string;
 }) {
   const year = new Date().getFullYear();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const isMn = t.nav?.home === "Нүүр";
+
+  const handleCtaClick = (e: React.MouseEvent) => {
+    e.preventDefault();
+    setIsModalOpen(true);
+  };
+
+  const getLightAccent = (color: string) => {
+    if (color.startsWith("rgb")) {
+      return color.replace("rgb", "rgba").replace(")", ", 0.12)");
+    }
+    return `${color}1e`;
+  };
+
+  const isYellow = accentColor === "#f6b414";
+  const btnTextColor = isYellow ? "#1a0f00" : "#ffffff";
 
   // Handle translations for "By" and "Trial" if not provided in t
   const textBy = (t as any).footer?.by || "Бүтээгч:";
@@ -95,15 +113,86 @@ export default function Footer({
 
         {/* CTA */}
         {trialHref && (
-          <Link 
-            href={trialHref} 
-            className="text-sm font-medium transition-colors hover:opacity-80" 
-            style={{ color: accentColor }}
-          >
-            {textTrial}
-          </Link>
+          <div className="relative">
+            <button 
+              onClick={handleCtaClick} 
+              className="text-sm font-medium transition-colors hover:opacity-80 focus:outline-none" 
+              style={{ color: accentColor }}
+            >
+              {textTrial}
+            </button>
+          </div>
         )}
       </div>
+
+      {/* Modal */}
+      {isModalOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          {/* Backdrop */}
+          <div 
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm transition-opacity duration-300"
+            onClick={() => setIsModalOpen(false)}
+          />
+          {/* Modal Content */}
+          <div className="relative bg-[#121212] border border-white/10 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200">
+            {/* Close Button */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+              aria-label="Close modal"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+
+            {/* Icon */}
+            <div 
+              className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center border border-white/10"
+              style={{ 
+                backgroundColor: getLightAccent(accentColor),
+                borderColor: `${accentColor}40`
+              }}
+            >
+              <svg 
+                className="w-8 h-8" 
+                style={{ color: accentColor }}
+                fill="none" 
+                viewBox="0 0 24 24" 
+                stroke="currentColor" 
+                strokeWidth={1.5}
+              >
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+
+            {/* Title */}
+            <h3 className="text-xl font-black text-white mb-2 tracking-tight">
+              {isMn ? "Тун удахгүй" : "Coming Soon"}
+            </h3>
+            
+            {/* Description */}
+            <p className="text-white/40 text-sm leading-relaxed mb-6 font-medium">
+              {isMn 
+                ? "Энэхүү үйлчилгээ одоогоор хөгжүүлэлтийн шатанд байна. Бид удахгүй бэлэн болгох болно." 
+                : "This service is currently under development. We will make it available very soon."}
+            </p>
+
+            {/* Action Button */}
+            <button
+              onClick={() => setIsModalOpen(false)}
+              className="w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              style={{ 
+                color: btnTextColor,
+                background: `linear-gradient(90deg, ${accentColor}, ${accentColor === "#f6b414" ? "#ffd35c" : accentColor === "#10b981" ? "#34d399" : "#ff708f"})`,
+                boxShadow: `0 4px 20px rgba(${accentColor === "#f6b414" ? "246,180,20" : accentColor === "#10b981" ? "16,185,129" : "255,68,105"}, 0.25)`
+              }}
+            >
+              {isMn ? "Ойлголоо" : "Got it"}
+            </button>
+          </div>
+        </div>
+      )}
     </footer>
   );
 }
