@@ -633,7 +633,7 @@ export default function ChatBot() {
                     type="button"
                     onClick={backToRootChips}
                     disabled={!ready}
-                    className="rounded-full border border-dashed border-gray-300 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm hover:border-accent-400 hover:bg-white hover:text-brand-900 disabled:opacity-50"
+                    className="rounded-full border border-dashed border-gray-300 bg-gray-50 px-3 py-1.5 text-xs font-medium text-gray-600 shadow-sm hover:border-accent-400 hover:bg-white hover:text-neutral-900 disabled:opacity-50"
                   >
                     {config.restartLabel}
                   </button>
