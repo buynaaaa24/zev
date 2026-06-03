@@ -342,8 +342,10 @@ export default function ChatBot() {
       if (isRelative) {
         socketOptions.path = baseUrl ? `${baseUrl}/socket.io` : "/socket.io";
       }
+      console.log(`[ChatBot Socket] Initializing connection to ${socketUrl} with options:`, socketOptions);
       s = io(socketUrl, socketOptions);
-    } catch {
+    } catch (err) {
+      console.error("[ChatBot Socket] Initialization failed:", err);
       return;
     }
     socketRef.current = s;
@@ -351,26 +353,56 @@ export default function ChatBot() {
     function emitJoin() {
       const convId = localStorage.getItem(CONV_KEY);
       const guestId = getOrCreateGuestId();
-      if (!convId || !s.connected) return;
-      s.emit("join", { conversationId: convId, guestId }, () => {});
+      if (!convId) {
+        console.warn("[ChatBot Socket] Cannot emit join: no conversationId in localStorage");
+        return;
+      }
+      if (!s.connected) {
+        console.warn("[ChatBot Socket] Cannot emit join: socket is not connected yet");
+        return;
+      }
+      console.log(`[ChatBot Socket] Emitting join event for conversationId: ${convId}, guestId: ${guestId}`);
+      s.emit("join", { conversationId: convId, guestId }, (err: any) => {
+        if (err) {
+          console.error("[ChatBot Socket] Join event acknowledgment returned error:", err);
+        } else {
+          console.log("[ChatBot Socket] Join event acknowledged successfully");
+        }
+      });
     }
 
     function onNew(payload: { conversationId?: string; message?: ChatMessage }) {
+      console.log("[ChatBot Socket] Received message:new event payload:", payload);
       const convId = localStorage.getItem(CONV_KEY);
-      if (!payload?.message || payload.conversationId !== convId) return;
+      if (!payload?.message) {
+        console.warn("[ChatBot Socket] Received empty message payload");
+        return;
+      }
+      if (payload.conversationId !== convId) {
+        console.warn(`[ChatBot Socket] Conversation ID mismatch: expected ${convId}, got ${payload.conversationId}`);
+        return;
+      }
       const m = payload.message;
       if (
         (m.role === "bot" || m.role === "agent") &&
         !m.text?.trim()
       ) {
+        console.log("[ChatBot Socket] Ignoring bot/agent message with empty text");
         return;
       }
 
       // BLOCK bot messages if we are in human mode (backend might emit them incorrectly)
-      if (m.role === "bot" && humanModeRef.current) return;
+      if (m.role === "bot" && humanModeRef.current) {
+        console.log("[ChatBot Socket] Ignoring bot message because we are in human mode");
+        return;
+      }
 
-      if (seenIds.current.has(m.id)) return;
+      if (seenIds.current.has(m.id)) {
+        console.log(`[ChatBot Socket] Ignoring already seen message: ${m.id}`);
+        return;
+      }
       seenIds.current.add(m.id);
+      console.log(`[ChatBot Socket] Adding message to state:`, m);
       setMessages((prev) => [...prev, m]);
       if (m.role === "agent") setHumanMode(true);
       if (m.role === "bot") setHumanMode(false);
@@ -378,13 +410,24 @@ export default function ChatBot() {
 
     s.on("message:new", onNew);
     s.on("connect", () => {
+      console.log(`[ChatBot Socket] Connected successfully! Socket ID: ${s.id}`);
       setSocketLive(true);
       emitJoin();
     });
-    s.on("disconnect", () => setSocketLive(false));
-    s.on("reconnect", emitJoin);
+    s.on("connect_error", (err) => {
+      console.error("[ChatBot Socket] Connection error:", err);
+    });
+    s.on("disconnect", (reason) => {
+      console.log(`[ChatBot Socket] Disconnected. Reason: ${reason}`);
+      setSocketLive(false);
+    });
+    s.on("reconnect", () => {
+      console.log("[ChatBot Socket] Reconnected");
+      emitJoin();
+    });
 
     return () => {
+      console.log("[ChatBot Socket] Cleaning up socket connection");
       s.off("message:new", onNew);
       s.disconnect();
       socketRef.current = null;
@@ -400,7 +443,14 @@ export default function ChatBot() {
     const guestId = getOrCreateGuestId();
     if (!convId) return;
     const run = () => {
-      s.emit("join", { conversationId: convId, guestId }, () => {});
+      console.log(`[ChatBot Socket] Widget opened/ready. Emitting join for conversationId: ${convId}`);
+      s.emit("join", { conversationId: convId, guestId }, (err: any) => {
+        if (err) {
+          console.error("[ChatBot Socket] Join event acknowledgment returned error (from open hook):", err);
+        } else {
+          console.log("[ChatBot Socket] Join event acknowledged successfully (from open hook)");
+        }
+      });
     };
     if (s.connected) run();
     else s.once("connect", run);
