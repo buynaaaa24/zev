@@ -74,7 +74,8 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
     return () => { document.body.style.overflow = ""; };
   }, [menuOpen]);
 
-  const isTransparent = !scrolled && isHome;
+  const isZarPage = pathname === `${base}/zar` || pathname === `${base}/zar/` || pathname.endsWith("/zar") || pathname.endsWith("/zar/");
+  const isTransparent = !scrolled && (isHome || isZarPage);
 
   return (
     <>

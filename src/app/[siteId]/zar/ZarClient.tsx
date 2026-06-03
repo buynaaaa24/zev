@@ -166,10 +166,12 @@ export default function ZarClient({ jobs, ads, lang, header }: ZarClientProps) {
     const prevOverflow = document.body.style.overflow;
     if (selectedJob || selectedAd) {
       document.body.style.overflow = "hidden";
+      (window as any).lenis?.stop();
     }
     return () => {
       window.removeEventListener("keydown", onKey);
       document.body.style.overflow = prevOverflow;
+      (window as any).lenis?.start();
     };
   }, [selectedJob, selectedAd, handleCloseModal]);
 
@@ -194,37 +196,37 @@ export default function ZarClient({ jobs, ads, lang, header }: ZarClientProps) {
 
       {/* Control Panel (Tabs & Search) */}
       <div className="mx-auto -mt-8 max-w-6xl px-4 relative z-10">
-        <div className="glass rounded-2xl border border-slate-200/80 p-4 shadow-xl flex flex-col md:flex-row gap-4 items-center justify-between">
+        <div className="bg-white rounded-2xl border border-slate-200/80 p-4 shadow-xl flex flex-col md:flex-row gap-4 items-center justify-between">
           {/* Tab Switcher */}
-          <div className="flex w-full md:w-auto p-1 bg-slate-100/80 rounded-xl border border-slate-200/30">
+          <div className="flex w-full md:w-auto p-1 bg-slate-100/80 rounded-xl border border-slate-200/30 overflow-x-auto scrollbar-none flex-nowrap shrink-0">
             <button
               onClick={() => setActiveTab("jobs")}
-              className={`flex-1 md:flex-initial flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
+              className={`flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 md:px-6 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold transition-all duration-300 whitespace-nowrap shrink-0 ${
                 activeTab === "jobs"
                   ? "bg-white text-neutral-900 shadow-sm border border-slate-200/50"
                   : "text-slate-500 hover:text-slate-900"
               }`}
             >
-              <Briefcase className="h-4 w-4" />
-              {t.jobsTab}
+              <Briefcase className="h-4 w-4 shrink-0" />
+              <span>{t.jobsTab}</span>
               {jobs.length > 0 && (
-                <span className="ml-1 px-1.5 py-0.5 text-xs bg-slate-200 text-slate-700 rounded-full font-bold">
+                <span className="ml-1 px-1.5 py-0.5 text-[10px] md:text-xs bg-slate-200 text-slate-700 rounded-full font-bold">
                   {jobs.length}
                 </span>
               )}
             </button>
             <button
               onClick={() => setActiveTab("sales")}
-              className={`flex-1 md:flex-initial flex items-center justify-center gap-2 px-6 py-2.5 rounded-lg text-sm font-semibold transition-all duration-300 ${
+              className={`flex-1 md:flex-initial flex items-center justify-center gap-1.5 px-3 py-2 md:px-6 md:py-2.5 rounded-lg text-xs md:text-sm font-semibold transition-all duration-300 whitespace-nowrap shrink-0 ${
                 activeTab === "sales"
                   ? "bg-white text-neutral-900 shadow-sm border border-slate-200/50"
                   : "text-slate-500 hover:text-slate-900"
               }`}
             >
-              <Megaphone className="h-4 w-4" />
-              {t.salesTab}
+              <Megaphone className="h-4 w-4 shrink-0" />
+              <span>{t.salesTab}</span>
               {ads.length > 0 && (
-                <span className="ml-1 px-1.5 py-0.5 text-xs bg-slate-200 text-slate-700 rounded-full font-bold">
+                <span className="ml-1 px-1.5 py-0.5 text-[10px] md:text-xs bg-slate-200 text-slate-700 rounded-full font-bold">
                   {ads.length}
                 </span>
               )}
@@ -382,7 +384,7 @@ export default function ZarClient({ jobs, ads, lang, header }: ZarClientProps) {
             />
 
             {/* Modal Body */}
-            <div className="relative z-[1101] flex h-[min(92dvh,900px)] w-[min(100vw-1rem,1000px)] flex-col overflow-hidden rounded-t-2xl border border-slate-200/90 bg-white shadow-2xl ring-1 ring-black/[0.04] sm:rounded-2xl transition-all duration-300">
+            <div data-lenis-prevent className="relative z-[1101] flex h-[min(92dvh,900px)] w-[min(100vw-1rem,1000px)] flex-col overflow-hidden rounded-t-2xl border border-slate-200/90 bg-white shadow-2xl ring-1 ring-black/[0.04] sm:rounded-2xl transition-all duration-300">
               {/* Modal Header */}
               <header className="relative shrink-0 border-b border-slate-200/80 bg-gradient-to-r from-slate-50 to-white px-6 py-5">
                 <div className="absolute inset-y-3 left-0 w-1 rounded-full bg-accent-500" />
