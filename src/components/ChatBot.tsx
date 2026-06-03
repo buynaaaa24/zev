@@ -196,7 +196,7 @@ function getLocalBotFallback(
     return t.chatbot.fallbacks.connect;
   }
 
-  return t.chatbot.errors.fallback;
+  return "";
 }
 
 export default function ChatBot() {
@@ -231,6 +231,11 @@ export default function ChatBot() {
   const bottomRef = useRef<HTMLDivElement>(null);
   const inputRef = useRef<HTMLInputElement>(null);
   const socketRef = useRef<Socket | null>(null);
+  const [humanMode, setHumanMode] = useState(false);
+  const humanModeRef = useRef(false);
+  useEffect(() => {
+    humanModeRef.current = humanMode;
+  }, [humanMode]);
   const seenIds = useRef<Set<string>>(new Set());
   const base = getApiBaseUrl();
 
@@ -254,7 +259,6 @@ export default function ChatBot() {
   }, [base, defaultConfig]);
 
   const bootstrapConversation = useCallback(async () => {
-    setReady(false);
     setError(null);
     const guestId = getOrCreateGuestId();
     let convId = localStorage.getItem(CONV_KEY);
@@ -293,6 +297,12 @@ export default function ChatBot() {
       const list = json.data ?? [];
       seenIds.current = new Set(list.map((m) => m.id));
       setMessages(list);
+
+      // Infer humanMode from history: if the most recent non-user message is from an agent
+      const lastOtherMsg = [...list].reverse().find(m => m.role !== "user");
+      if (lastOtherMsg?.role === "agent") setHumanMode(true);
+      else if (lastOtherMsg?.role === "bot") setHumanMode(false);
+
       setReady(true);
       setError(null);
     } catch (e) {
@@ -300,20 +310,6 @@ export default function ChatBot() {
       setReady(false);
     }
   }, [base, t]);
-
-  const handleResetChat = useCallback(async () => {
-    localStorage.removeItem(CONV_KEY);
-    localStorage.removeItem(GUEST_KEY);
-    seenIds.current.clear();
-    setMessages([]);
-    setActiveChoices(config.rootChoices);
-    void bootstrapConversation();
-  }, [config.rootChoices, bootstrapConversation]);
-
-  const resetChatRef = useRef(handleResetChat);
-  useEffect(() => {
-    resetChatRef.current = handleResetChat;
-  }, [handleResetChat]);
 
   /** Preload CMS chatbot config as soon as the widget mounts (not only when the panel opens). */
   useEffect(() => {
@@ -369,21 +365,18 @@ export default function ChatBot() {
       ) {
         return;
       }
+
+      // BLOCK bot messages if we are in human mode (backend might emit them incorrectly)
+      if (m.role === "bot" && humanModeRef.current) return;
+
       if (seenIds.current.has(m.id)) return;
       seenIds.current.add(m.id);
       setMessages((prev) => [...prev, m]);
-    }
-
-    function onUpdate(payload: { conversationId?: string; status?: string }) {
-      const convId = localStorage.getItem(CONV_KEY);
-      if (!payload || payload.conversationId !== convId) return;
-      if (payload.status === "closed") {
-        void resetChatRef.current();
-      }
+      if (m.role === "agent") setHumanMode(true);
+      if (m.role === "bot") setHumanMode(false);
     }
 
     s.on("message:new", onNew);
-    s.on("conversation:update", onUpdate);
     s.on("connect", () => {
       setSocketLive(true);
       emitJoin();
@@ -393,7 +386,6 @@ export default function ChatBot() {
 
     return () => {
       s.off("message:new", onNew);
-      s.off("conversation:update", onUpdate);
       s.disconnect();
       socketRef.current = null;
       setSocketLive(false);
@@ -449,24 +441,32 @@ export default function ChatBot() {
       });
       if (!res.ok) throw new Error(await res.text());
       const json = (await res.json()) as {
-        data: { userMsg: ChatMessage; botMsg: ChatMessage | null };
+        data: { userMsg: ChatMessage; botMsg: ChatMessage | null; humanMode?: boolean };
       };
-      const { userMsg, botMsg } = json.data;
+      const { userMsg, botMsg, humanMode: nextHumanMode } = json.data;
+
+      const isActuallyHuman = typeof nextHumanMode === "boolean" ? nextHumanMode : humanMode;
+      if (typeof nextHumanMode === "boolean") setHumanMode(nextHumanMode);
+
       setMessages((prev) => {
         const next = [...prev];
         if (!seenIds.current.has(userMsg.id)) {
           seenIds.current.add(userMsg.id);
           next.push(userMsg);
         }
-        if (botMsg?.text?.trim() && !seenIds.current.has(botMsg.id)) {
+        // If the backend incorrectly sends a botMsg during human mode, we ignore it
+        if (botMsg?.text?.trim() && !seenIds.current.has(botMsg.id) && !isActuallyHuman) {
           seenIds.current.add(botMsg.id);
           next.push(botMsg);
-        } else if (!botMsg?.text?.trim()) {
-          next.push({
-            id: `bot-local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
-            role: "bot",
-            text: getLocalBotFallback(trimmed, t, lang),
-          });
+        } else if (!botMsg?.text?.trim() && !isActuallyHuman) {
+          const fallback = getLocalBotFallback(trimmed, t, lang);
+          if (fallback) {
+            next.push({
+              id: `bot-local-${Date.now()}-${Math.random().toString(36).slice(2, 7)}`,
+              role: "bot",
+              text: fallback,
+            });
+          }
         }
         return next;
       });
@@ -576,7 +576,7 @@ export default function ChatBot() {
                 </div>
               </div>
             )}
-            {activeChoices.length > 0 && (
+            {activeChoices.length > 0 && !humanMode && (
               <div className="flex flex-wrap items-center gap-2 pt-1">
                 {!atRootChips && config.restartLabel.trim() && (
                   <button
