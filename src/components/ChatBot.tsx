@@ -336,10 +336,17 @@ export default function ChatBot() {
   useEffect(() => {
     let s: Socket;
     try {
-      s = io(getSocketBaseUrl(), {
+      const baseUrl = getSocketBaseUrl();
+      const isRelative = !baseUrl || baseUrl.startsWith("/");
+      const socketUrl = isRelative ? window.location.origin : baseUrl;
+      const socketOptions: any = {
         transports: ["websocket", "polling"],
         withCredentials: true,
-      });
+      };
+      if (isRelative) {
+        socketOptions.path = baseUrl ? `${baseUrl}/socket.io` : "/socket.io";
+      }
+      s = io(socketUrl, socketOptions);
     } catch {
       return;
     }
