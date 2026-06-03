@@ -32,7 +32,7 @@ export default function LeadFormSection({
   subtitle = "Холбоо барих",
   body = "Бид таны санааг бодит болгоход бэлэн байна. Мэдээллээ үлдээгээрэй, бид тантай удахгүй холбогдох болно.",
   emailLabel = "Email Us",
-  contactEmail = "contact@zevtabs.mn",
+  contactEmail = "info@zevtabs.mn",
   phoneLabel = "Phone",
   phone,
   locationLabel = "Location",
@@ -42,7 +42,7 @@ export default function LeadFormSection({
 }: LeadFormSectionProps) {
   const [form, setForm] = useState({
     utas: "",
-    ner: "",
+    ner: systemName,
     mail: "",
     tailbar: "",
   });
@@ -53,7 +53,7 @@ export default function LeadFormSection({
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     const { name, value } = e.target;
     setForm(prev => ({ ...prev, [name]: value }));
-    
+
     // Clear error when typing
     if (error[name]) {
       setError((prev: any) => ({ ...prev, [name]: false }));
@@ -65,7 +65,7 @@ export default function LeadFormSection({
     if (form.utas.length !== 8) newErrors.utas = true;
     if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(form.mail)) newErrors.mail = true;
     if (!form.tailbar.trim()) newErrors.tailbar = true;
-    
+
     setError(newErrors);
     return Object.keys(newErrors).length === 0;
   };
@@ -78,7 +78,7 @@ export default function LeadFormSection({
     try {
       const payload: any = { ...form, systemiinNer: systemName };
       const encryptedData = encrypt(JSON.stringify(payload));
-      
+
       const response = await axios.post(
         "https://admin.zevtabs.mn/api/kholbooBarikhKhadgalya",
         encryptedData
@@ -86,7 +86,7 @@ export default function LeadFormSection({
 
       if (response.data === "Amjilttai") {
         setStatus("success");
-        setForm({ utas: "", ner: "", mail: "", tailbar: "" });
+        setForm({ utas: "", ner: systemName, mail: "", tailbar: "" });
       } else {
         setStatus("error");
       }
@@ -108,9 +108,9 @@ export default function LeadFormSection({
 
       <div className="relative z-10 max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16">
         <div className="grid lg:grid-cols-2 gap-16 lg:gap-24 items-center">
-          
+
           {/* Left Side: Content */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, x: -30 }}
             whileInView={{ opacity: 1, x: 0 }}
             transition={{ duration: 0.8 }}
@@ -182,7 +182,7 @@ export default function LeadFormSection({
           </motion.div>
 
           {/* Right Side: Form Card */}
-          <motion.div 
+          <motion.div
             initial={{ opacity: 0, scale: 0.95 }}
             whileInView={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.8, delay: 0.2 }}
@@ -191,11 +191,11 @@ export default function LeadFormSection({
           >
             {/* Glow beneath the card */}
             <div className="absolute inset-0 rounded-[40px] opacity-20 blur-[40px] pointer-events-none" style={{ backgroundColor: accentColor }} />
-            
+
             <div className="relative bg-neutral-900/40 backdrop-blur-3xl border border-white/10 p-8 sm:p-12 rounded-[40px] shadow-2xl">
               <AnimatePresence mode="wait">
                 {status === "success" ? (
-                  <motion.div 
+                  <motion.div
                     key="success"
                     initial={{ opacity: 0, y: 20 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -207,7 +207,7 @@ export default function LeadFormSection({
                     </div>
                     <h3 className="text-white text-2xl font-black mb-4">Амжилттай илгээгдлээ!</h3>
                     <p className="text-white/40 mb-8 font-medium">Бид 1-2 ажлын өдрийн дотор тантай холбогдох болно.</p>
-                    <button 
+                    <button
                       onClick={() => setStatus("idle")}
                       className="px-8 py-3 rounded-full bg-white text-black font-bold hover:scale-105 active:scale-95 transition-all"
                     >
@@ -215,7 +215,7 @@ export default function LeadFormSection({
                     </button>
                   </motion.div>
                 ) : (
-                  <motion.form 
+                  <motion.form
                     key="form"
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
@@ -226,7 +226,7 @@ export default function LeadFormSection({
                     <div className="grid sm:grid-cols-2 gap-6">
                       <div className="space-y-2">
                         <label className="text-white/30 text-[10px] font-black uppercase tracking-widest ml-1">Утас</label>
-                        <input 
+                        <input
                           name="utas"
                           maxLength={8}
                           value={form.utas}
@@ -237,7 +237,7 @@ export default function LeadFormSection({
                       </div>
                       <div className="space-y-2">
                         <label className="text-white/30 text-[10px] font-black uppercase tracking-widest ml-1">И-мэйл</label>
-                        <input 
+                        <input
                           name="mail"
                           value={form.mail}
                           onChange={handleChange}
@@ -249,7 +249,7 @@ export default function LeadFormSection({
 
                     <div className="space-y-2">
                       <label className="text-white/30 text-[10px] font-black uppercase tracking-widest ml-1">Тайлбар</label>
-                      <textarea 
+                      <textarea
                         name="tailbar"
                         value={form.tailbar}
                         onChange={handleChange}
@@ -259,7 +259,7 @@ export default function LeadFormSection({
                       />
                     </div>
 
-                    <button 
+                    <button
                       type="submit"
                       disabled={loading}
                       className="w-full relative group py-5 rounded-2xl font-black text-lg transition-all overflow-hidden"
@@ -267,7 +267,7 @@ export default function LeadFormSection({
                     >
                       <div className="absolute inset-0 bg-white/20 translate-y-full group-hover:translate-y-0 transition-transform duration-500" />
                       <span className="relative z-10 flex items-center justify-center gap-3">
-                        {loading ? "Илгээж байна..." : "Илгээх"} 
+                        {loading ? "Илгээж байна..." : "Илгээх"}
                         {!loading && <ArrowRight size={20} className="group-hover:translate-x-1 transition-transform" />}
                       </span>
                     </button>
