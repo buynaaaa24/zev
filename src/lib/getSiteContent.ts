@@ -337,7 +337,7 @@ const EMPTY_PARKEASE: ParkEaseSections = {
   how: { label: "", title: [], desc: "", steps: [] },
   payments: { label: "", title: [], desc: "", qpayTitle: "", qpayBadge: "", qpayDesc: "", stickerTitle: "", stickerBadge: "", stickerDesc: "", note: "", banks: [] },
   features: { label: "", title: "", desc: "", items: [] },
-  pricing: { label: "", title: "", desc: "", mostPopular: "", ctaBtn: "", note: "", quoteBtn: "", tiers: [] },
+  pricing: { label: "", title: "", desc: "", mostPopular: "", ctaBtn: "", note: "", quoteBtn: "", quoteLink: "", tiers: [] },
   free: { title: "", desc: "", cards: [] },
   cta: { title: "", desc: "", btn: "", emailLabel: "", email: "", phoneLabel: "", phone: "", locationLabel: "", location: "" },
 };

@@ -304,6 +304,7 @@ export type ParkEaseSections = {
     ctaBtn: string;
     note: string;
     quoteBtn: string;
+    quoteLink?: string;
     tiers: { name: string; slots: string; features: string[]; discounts?: { label: string; color?: string }[] }[];
   };
   free: {

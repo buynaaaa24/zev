@@ -47,6 +47,7 @@ const EMPTY_SECTIONS: ParkEaseSections = {
     ctaBtn: "",
     note: "",
     quoteBtn: "",
+    quoteLink: "",
     tiers: [],
   },
   free: { title: "", desc: "", cards: [] },
@@ -1071,7 +1072,7 @@ function PricingSection() {
           >
             {api.note}{" "}
             <Link
-              href="#kholbooBarikh"
+              href={api.quoteLink || "#kholbooBarikh"}
               className="font-medium hover:underline"
               style={{ color: YELLOW_DARK }}
             >
