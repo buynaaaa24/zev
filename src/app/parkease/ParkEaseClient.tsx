@@ -104,6 +104,13 @@ function useReveal(threshold = 0.1) {
   return { ref, visible };
 }
 
+/** Ensures external URLs have a protocol so they don't resolve relative to current page. */
+function ensureAbsoluteUrl(url: string): string {
+  if (!url) return url;
+  if (/^https?:\/\//i.test(url)) return url;
+  return `https://${url}`;
+}
+
 /* ── Hero ────────────────────────────────────────────────── */
 function HeroSection() {
   const { lang } = useParkEaseLang();
@@ -237,9 +244,9 @@ function HeroSection() {
         aria-hidden
       />
 
-      <div className={`hero-content relative z-10 w-full max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16 pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-44 ${api.image ? "flex flex-col lg:flex-row items-center gap-10 lg:gap-16" : ""}`}>
-        {/* Text column */}
-        <div className={api.image ? "flex-1 min-w-0" : ""}>
+      <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16 pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-44">
+        {/* Text column — limited to left half when image is present */}
+        <div className={api.image ? "lg:max-w-[55%]" : ""}>
           <div
             className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[11px] sm:text-xs font-medium tracking-wider uppercase mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
@@ -314,7 +321,7 @@ function HeroSection() {
             </a>
             {api.cta2Link ? (
               <a
-                href={api.cta2Link}
+                href={ensureAbsoluteUrl(api.cta2Link)}
                 target="_blank"
                 rel="noopener noreferrer"
                 className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-white/15 text-white text-[15px] font-medium active:scale-[0.97] hover:bg-white/5 transition-all duration-300"
@@ -356,24 +363,24 @@ function HeroSection() {
           </div>
         </div>
 
-        {/* Hero image column */}
-        {api.image && (
+      {/* Hero image — top-right decoration, doesn't affect text layout */}
+      {api.image && (
+        <div
+          className={`absolute right-0 top-16 hidden lg:block z-[5] w-[46%] max-w-[600px] pr-6 xl:pr-10 transition-all duration-700 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+          style={{ transitionDelay: ".5s" }}
+        >
           <div
-            className={`relative w-full lg:w-[45%] shrink-0 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-            style={{ transitionDelay: ".5s" }}
-          >
-            <div
-              className="absolute -inset-6 rounded-3xl opacity-30 blur-2xl"
-              style={{ background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.5), transparent 70%)` }}
-              aria-hidden
-            />
-            <img
-              src={resolveMediaUrl(api.image)}
-              alt=""
-              className="relative z-10 w-full h-auto max-h-[500px] object-contain drop-shadow-2xl rounded-2xl"
-            />
-          </div>
-        )}
+            className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl"
+            style={{ background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.6), transparent 70%)` }}
+            aria-hidden
+          />
+          <img
+            src={resolveMediaUrl(api.image)}
+            alt=""
+            className="relative z-10 w-full h-auto max-h-[80vh] object-contain object-top drop-shadow-2xl"
+          />
+        </div>
+      )}
       </div>
 
       <div
