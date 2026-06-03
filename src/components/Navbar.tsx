@@ -11,6 +11,7 @@ const SECTIONS = [
   { id: "services", label: { en: "Services", mn: "Үйлчилгээ" } },
   { id: "work", label: { en: "Development", mn: "Төслүүд" } },
   { id: "ajluud", label: { en: "Works", mn: "Ажлууд" } },
+  { id: "zar", label: { en: "Ads", mn: "Зар" }, isPage: true },
   { id: "contact", label: { en: "Contact", mn: "Холбоо" } },
 ];
 
@@ -48,7 +49,7 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
 
       lastScrollY.current = y;
 
-      const sectionIds = SECTIONS.map((s) => s.id);
+      const sectionIds = SECTIONS.filter(s => !s.isPage).map((s) => s.id);
       for (let i = sectionIds.length - 1; i >= 0; i--) {
         const el = document.getElementById(sectionIds[i]);
         if (el) {
@@ -62,7 +63,7 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
     };
     window.addEventListener("scroll", onScroll, { passive: true });
     return () => window.removeEventListener("scroll", onScroll);
-  }, []);
+  }, [isHome]);
 
   useEffect(() => {
     setMenuOpen(false);
@@ -115,9 +116,10 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
           <nav className="hidden md:flex items-center gap-1">
             {SECTIONS.map((s) => {
               const label = lang === "mn" ? s.label.mn : s.label.en;
-              const isActive = isHome && activeSection === s.id;
+              const isPageActive = s.isPage && (pathname === `${base}/${s.id}` || pathname === `${base}/${s.id}/` || (s.id === "zar" && pathname.endsWith("/zar")));
+              const isActive = !s.isPage && isHome && activeSection === s.id;
 
-              if (isHome) {
+              if (isHome && !s.isPage) {
                 return (
                   <button
                     key={s.id}
@@ -143,14 +145,21 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
               return (
                 <Link
                   key={s.id}
-                  href={`${base}/#${s.id}`}
-                  className={`px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ${
-                    isTransparent
-                      ? "text-white/70 hover:text-white hover:bg-white/10"
-                      : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100"
+                  href={s.isPage ? `${base}/${s.id}` : `${base}/#${s.id}`}
+                  className={`relative px-4 py-2 rounded-full text-[13px] font-medium transition-all duration-300 ${
+                    isPageActive
+                      ? isTransparent
+                        ? "text-white bg-white/10"
+                        : "text-neutral-900 bg-neutral-100"
+                      : isTransparent
+                        ? "text-white/70 hover:text-white hover:bg-white/10"
+                        : "text-neutral-500 hover:text-neutral-800 hover:bg-neutral-100"
                   }`}
                 >
                   {label}
+                  {isPageActive && (
+                    <span className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-1 h-1 rounded-full bg-accent-500" />
+                  )}
                 </Link>
               );
             })}
@@ -208,11 +217,17 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
         <div className="flex flex-col px-8 pt-10 gap-2">
           {SECTIONS.map((s, i) => {
             const label = lang === "mn" ? s.label.mn : s.label.en;
+            const targetHref = s.isPage ? `${base}/${s.id}` : `${isHome ? "" : base}#${s.id}`;
             return (
               <Link
                 key={s.id}
-                href={`#${s.id}`}
-                onClick={() => { scrollToSection(s.id); setMenuOpen(false); }}
+                href={targetHref}
+                onClick={() => {
+                  if (!s.isPage && isHome) {
+                    scrollToSection(s.id);
+                  }
+                  setMenuOpen(false);
+                }}
                 style={{ transitionDelay: menuOpen ? `${i * 50}ms` : "0ms" }}
                 className={`text-left text-2xl font-bold text-white/80 hover:text-white py-3 border-b border-white/5 transition-all duration-500 ${
                   menuOpen ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-6"
