@@ -10,6 +10,7 @@ const NAV = {
     { label: "How It Works", href: "/parkease#how-it-works", key: "how" },
     { label: "Payments", href: "/parkease#payments", key: "payments" },
     { label: "Features", href: "/parkease#features", key: "features" },
+    { label: "Opportunities", href: "/parkease#bolomjuud", key: "bolomjuud" },
     { label: "Pricing", href: "/parkease#pricing", key: "pricing" },
   ],
   mn: [
@@ -17,6 +18,7 @@ const NAV = {
     { label: "Хэрхэн ажилладаг", href: "/parkease#how-it-works", key: "how" },
     { label: "Төлбөр", href: "/parkease#payments", key: "payments" },
     { label: "Онцлогууд", href: "/parkease#features", key: "features" },
+    { label: "Боломжууд", href: "/parkease#bolomjuud", key: "bolomjuud" },
     { label: "Үнэ тариф", href: "/parkease#pricing", key: "pricing" },
   ],
 };
@@ -27,7 +29,9 @@ export default function ParkEaseNavbar() {
   const { lang, toggle, sections } = useParkEaseLang();
 
   const links = NAV[lang].filter(
-    (item) => item.key !== "features" || sections.features
+    (item) =>
+      (item.key !== "features" || sections.features) &&
+      (item.key !== "bolomjuud" || sections.bolomjuud)
   );
 
   useEffect(() => {

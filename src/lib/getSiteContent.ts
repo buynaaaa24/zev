@@ -368,6 +368,18 @@ export async function getParkEaseSections(lang: string = "mn", siteId: string = 
       ...asRecord(patch.features),
       items: Array.isArray(asRecord(patch.features).items) ? (asRecord(patch.features).items as any) : [],
     },
+    bolomjuud: patch.bolomjuud ? {
+      label: (asRecord(patch.bolomjuud).label as string) || "",
+      title: (asRecord(patch.bolomjuud).title as string) || "",
+      desc: (asRecord(patch.bolomjuud).desc as string) || "",
+      items: Array.isArray(asRecord(patch.bolomjuud).items)
+        ? (asRecord(patch.bolomjuud).items as any[]).map((item) => ({
+            title: (item.title as string) || "",
+            desc: (item.desc as string) || "",
+            image: (item.image as string) || undefined,
+          }))
+        : [],
+    } : undefined,
     pricing: {
       ...EMPTY_PARKEASE.pricing,
       ...asRecord(patch.pricing),

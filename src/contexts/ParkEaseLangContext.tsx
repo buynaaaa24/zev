@@ -6,6 +6,7 @@ export type PLang = "en" | "mn";
 
 type ActiveSections = {
   features: boolean;
+  bolomjuud: boolean;
 };
 
 type Ctx = { 
@@ -18,13 +19,13 @@ type Ctx = {
 const ParkEaseLangContext = createContext<Ctx>({ 
   lang: "mn", 
   toggle: () => {},
-  sections: { features: true },
+  sections: { features: true, bolomjuud: false },
   setSections: () => {}
 });
 
 export function ParkEaseLangProvider({ children }: { children: ReactNode }) {
   const [lang, setLang] = useState<PLang>("mn");
-  const [sections, setSections] = useState<ActiveSections>({ features: true });
+  const [sections, setSections] = useState<ActiveSections>({ features: true, bolomjuud: false });
 
   useEffect(() => {
     const match = document.cookie.match(/(^|;)\s*parkease-lang\s*=\s*([^;]+)/);

@@ -38,6 +38,7 @@ const EMPTY_SECTIONS: ParkEaseSections = {
     banks: [],
   },
   features: { label: "", title: "", desc: "", items: [] },
+  bolomjuud: { label: "", title: "", desc: "", items: [] },
   pricing: {
     label: "",
     title: "",
@@ -686,9 +687,8 @@ function FeaturesSection() {
       <div className="max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16">
         <div ref={ref}>
           <div
-            className={`text-center mb-16 md:mb-24 transition-all duration-700 ${
-              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-            }`}
+            className={`text-center mb-16 md:mb-24 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+              }`}
           >
             <p
               className="text-[36px] sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
@@ -722,7 +722,7 @@ function FeaturesSection() {
               const hasImage = !!item.image;
               const isLarge = item.size === "large";
               const isMedium = item.size === "medium";
-              
+
               return (
                 <div
                   key={idx}
@@ -732,8 +732,8 @@ function FeaturesSection() {
                     ${isMedium ? "md:col-span-2 min-h-[260px]" : ""}
                     ${!isLarge && !isMedium ? "min-h-[240px]" : ""}
                     ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}
-                    ${hasImage 
-                      ? "border-neutral-800 text-white bg-neutral-900" 
+                    ${hasImage
+                      ? "border-neutral-800 text-white bg-neutral-900"
                       : "bg-white border-neutral-150 text-neutral-800 hover:border-yellow-500/30 hover:shadow-[0_20px_50px_rgba(246,180,20,0.06)]"
                     }
                     hover:-translate-y-1.5
@@ -768,7 +768,7 @@ function FeaturesSection() {
                           {FEATURE_ICONS[idx % FEATURE_ICONS.length]}
                         </div>
                       )}
-                      
+
                       {hasImage && (
                         <div
                           className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(255,255,255,0.05)]"
@@ -777,7 +777,7 @@ function FeaturesSection() {
                         </div>
                       )}
                     </div>
-                    
+
                     <div className="mt-4">
                       <h3
                         className={`font-black tracking-tight leading-snug mb-3
@@ -803,6 +803,117 @@ function FeaturesSection() {
         </div>
       </div>
     </section>
+  );
+}
+function BolomjuudSection() {
+  const { lang } = useParkEaseLang();
+  const api = useContext(AdminCtx)[lang].bolomjuud;
+  const { ref, visible } = useReveal();
+
+  if (!api || !api.items || api.items.length === 0) return null;
+
+  const items = api.items.filter(
+    (item) => (item.title && item.title.trim() !== "") || item.image
+  );
+
+  if (items.length === 0) return null;
+
+  return (
+    <section
+      id="bolomjuud"
+      className="py-14 sm:py-24 lg:py-32 relative z-10 px-5 sm:px-10 lg:px-16"
+      style={{
+        background: "linear-gradient(140deg, #0a0800 0%, #110e02 55%, #050400 100%)",
+      }}
+    >
+      <div className="max-w-[1200px] mx-auto">
+        <div ref={ref}>
+          <div
+            className={`text-center mb-16 md:mb-24 transition-all duration-700 ${
+              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
+          >
+            <p
+              className="text-sm font-semibold uppercase tracking-widest mb-3"
+              style={{ color: YELLOW }}
+            >
+              {api.label || (lang === "mn" ? "Боломжууд" : "Opportunities")}
+            </p>
+            <h2 className="text-[28px] sm:text-4xl md:text-5xl lg:text-6xl font-black tracking-tight text-white mb-4 sm:mb-6">
+              {api.title}
+            </h2>
+            <div className="flex items-center justify-center gap-3 mb-4 sm:mb-6">
+              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.3)" }} />
+              <div className="w-2 h-2 rounded-full" style={{ background: YELLOW }} />
+              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.3)" }} />
+            </div>
+            <p className="text-white/40 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">
+              {api.desc}
+            </p>
+          </div>
+
+          <div className="space-y-16 md:space-y-28">
+            {items.map((item, idx) => (
+              <BolomjuudRow key={idx} item={item} index={idx} />
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  );
+}
+
+function BolomjuudRow({ item, index }: { item: any; index: number }) {
+  const { ref, visible } = useReveal();
+  const isEven = index % 2 === 0;
+  return (
+    <div
+      ref={ref}
+      className={`flex flex-col ${
+        isEven ? "md:flex-row" : "md:flex-row-reverse"
+      } items-center gap-8 md:gap-20`}
+    >
+      <div
+        className={`flex-1 transition-all duration-1000 ${
+          visible
+            ? "opacity-100 translate-x-0"
+            : isEven
+            ? "opacity-0 -translate-x-12"
+            : "opacity-0 translate-x-12"
+        }`}
+      >
+        <div className="w-10 h-1 mb-6 rounded-full" style={{ backgroundColor: YELLOW }} />
+        <h3 className="text-xl sm:text-3xl font-black text-white tracking-tighter mb-4 leading-tight">
+          {item.title}
+        </h3>
+        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-6">
+          {item.desc}
+        </p>
+      </div>
+      <div
+        className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${
+          visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
+        }`}
+      >
+        <div
+          className="absolute inset-0 blur-[60px] rounded-full"
+          style={{ background: `${YELLOW_GLOW}0.15)` }}
+        />
+        <div className="relative aspect-[16/10] w-full rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group bg-neutral-950">
+          {item.image ? (
+            <img
+              src={resolveMediaUrl(item.image)}
+              alt={item.title}
+              className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <ChevronRight size={60} className="text-white/5" />
+            </div>
+          )}
+        </div>
+      </div>
+    </div>
   );
 }
 
@@ -860,9 +971,9 @@ function PricingSection() {
                   transitionDelay: visible ? `${i * 100}ms` : "0ms",
                   ...(highlight[i]
                     ? {
-                        border: `2px solid ${YELLOW_GLOW}0.45)`,
-                        boxShadow: `0 20px 60px ${YELLOW_GLOW}0.12)`,
-                      }
+                      border: `2px solid ${YELLOW_GLOW}0.45)`,
+                      boxShadow: `0 20px 60px ${YELLOW_GLOW}0.12)`,
+                    }
                     : {}),
                 }}
               >
@@ -941,10 +1052,10 @@ function PricingSection() {
                   style={
                     highlight[i]
                       ? {
-                          background: YELLOW,
-                          color: "#1a0f00",
-                          boxShadow: `0 8px 24px ${YELLOW_GLOW}0.3)`,
-                        }
+                        background: YELLOW,
+                        color: "#1a0f00",
+                        boxShadow: `0 8px 24px ${YELLOW_GLOW}0.3)`,
+                      }
                       : {}
                   }
                 >
@@ -1083,10 +1194,16 @@ export default function ParkEaseClient({
   const features = (currentSections.features?.items || []).filter(
     (item) => (item.title && item.title.trim() !== "") || item.image
   );
+  const bolomjuud = (currentSections.bolomjuud?.items || []).filter(
+    (item) => (item.title && item.title.trim() !== "") || item.image
+  );
 
   useEffect(() => {
-    setSections({ features: features.length > 0 });
-  }, [features.length, setSections]);
+    setSections({
+      features: features.length > 0,
+      bolomjuud: bolomjuud.length > 0,
+    });
+  }, [features.length, bolomjuud.length, setSections]);
 
   return (
     <AdminCtx.Provider value={{ mn: initialMn, en: initialEn }}>
@@ -1094,6 +1211,7 @@ export default function ParkEaseClient({
       <HowItWorksSection />
       <PaymentSection />
       <FeaturesSection />
+      <BolomjuudSection />
       <PricingSection />
       <FreeDriverSection />
       <CtaSection globalContact={globalContact} />

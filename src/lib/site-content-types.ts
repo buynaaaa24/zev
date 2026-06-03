@@ -290,6 +290,12 @@ export type ParkEaseSections = {
     desc: string;
     items: { title: string; desc: string; size: "small" | "medium" | "large"; image?: string }[];
   };
+  bolomjuud?: {
+    label: string;
+    title: string;
+    desc: string;
+    items: { title: string; desc: string; image?: string }[];
+  };
   pricing: {
     label: string;
     title: string;
