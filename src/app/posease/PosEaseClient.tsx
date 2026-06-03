@@ -549,7 +549,7 @@ function PricingContent({
                     <div
                       key={di}
                       className="px-3 py-1.5 rounded-full text-white text-[11px] font-black shadow-lg uppercase whitespace-nowrap"
-                      style={{ backgroundColor: d.color || "#7c3aed" }}
+                      style={{ backgroundColor: d.color ? (d.color.startsWith("#") ? d.color : `#${d.color}`) : "#7c3aed" }}
                     >
                       {d.label}
                     </div>
