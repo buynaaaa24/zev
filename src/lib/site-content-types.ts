@@ -129,6 +129,15 @@ export type SalesPageSections = {
   };
 };
 
+/** /zar listing page copy (site page id: `zar-page`) */
+export type ZarPageSections = {
+  header: {
+    eyebrow: string;
+    title: string;
+    intro: string;
+  };
+};
+
 /** /jobs listing page copy (site page id: `jobs-page`) */
 export type JobsPageSections = {
   header: {

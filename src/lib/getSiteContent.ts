@@ -17,6 +17,7 @@ import type {
   AmarHomeSections,
   RentlySections,
   QrSections,
+  ZarPageSections,
 } from "./site-content-types";
 import {
   fetchWithTimeout,
@@ -103,6 +104,9 @@ const EMPTY_PROPERTIES_PAGE: PropertiesPageSections = {
   cta: { href: "", label: "" },
 };
 const EMPTY_SALES_PAGE: SalesPageSections = {
+  header: { eyebrow: "", title: "", intro: "" },
+};
+const EMPTY_ZAR_PAGE: ZarPageSections = {
   header: { eyebrow: "", title: "", intro: "" },
 };
 const EMPTY_JOBS_PAGE: JobsPageSections = {
@@ -251,6 +255,13 @@ export async function getSalesPageSections(lang: string = "mn", siteId: string =
   const patch = asRecord(await fetchSitePageSections("sales-page", lang, siteId));
   return {
     header: { ...EMPTY_SALES_PAGE.header, ...asRecord(patch.header) },
+  };
+}
+
+export async function getZarPageSections(lang: string = "mn", siteId: string = "zevtabs"): Promise<ZarPageSections> {
+  const patch = asRecord(await fetchSitePageSections("zar-page", lang, siteId));
+  return {
+    header: { ...EMPTY_ZAR_PAGE.header, ...asRecord(patch.header) },
   };
 }
 

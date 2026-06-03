@@ -47,6 +47,11 @@ interface ZarClientProps {
   jobs: JobItem[];
   ads: SalesAdItem[];
   lang: string;
+  header?: {
+    eyebrow?: string;
+    title?: string;
+    intro?: string;
+  };
 }
 
 const texts = {
@@ -111,7 +116,7 @@ function formatDate(iso?: string, lang = "mn"): string | null {
   }
 }
 
-export default function ZarClient({ jobs, ads, lang }: ZarClientProps) {
+export default function ZarClient({ jobs, ads, lang, header }: ZarClientProps) {
   const t = lang === "en" ? texts.en : texts.mn;
   const [activeTab, setActiveTab] = useState<"jobs" | "sales">("jobs");
   const [searchQuery, setSearchQuery] = useState("");
@@ -176,19 +181,19 @@ export default function ZarClient({ jobs, ads, lang }: ZarClientProps) {
         <div className="relative mx-auto max-w-6xl px-4 text-center">
           <span className="inline-flex items-center gap-1.5 rounded-full border border-white/10 bg-white/5 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-400">
             {activeTab === "jobs" ? <Briefcase className="h-3.5 w-3.5" /> : <Megaphone className="h-3.5 w-3.5" />}
-            {activeTab === "jobs" ? t.jobsTab : t.salesTab}
+            {header?.eyebrow || (activeTab === "jobs" ? t.jobsTab : t.salesTab)}
           </span>
           <h1 className="mt-4 text-3xl font-extrabold tracking-tight sm:text-5xl lg:text-6xl">
-            <span className="gradient-text">{t.title}</span>
+            <span className="gradient-text">{header?.title || t.title}</span>
           </h1>
           <p className="mx-auto mt-4 max-w-2xl text-base text-gray-400 sm:text-lg">
-            {t.subtitle}
+            {header?.intro || t.subtitle}
           </p>
         </div>
       </section>
 
       {/* Control Panel (Tabs & Search) */}
-      <div className="mx-auto -mt-8 max-w-6xl px-4">
+      <div className="mx-auto -mt-8 max-w-6xl px-4 relative z-10">
         <div className="glass rounded-2xl border border-slate-200/80 p-4 shadow-xl flex flex-col md:flex-row gap-4 items-center justify-between">
           {/* Tab Switcher */}
           <div className="flex w-full md:w-auto p-1 bg-slate-100/80 rounded-xl border border-slate-200/30">

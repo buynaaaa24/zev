@@ -1,6 +1,7 @@
 import { getApiBaseUrl } from "@/lib/api";
 import { fetchWithTimeout } from "@/lib/server-fetch";
 import { getLanguageServer } from "@/lib/i18n-server";
+import { getZarPageSections } from "@/lib/getSiteContent";
 import ZarClient from "@/app/[siteId]/zar/ZarClient";
 import type { JobItem } from "../jobs/JobsClient";
 import type { SalesAdItem } from "@/components/sales/SalesAdsClient";
@@ -36,10 +37,11 @@ async function loadAds(lang: string, siteId: string): Promise<SalesAdItem[]> {
 export default async function ZarPage({ params }: { params: Promise<{ siteId: string }> }) {
   const { siteId } = await params;
   const lang = await getLanguageServer();
-  const [jobs, ads] = await Promise.all([
+  const [jobs, ads, pageData] = await Promise.all([
     loadJobs(lang, siteId),
     loadAds(lang, siteId),
+    getZarPageSections(lang, siteId),
   ]);
 
-  return <ZarClient jobs={jobs} ads={ads} lang={lang} />;
+  return <ZarClient jobs={jobs} ads={ads} lang={lang} header={pageData.header} />;
 }
