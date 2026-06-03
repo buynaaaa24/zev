@@ -12,6 +12,19 @@ const YELLOW = "#f6b414";
 const YELLOW_DARK = "#d99a0e";
 const YELLOW_GLOW = "rgba(246,180,20,";
 
+const handleAnchorScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const href = e.currentTarget.getAttribute("href");
+  if (href && href.startsWith("#")) {
+    e.preventDefault();
+    const targetId = href.substring(1);
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+    window.history.pushState(null, "", href);
+  }
+};
+
 /* ── Admin sections context ─────────────────────────────── */
 const EMPTY_SECTIONS: ParkEaseSections = {
   hero: {
@@ -270,8 +283,9 @@ function HeroSection() {
           className={`flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
           style={{ transitionDelay: ".44s" }}
         >
-          <Link
+          <a
             href="#kholbooBarikh"
+            onClick={handleAnchorScroll}
             className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-[15px] font-semibold active:scale-[0.97] transition-all duration-300"
             style={{
               background: `linear-gradient(90deg,${YELLOW},#ffc93c,${YELLOW})`,
@@ -295,7 +309,7 @@ function HeroSection() {
                 d="M17 8l4 4m0 0l-4 4m4-4H3"
               />
             </svg>
-          </Link>
+          </a>
           <button
             onClick={() =>
               document
@@ -967,7 +981,7 @@ function PricingSection() {
             {api.tiers.map((tier, i) => (
               <div
                 key={i}
-                className={`relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 overflow-hidden transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${highlight[i] ? "bg-neutral-900 md:scale-[1.03] md:-mt-2" : "bg-neutral-50 border border-neutral-150"}`}
+                className={`relative rounded-2xl sm:rounded-3xl p-5 sm:p-8 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${highlight[i] ? "bg-neutral-900 md:scale-[1.03] md:-mt-2" : "bg-neutral-50 border border-neutral-150"}`}
                 style={{
                   transitionDelay: visible ? `${i * 100}ms` : "0ms",
                   ...(highlight[i]
@@ -1043,8 +1057,9 @@ function PricingSection() {
                     </li>
                   ))}
                 </ul>
-                <Link
+                <a
                   href="#kholbooBarikh"
+                  onClick={handleAnchorScroll}
                   className={
                     highlight[i]
                       ? "block text-center text-[14px] font-semibold py-3 rounded-xl sm:rounded-2xl"
@@ -1061,7 +1076,7 @@ function PricingSection() {
                   }
                 >
                   {api.ctaBtn}
-                </Link>
+                </a>
               </div>
             ))}
           </div>
@@ -1071,13 +1086,14 @@ function PricingSection() {
             style={{ transitionDelay: "0.35s" }}
           >
             {api.note}{" "}
-            <Link
+            <a
               href={api.quoteLink || "#kholbooBarikh"}
+              onClick={handleAnchorScroll}
               className="font-medium hover:underline"
               style={{ color: YELLOW_DARK }}
             >
               {api.quoteBtn}
-            </Link>
+            </a>
           </p>
         </div>
       </div>

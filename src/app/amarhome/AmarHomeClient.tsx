@@ -79,6 +79,19 @@ const DEFAULTS: { en: AmarHomeSections; mn: AmarHomeSections } = {
   }
 };
 
+const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const href = e.currentTarget.getAttribute("href");
+  if (href && href.startsWith("#")) {
+    e.preventDefault();
+    const targetId = href.substring(1);
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+    window.history.pushState(null, "", href);
+  }
+};
+
 export default function AmarHomeClient({ data, globalContact }: { data: AmarHomeSections; globalContact?: GlobalContactInfo }) {
   const { lang } = useAmarHomeLang();
   const [mounted, setMounted] = useState(false);
@@ -160,9 +173,13 @@ export default function AmarHomeClient({ data, globalContact }: { data: AmarHome
                  {hero.desc}
               </p>
               <div className="flex flex-wrap gap-4">
-                 <Link href="#kholbooBarikh" className="group px-8 py-4 rounded-full bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-900/40 flex items-center gap-3">
-                    {hero.cta} <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
-                 </Link>
+                  <a
+                    href="#kholbooBarikh"
+                    onClick={handleScroll}
+                    className="group px-8 py-4 rounded-full bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-900/40 flex items-center gap-3"
+                  >
+                     {hero.cta} <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+                  </a>
               </div>
            </div>
         </div>
@@ -292,7 +309,7 @@ function PricingTier({ tier, index, totalCount }: { tier: any; index: number; to
   const isMiddle = totalCount === 3 && index === 1;
   return (
     <div ref={ref} className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: `${index * 150}ms` }}>
-      <div className={`relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 overflow-hidden ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}>
+      <div className={`relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}>
         {tier.discounts && tier.discounts.length > 0 && (
           <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
             {tier.discounts.map((d: { label: string; color?: string }, di: number) => (
@@ -307,9 +324,13 @@ function PricingTier({ tier, index, totalCount }: { tier: any; index: number; to
         </div>
         <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-8 tracking-tighter break-all w-full">{tier.price}</p>
         <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">{tier.desc}</p>
-        <Link href="#kholbooBarikh" className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl ${isMiddle ? "bg-white text-black hover:bg-emerald-500 hover:text-white" : "bg-emerald-500 text-white hover:bg-white hover:text-black"}`}>
+        <a
+          href="#kholbooBarikh"
+          onClick={handleScroll}
+          className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl ${isMiddle ? "bg-white text-black hover:bg-emerald-500 hover:text-white" : "bg-emerald-500 text-white hover:bg-white hover:text-black"}`}
+        >
           Get Started
-        </Link>
+        </a>
       </div>
     </div>
   );

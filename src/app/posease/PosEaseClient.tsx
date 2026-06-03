@@ -11,6 +11,19 @@ import { resolveMediaUrl } from "@/lib/media";
 const PINK = "rgb(255, 68, 105)";
 const PINK_GLOW = "rgba(255, 68, 105, 0.5)";
 
+const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
+  const href = e.currentTarget.getAttribute("href");
+  if (href && href.startsWith("#")) {
+    e.preventDefault();
+    const targetId = href.substring(1);
+    const el = document.getElementById(targetId);
+    if (el) {
+      el.scrollIntoView({ behavior: "smooth" });
+    }
+    window.history.pushState(null, "", href);
+  }
+};
+
 /* ── Fallback Defaults ───────────────────────────────────── */
 const DEFAULTS: { en: PosEaseSections; mn: PosEaseSections } = {
   en: {
@@ -311,8 +324,9 @@ export default function PosEaseClient({
           </p>
 
           <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
-            <Link
+            <a
               href="#kholbooBarikh"
+              onClick={handleScroll}
               className="group relative px-12 py-5 rounded-full bg-[rgb(255,68,105)] text-white font-black text-lg hover:scale-[1.05] active:scale-95 transition-all duration-500 shadow-[0_10px_40px_rgba(255,68,105,0.4)] overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
@@ -323,7 +337,7 @@ export default function PosEaseClient({
                   className="group-hover:translate-x-2 transition-transform"
                 />
               </span>
-            </Link>
+            </a>
           </div>
         </div>
 
@@ -535,7 +549,7 @@ function PricingContent({
           <div
             key={i}
             className={`
-              relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start overflow-hidden
+              relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start
               ${tiers.length === 3 && i === 1 ? "border-[rgb(255,68,105)]/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(255,68,105,0.15)]" : ""}
               ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}
               hover:border-[rgb(255,68,105)]/30 hover:-translate-y-2 transition-all duration-500
@@ -572,8 +586,9 @@ function PricingContent({
             <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">
               {tier.desc}
             </p>
-            <Link
+            <a
               href="#kholbooBarikh"
+              onClick={handleScroll}
               className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl
                 ${
                   tiers.length === 3 && i === 1
@@ -582,7 +597,7 @@ function PricingContent({
                 }`}
             >
               Get Started
-            </Link>
+            </a>
           </div>
         ))}
       </div>
