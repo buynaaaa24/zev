@@ -20,28 +20,72 @@ const DEFAULTS: { en: AmarHomeSections; mn: AmarHomeSections } = {
       title: "Invisible Technology.",
       desc: "We believe the best technology is the one you never see, but always feel.",
       items: [
-        { title: "Atmospheric Intelligence", desc: "Lighting and climate that adjust to your biological clock.", size: "large", image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=1200" },
-        { title: "Sonic Architecture", desc: "Immersive audio that moves with you through every room.", size: "medium", image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1200" },
-        { title: "Guardian AI", desc: "Proactive security that identifies anomalies before they become threats.", size: "small" },
-        { title: "Energy Synthesis", desc: "A self-optimizing power grid that minimizes your footprint.", size: "small" },
+        {
+          title: "Atmospheric Intelligence",
+          desc: "Lighting and climate that adjust to your biological clock.",
+          size: "large",
+          image:
+            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=1200",
+        },
+        {
+          title: "Sonic Architecture",
+          desc: "Immersive audio that moves with you through every room.",
+          size: "medium",
+          image:
+            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1200",
+        },
+        {
+          title: "Guardian AI",
+          desc: "Proactive security that identifies anomalies before they become threats.",
+          size: "small",
+        },
+        {
+          title: "Energy Synthesis",
+          desc: "A self-optimizing power grid that minimizes your footprint.",
+          size: "small",
+        },
       ],
     },
     hardware: {
       title: "The Components.",
       items: [
-        { name: "Core Hub", desc: "The silent engine powering your entire ecosystem.", label: "Neural Station" },
-        { name: "Glass Touch", desc: "A singular, hand-polished interface for absolute control.", label: "Control Surface" },
-        { name: "Lumina S1", desc: "Bio-adaptive sensors that read the rhythm of the day.", label: "Sensor Array" },
-      ]
+        {
+          name: "Core Hub",
+          desc: "The silent engine powering your entire ecosystem.",
+          label: "Neural Station",
+        },
+        {
+          name: "Glass Touch",
+          desc: "A singular, hand-polished interface for absolute control.",
+          label: "Control Surface",
+        },
+        {
+          name: "Lumina S1",
+          desc: "Bio-adaptive sensors that read the rhythm of the day.",
+          label: "Sensor Array",
+        },
+      ],
     },
     pricing: {
       title: "Your Sanctuary.",
       tiers: [
-        { name: "Urban", price: "Custom", desc: "Optimized for high-end apartments and lofts." },
-        { name: "Family", price: "Custom", desc: "Comprehensive ecosystem for residential homes." },
-        { name: "Global", price: "Custom", desc: "The ultimate standard for estates and retreats." },
-      ]
-    }
+        {
+          name: "Urban",
+          price: "Custom",
+          desc: "Optimized for high-end apartments and lofts.",
+        },
+        {
+          name: "Family",
+          price: "Custom",
+          desc: "Comprehensive ecosystem for residential homes.",
+        },
+        {
+          name: "Global",
+          price: "Custom",
+          desc: "The ultimate standard for estates and retreats.",
+        },
+      ],
+    },
   },
   mn: {
     hero: {
@@ -54,29 +98,73 @@ const DEFAULTS: { en: AmarHomeSections; mn: AmarHomeSections } = {
       title: "Үл Үзэгдэх Технологи.",
       desc: "Хамгийн шилдэг технологи бол хэзээ ч харагдахгүй мөртлөө үргэлж мэдрэгддэг технологи юм.",
       items: [
-        { title: "Агаар мандлын оюун ухаан", desc: "Таны биологийн цагт тохирсон гэрэлтүүлэг болон уур амьсгал.", size: "large", image: "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=1200" },
-        { title: "Дуу авианы архитектур", desc: "Таныг өрөө бүрт дагах гайхалтай дуугаралт.", size: "medium", image: "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1200" },
-        { title: "Хамгаалагч AI", desc: "Аюулыг болохоос нь өмнө илрүүлэх ухаалаг хамгаалалт.", size: "small" },
-        { title: "Эрчим хүчний синтез", desc: "Таны хэрэглээг багасгах өөрөө оновчтой болгодог сүлжээ.", size: "small" },
+        {
+          title: "Агаар мандлын оюун ухаан",
+          desc: "Таны биологийн цагт тохирсон гэрэлтүүлэг болон уур амьсгал.",
+          size: "large",
+          image:
+            "https://images.unsplash.com/photo-1600210492486-724fe5c67fb0?auto=format&fit=crop&q=80&w=1200",
+        },
+        {
+          title: "Дуу авианы архитектур",
+          desc: "Таныг өрөө бүрт дагах гайхалтай дуугаралт.",
+          size: "medium",
+          image:
+            "https://images.unsplash.com/photo-1600607687920-4e2a09cf159d?auto=format&fit=crop&q=80&w=1200",
+        },
+        {
+          title: "Хамгаалагч AI",
+          desc: "Аюулыг болохоос нь өмнө илрүүлэх ухаалаг хамгаалалт.",
+          size: "small",
+        },
+        {
+          title: "Эрчим хүчний синтез",
+          desc: "Таны хэрэглээг багасгах өөрөө оновчтой болгодог сүлжээ.",
+          size: "small",
+        },
       ],
     },
     hardware: {
       title: "Бүрэлдэхүүн Хэсэг.",
       items: [
-        { name: "Core Hub", desc: "Таны бүх экосистемийг тэжээх чимээгүй хөдөлгүүр.", label: "Мэдрэлийн төв" },
-        { name: "Glass Touch", desc: "Бүрэн хяналт тавих гараар өнгөлсөн шилэн интерфэйс.", label: "Хяналтын гадаргуу" },
-        { name: "Lumina S1", desc: "Өдрийн хэмнэлийг мэдрэх био-адаптив мэдрэгчүүд.", label: "Мэдрэгч" },
-      ]
+        {
+          name: "Core Hub",
+          desc: "Таны бүх экосистемийг тэжээх чимээгүй хөдөлгүүр.",
+          label: "Мэдрэлийн төв",
+        },
+        {
+          name: "Glass Touch",
+          desc: "Бүрэн хяналт тавих гараар өнгөлсөн шилэн интерфэйс.",
+          label: "Хяналтын гадаргуу",
+        },
+        {
+          name: "Lumina S1",
+          desc: "Өдрийн хэмнэлийг мэдрэх био-адаптив мэдрэгчүүд.",
+          label: "Мэдрэгч",
+        },
+      ],
     },
     pricing: {
       title: "Таны Орон Зай.",
       tiers: [
-        { name: "Urban", price: "Захиалгат", desc: "Орчин үеийн орон сууц болон лофтод зориулагдсан." },
-        { name: "Family", price: "Захиалгат", desc: "Гэр бүлийн хауст зориулсан бүрэн экосистем." },
-        { name: "Global", price: "Захиалгат", desc: "Эдлэн газар болон виллад зориулсан дээд зэргийн стандарт." },
-      ]
-    }
-  }
+        {
+          name: "Urban",
+          price: "Захиалгат",
+          desc: "Орчин үеийн орон сууц болон лофтод зориулагдсан.",
+        },
+        {
+          name: "Family",
+          price: "Захиалгат",
+          desc: "Гэр бүлийн хауст зориулсан бүрэн экосистем.",
+        },
+        {
+          name: "Global",
+          price: "Захиалгат",
+          desc: "Эдлэн газар болон виллад зориулсан дээд зэргийн стандарт.",
+        },
+      ],
+    },
+  },
 };
 
 const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
@@ -92,7 +180,13 @@ const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
   }
 };
 
-export default function AmarHomeClient({ data, globalContact }: { data: AmarHomeSections; globalContact?: GlobalContactInfo }) {
+export default function AmarHomeClient({
+  data,
+  globalContact,
+}: {
+  data: AmarHomeSections;
+  globalContact?: GlobalContactInfo;
+}) {
   const { lang } = useAmarHomeLang();
   const [mounted, setMounted] = useState(false);
   const canvasRef = useRef<HTMLCanvasElement>(null);
@@ -105,30 +199,51 @@ export default function AmarHomeClient({ data, globalContact }: { data: AmarHome
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let animId: number;
-    const particles: { x: number; y: number; r: number; dx: number; dy: number; alpha: number }[] = [];
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+    const particles: {
+      x: number;
+      y: number;
+      r: number;
+      dx: number;
+      dy: number;
+      alpha: number;
+    }[] = [];
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
     resize();
     window.addEventListener("resize", resize);
     for (let i = 0; i < 60; i++) {
       particles.push({
-        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
         r: Math.random() * 1.5 + 0.2,
-        dx: (Math.random() - 0.5) * 0.1, dy: -Math.random() * 0.3 - 0.05,
+        dx: (Math.random() - 0.5) * 0.1,
+        dy: -Math.random() * 0.3 - 0.05,
         alpha: Math.random() * 0.4 + 0.1,
       });
     }
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(16,185,129,${p.alpha})`; ctx.fill();
-        p.x += p.dx; p.y += p.dy;
-        if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(16,185,129,${p.alpha})`;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.y < -10) {
+          p.y = canvas.height + 10;
+          p.x = Math.random() * canvas.width;
+        }
       });
       animId = requestAnimationFrame(draw);
     };
     draw();
-    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+    };
   }, []);
 
   const hero = {
@@ -138,9 +253,14 @@ export default function AmarHomeClient({ data, globalContact }: { data: AmarHome
     cta: data.hero.cta || defaults.hero.cta,
   };
 
-  const features = data.features.items.length > 0 ? data.features : defaults.features;
-  const hardware = data.hardware.items.length > 0 ? data.hardware.items : defaults.hardware.items;
-  const pricing = data.pricing.tiers.length > 0 ? data.pricing.tiers : defaults.pricing.tiers;
+  const features =
+    data.features.items.length > 0 ? data.features : defaults.features;
+  const hardware =
+    data.hardware.items.length > 0
+      ? data.hardware.items
+      : defaults.hardware.items;
+  const pricing =
+    data.pricing.tiers.length > 0 ? data.pricing.tiers : defaults.pricing.tiers;
 
   const getGridCols = (count: number) => {
     if (count === 1) return "grid-cols-1 max-w-md mx-auto";
@@ -150,70 +270,99 @@ export default function AmarHomeClient({ data, globalContact }: { data: AmarHome
 
   return (
     <main className="bg-[#050505] min-h-screen relative overflow-hidden font-sans selection:bg-emerald-500 selection:text-white">
-      
-      
       {/* BACKGROUND ELEMENTS */}
       <div className="fixed inset-0 pointer-events-none z-0">
         <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[70%] rounded-full bg-emerald-900/40 blur-[160px] animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-5%] w-[60%] h-[50%] rounded-full bg-emerald-600/10 blur-[140px]" />
-        <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(6,78,59,0.4) 0%, transparent 80%)" }} />
+        <div
+          className="absolute inset-0 z-[1]"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(6,78,59,0.4) 0%, transparent 80%)",
+          }}
+        />
       </div>
 
-      <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none z-[5]" />
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 w-full h-full pointer-events-none z-[5]"
+      />
 
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center pt-20 px-6 md:px-16 lg:px-24 z-10">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full max-w-[1400px] mx-auto">
-           <div className={`lg:col-span-6 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}>
-              <h1 className="text-5xl sm:text-6xl lg:text-[80px] font-black text-white mb-6 leading-[1.1] tracking-tighter">
-                 {hero.title}<br />
-                 <span className="bg-gradient-to-r from-emerald-400 to-white text-transparent bg-clip-text italic pr-4">{hero.titleAccent}</span>
-              </h1>
-              <p className="text-lg sm:text-xl text-white/40 max-w-lg mb-10 leading-relaxed font-medium">
-                 {hero.desc}
-              </p>
-              <div className="flex flex-wrap gap-4">
-                  <a
-                    href="#kholbooBarikh"
-                    onClick={handleScroll}
-                    className="group px-8 py-4 rounded-full bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-900/40 flex items-center gap-3"
-                  >
-                     {hero.cta} <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
-                  </a>
-              </div>
-           </div>
+          <div
+            className={`lg:col-span-6 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}
+          >
+            <h1 className="text-5xl sm:text-6xl lg:text-[80px] font-black text-white mb-6 leading-[1.1] tracking-tighter">
+              {hero.title}
+              <br />
+              <span className="bg-gradient-to-r from-emerald-400 to-white text-transparent bg-clip-text italic pr-4">
+                {hero.titleAccent}
+              </span>
+            </h1>
+            <p className="text-lg sm:text-xl text-white/40 max-w-lg mb-10 leading-relaxed font-medium">
+              {hero.desc}
+            </p>
+            <div className="flex flex-wrap gap-4">
+              <a
+                href="#kholbooBarikh"
+                onClick={handleScroll}
+                className="group px-8 py-4 rounded-full bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-900/40 flex items-center gap-3"
+              >
+                {hero.cta}{" "}
+                <ArrowRight
+                  size={16}
+                  className="group-hover:translate-x-2 transition-transform"
+                />
+              </a>
+            </div>
+          </div>
         </div>
       </section>
 
       {/* FEATURES (Технологи) */}
       <section id="features" className="py-8 md:py-16 relative z-10 px-6">
         <div className="max-w-[1200px] mx-auto">
-           <div className="mb-8 md:mb-14">
-              <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">Innovation</span>
-              <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-[0.9]">{features.title}</h2>
-              <p className="text-white/40 text-lg mt-6 max-w-xl">{features.desc}</p>
-           </div>
-           
-           <div className="flex flex-col gap-12 md:gap-16">
-              {features.items.map((item, i) => (
-                <FeatureRow key={i} item={item} index={i} />
-              ))}
-           </div>
+          <div className="mb-8 md:mb-14">
+            <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
+              Innovation
+            </span>
+            <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-[0.9]">
+              {features.title}
+            </h2>
+            <p className="text-white/40 text-lg mt-6 max-w-xl">
+              {features.desc}
+            </p>
+          </div>
+
+          <div className="flex flex-col gap-12 md:gap-16">
+            {features.items.map((item, i) => (
+              <FeatureRow key={i} item={item} index={i} />
+            ))}
+          </div>
         </div>
       </section>
 
       {/* HARDWARE (Төхөөрөмжүүд) */}
       {hardware.length > 0 && (
-        <section id="hardware" className="py-12 md:py-24 bg-neutral-900/10 relative z-10">
+        <section
+          id="hardware"
+          className="py-12 md:py-24 bg-neutral-900/10 relative z-10"
+        >
           <div className="max-w-[1200px] mx-auto px-6">
             <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12 md:mb-16">
-                <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">{data.hardware.title}</h2>
+              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">
+                {data.hardware.title}
+              </h2>
             </div>
-            
-            <div className={`grid ${getGridCols(hardware.length)} gap-6 md:gap-10`}>
-                {hardware.map((item, i) => (
-                  <HardwareSpotlight key={i} item={item} index={i} />
-                ))}
+
+            <div
+              className={`grid ${getGridCols(hardware.length)} gap-6 md:gap-10`}
+            >
+              {hardware.map((item, i) => (
+                <HardwareSpotlight key={i} item={item} index={i} />
+              ))}
             </div>
           </div>
         </section>
@@ -224,12 +373,19 @@ export default function AmarHomeClient({ data, globalContact }: { data: AmarHome
         <section id="pricing" className="py-8 md:py-16 relative z-10 px-6">
           <div className="max-w-[1200px] mx-auto">
             <div className="text-center mb-8 md:mb-14">
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-8">{data.pricing.title || defaults.pricing.title}</h2>
+              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-8">
+                {data.pricing.title || defaults.pricing.title}
+              </h2>
               <div className="w-12 h-1 bg-emerald-500 mx-auto rounded-full" />
             </div>
             <div className={`grid ${getGridCols(pricing.length)} gap-8`}>
               {pricing.map((tier, i) => (
-                <PricingTier key={i} tier={tier} index={i} totalCount={pricing.length} />
+                <PricingTier
+                  key={i}
+                  tier={tier}
+                  index={i}
+                  totalCount={pricing.length}
+                />
               ))}
             </div>
           </div>
@@ -248,34 +404,47 @@ export default function AmarHomeClient({ data, globalContact }: { data: AmarHome
         location={globalContact?.location}
         locationUrl={globalContact?.locationUrl}
       />
-
     </main>
   );
 }
-
 
 function FeatureRow({ item, index }: { item: any; index: number }) {
   const { ref, visible } = useReveal();
   const isEven = index % 2 === 0;
   return (
-    <div ref={ref} className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-8 md:gap-20`}>
-       <div className={`flex-1 transition-all duration-1000 ${visible ? "opacity-100 translate-x-0" : isEven ? "opacity-0 -translate-x-12" : "opacity-0 translate-x-12"}`}>
-          <div className="w-10 h-1 bg-emerald-500 mb-6 rounded-full" />
-          <h3 className="text-xl sm:text-3xl font-black text-white tracking-tighter mb-4 leading-tight">{item.title}</h3>
-          <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-6">{item.desc}</p>
-       </div>
-       <div className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}>
-          <div className="absolute inset-0 bg-emerald-500/20 blur-[60px] rounded-full" />
-          <div className="relative aspect-[16/10] rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group">
-             {item.image ? (
-                <img src={resolveMediaUrl(item.image)} alt={item.title} className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" />
-             ) : (
-                <div className="w-full h-full bg-neutral-900 flex items-center justify-center">
-                   <ChevronRight size={60} className="text-white/5" />
-                </div>
-             )}
-          </div>
-       </div>
+    <div
+      ref={ref}
+      className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-8 md:gap-20`}
+    >
+      <div
+        className={`flex-1 transition-all duration-1000 ${visible ? "opacity-100 translate-x-0" : isEven ? "opacity-0 -translate-x-12" : "opacity-0 translate-x-12"}`}
+      >
+        <div className="w-10 h-1 bg-emerald-500 mb-6 rounded-full" />
+        <h3 className="text-xl sm:text-3xl font-black text-white tracking-tighter mb-4 leading-tight">
+          {item.title}
+        </h3>
+        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-6">
+          {item.desc}
+        </p>
+      </div>
+      <div
+        className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}
+      >
+        <div className="absolute inset-0 bg-emerald-500/20 blur-[60px] rounded-full" />
+        <div className="relative aspect-[16/10] rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group">
+          {item.image ? (
+            <img
+              src={resolveMediaUrl(item.image)}
+              alt={item.title}
+              className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+            />
+          ) : (
+            <div className="w-full h-full bg-neutral-900 flex items-center justify-center">
+              <ChevronRight size={60} className="text-white/5" />
+            </div>
+          )}
+        </div>
+      </div>
     </div>
   );
 }
@@ -283,47 +452,99 @@ function FeatureRow({ item, index }: { item: any; index: number }) {
 function HardwareSpotlight({ item, index }: { item: any; index: number }) {
   const { ref, visible } = useReveal();
   return (
-    <div ref={ref} className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: `${index * 150}ms` }}>
-       <div className="relative aspect-[4/3] md:aspect-square rounded-[24px] md:rounded-[40px] bg-neutral-900/40 border border-white/10 mb-4 md:mb-6 overflow-hidden group">
-          {item.image ? (
-             <img src={resolveMediaUrl(item.image)} alt={item.name} className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-100 transition-all duration-700" />
-          ) : (
-             <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-          )}
-          <div className="absolute top-4 left-4 text-white/5 text-[32px] md:text-[48px] font-black leading-none">0{index + 1}</div>
-          <div className="relative h-full flex flex-col items-center justify-center p-6 md:p-8 text-center group-hover:-translate-y-2 transition-transform duration-700">
-             <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-emerald-500/30 transition-all duration-500 backdrop-blur-sm">
-                <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(52,211,153,1)]" />
-             </div>
-             <span className="text-emerald-400 text-[8px] md:text-[9px] font-black uppercase tracking-[0.4em] mb-2 block">{item.label}</span>
-             <h3 className="text-xl md:text-2xl font-black text-white">{item.name}</h3>
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+      style={{ transitionDelay: `${index * 150}ms` }}
+    >
+      <div className="relative aspect-[4/3] md:aspect-square rounded-[24px] md:rounded-[40px] bg-neutral-900/40 border border-white/10 mb-4 md:mb-6 overflow-hidden group">
+        {item.image ? (
+          <img
+            src={resolveMediaUrl(item.image)}
+            alt={item.name}
+            className="absolute inset-0 w-full h-full object-cover opacity-60 group-hover:scale-110 group-hover:opacity-100 transition-all duration-700"
+          />
+        ) : (
+          <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+        )}
+        <div className="absolute top-4 left-4 text-white/5 text-[32px] md:text-[48px] font-black leading-none">
+          0{index + 1}
+        </div>
+        <div className="relative h-full flex flex-col items-center justify-center p-6 md:p-8 text-center group-hover:-translate-y-2 transition-transform duration-700">
+          <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-emerald-500/30 transition-all duration-500 backdrop-blur-sm">
+            <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(52,211,153,1)]" />
           </div>
-       </div>
-       <p className="text-white/30 text-[10px] md:text-xs font-medium leading-relaxed pl-6 border-l border-white/5">{item.desc}</p>
+          <span className="text-emerald-400 text-[8px] md:text-[9px] font-black uppercase tracking-[0.4em] mb-2 block">
+            {item.label}
+          </span>
+          <h3 className="text-xl md:text-2xl font-black text-white">
+            {item.name}
+          </h3>
+        </div>
+      </div>
+      <p className="text-white/30 text-[10px] md:text-xs font-medium leading-relaxed pl-6 border-l border-white/5">
+        {item.desc}
+      </p>
     </div>
   );
 }
 
-function PricingTier({ tier, index, totalCount }: { tier: any; index: number; totalCount: number }) {
+function PricingTier({
+  tier,
+  index,
+  totalCount,
+}: {
+  tier: any;
+  index: number;
+  totalCount: number;
+}) {
   const { ref, visible } = useReveal();
   const isMiddle = totalCount === 3 && index === 1;
   return (
-    <div ref={ref} className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: `${index * 150}ms` }}>
-      <div className={`relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}>
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+      style={{ transitionDelay: `${index * 150}ms` }}
+    >
+      <div
+        className={`relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}
+      >
         {tier.discounts && tier.discounts.length > 0 && (
           <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
-            {tier.discounts.map((d: { label: string; color?: string }, di: number) => (
-              <div key={di} className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap" style={{ backgroundColor: d.color ? (d.color.startsWith("#") ? d.color : `#${d.color}`) : "#7c3aed" }}>
-                {d.label}
-              </div>
-            ))}
+            {tier.discounts.map(
+              (d: { label: string; color?: string }, di: number) => (
+                <div
+                  key={di}
+                  className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap"
+                  style={{
+                    backgroundColor: d.color
+                      ? d.color.startsWith("#")
+                        ? d.color
+                        : `#${d.color}`
+                      : "#7c3aed",
+                  }}
+                >
+                  {d.label}
+                </div>
+              ),
+            )}
           </div>
         )}
-        <div className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${isMiddle ? "bg-emerald-500" : "bg-white/5 border border-white/10"}`}>
-          <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${isMiddle ? "text-white" : "text-emerald-400"}`}>{tier.name}</span>
+        <div
+          className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${isMiddle ? "bg-emerald-500" : "bg-white/5 border border-white/10"}`}
+        >
+          <span
+            className={`text-[10px] font-black uppercase tracking-[0.3em] ${isMiddle ? "text-white" : "text-emerald-400"}`}
+          >
+            {tier.name}
+          </span>
         </div>
-        <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-8 tracking-tighter break-all w-full">{tier.price}</p>
-        <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">{tier.desc}</p>
+        <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-8 tracking-tighter break-all w-full">
+          {tier.price}
+        </p>
+        <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">
+          {tier.desc}
+        </p>
         <a
           href="#kholbooBarikh"
           onClick={handleScroll}
@@ -342,7 +563,15 @@ function useReveal() {
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) { setVisible(true); obs.disconnect(); } }, { threshold: 0.1 });
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) {
+          setVisible(true);
+          obs.disconnect();
+        }
+      },
+      { threshold: 0.1 },
+    );
     obs.observe(el);
     return () => obs.disconnect();
   }, []);
