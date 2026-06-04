@@ -289,22 +289,22 @@ export default function AmarHomeClient({
       />
 
       {/* HERO */}
-      <section className="relative min-h-[90vh] flex items-center pt-20 px-6 md:px-16 lg:px-24 z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-16 items-center w-full max-w-[1400px] mx-auto">
+      <section className="relative min-h-[90vh] flex items-center pt-20 px-5 sm:px-8 md:px-16 lg:px-24 z-10">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-center w-full max-w-[1400px] mx-auto">
           <div
             className={`lg:col-span-6 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}
           >
-            <h1 className="text-5xl sm:text-6xl lg:text-[80px] font-black text-white mb-6 leading-[1.1] tracking-tighter">
+            <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[80px] font-black text-white mb-5 sm:mb-6 leading-[1.1] tracking-tighter">
               {hero.title}
               <br />
               <span className="bg-gradient-to-r from-emerald-400 to-white text-transparent bg-clip-text italic pr-4">
                 {hero.titleAccent}
               </span>
             </h1>
-            <p className="text-lg sm:text-xl text-white/40 max-w-lg mb-10 leading-relaxed font-medium">
+            <p className="text-base sm:text-lg md:text-xl text-white/40 max-w-lg mb-8 sm:mb-10 leading-relaxed font-medium">
               {hero.desc}
             </p>
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-3 sm:gap-4">
               <a
                 href="#kholbooBarikh"
                 onClick={handleScroll}
@@ -322,21 +322,24 @@ export default function AmarHomeClient({
       </section>
 
       {/* FEATURES (Технологи) */}
-      <section id="features" className="py-8 md:py-16 relative z-10 px-6">
+      <section
+        id="features"
+        className="py-8 md:py-16 relative z-10 px-5 sm:px-8 md:px-6"
+      >
         <div className="max-w-[1200px] mx-auto">
           <div className="mb-8 md:mb-14">
             <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
               Innovation
             </span>
-            <h2 className="text-4xl md:text-6xl font-black text-white tracking-tighter leading-[0.9]">
+            <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[0.9]">
               {features.title}
             </h2>
-            <p className="text-white/40 text-lg mt-6 max-w-xl">
+            <p className="text-white/40 text-base sm:text-lg mt-4 sm:mt-6 max-w-xl">
               {features.desc}
             </p>
           </div>
 
-          <div className="flex flex-col gap-12 md:gap-16">
+          <div className="flex flex-col gap-8 sm:gap-12 md:gap-16">
             {features.items.map((item, i) => (
               <FeatureRow key={i} item={item} index={i} />
             ))}
@@ -348,17 +351,17 @@ export default function AmarHomeClient({
       {hardware.length > 0 && (
         <section
           id="hardware"
-          className="py-12 md:py-24 bg-neutral-900/10 relative z-10"
+          className="py-8 sm:py-12 md:py-20 lg:py-24 bg-neutral-900/10 relative z-10"
         >
-          <div className="max-w-[1200px] mx-auto px-6">
-            <div className="flex flex-col md:flex-row justify-between items-end gap-6 mb-12 md:mb-16">
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">
+          <div className="max-w-[1200px] mx-auto px-5 sm:px-8 md:px-6">
+            <div className="flex flex-col md:flex-row justify-between items-end gap-4 sm:gap-6 mb-8 sm:mb-12 md:mb-16">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter leading-none">
                 {data.hardware.title}
               </h2>
             </div>
 
             <div
-              className={`grid ${getGridCols(hardware.length)} gap-6 md:gap-10`}
+              className={`grid ${getGridCols(hardware.length)} gap-5 sm:gap-6 md:gap-8 lg:gap-10`}
             >
               {hardware.map((item, i) => (
                 <HardwareSpotlight key={i} item={item} index={i} />
@@ -370,15 +373,20 @@ export default function AmarHomeClient({
 
       {/* PRICING (Үнийн санал) */}
       {pricing.length > 0 && (
-        <section id="pricing" className="py-8 md:py-16 relative z-10 px-6">
+        <section
+          id="pricing"
+          className="py-8 md:py-16 relative z-10 px-5 sm:px-8 md:px-6"
+        >
           <div className="max-w-[1200px] mx-auto">
             <div className="text-center mb-8 md:mb-14">
-              <h2 className="text-4xl md:text-5xl font-black text-white tracking-tighter mb-8">
+              <h2 className="text-3xl sm:text-4xl md:text-5xl font-black text-white tracking-tighter mb-6 sm:mb-8">
                 {data.pricing.title || defaults.pricing.title}
               </h2>
               <div className="w-12 h-1 bg-emerald-500 mx-auto rounded-full" />
             </div>
-            <div className={`grid ${getGridCols(pricing.length)} gap-8`}>
+            <div
+              className={`grid ${getGridCols(pricing.length)} gap-4 sm:gap-6 md:gap-8`}
+            >
               {pricing.map((tier, i) => (
                 <PricingTier
                   key={i}
@@ -414,16 +422,16 @@ function FeatureRow({ item, index }: { item: any; index: number }) {
   return (
     <div
       ref={ref}
-      className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-8 md:gap-20`}
+      className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-6 sm:gap-8 md:gap-12 lg:gap-20`}
     >
       <div
         className={`flex-1 transition-all duration-1000 ${visible ? "opacity-100 translate-x-0" : isEven ? "opacity-0 -translate-x-12" : "opacity-0 translate-x-12"}`}
       >
-        <div className="w-10 h-1 bg-emerald-500 mb-6 rounded-full" />
-        <h3 className="text-xl sm:text-3xl font-black text-white tracking-tighter mb-4 leading-tight">
+        <div className="w-8 sm:w-10 h-1 bg-emerald-500 mb-4 sm:mb-6 rounded-full" />
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tighter mb-3 sm:mb-4 leading-tight">
           {item.title}
         </h3>
-        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-6">
+        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-4 sm:mb-6">
           {item.desc}
         </p>
       </div>
@@ -431,7 +439,7 @@ function FeatureRow({ item, index }: { item: any; index: number }) {
         className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}
       >
         <div className="absolute inset-0 bg-emerald-500/20 blur-[60px] rounded-full" />
-        <div className="relative aspect-[16/10] rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group">
+        <div className="relative aspect-[16/10] rounded-[16px] sm:rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group">
           {item.image ? (
             <img
               src={resolveMediaUrl(item.image)}
@@ -457,7 +465,7 @@ function HardwareSpotlight({ item, index }: { item: any; index: number }) {
       className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
       style={{ transitionDelay: `${index * 150}ms` }}
     >
-      <div className="relative aspect-[4/3] md:aspect-square rounded-[24px] md:rounded-[40px] bg-neutral-900/40 border border-white/10 mb-4 md:mb-6 overflow-hidden group">
+      <div className="relative aspect-[4/3] sm:aspect-square rounded-[20px] sm:rounded-[24px] md:rounded-[40px] bg-neutral-900/40 border border-white/10 mb-3 sm:mb-4 md:mb-6 overflow-hidden group">
         {item.image ? (
           <img
             src={resolveMediaUrl(item.image)}
@@ -467,22 +475,22 @@ function HardwareSpotlight({ item, index }: { item: any; index: number }) {
         ) : (
           <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
         )}
-        <div className="absolute top-4 left-4 text-white/5 text-[32px] md:text-[48px] font-black leading-none">
+        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 text-white/5 text-[24px] sm:text-[32px] md:text-[48px] font-black leading-none">
           0{index + 1}
         </div>
-        <div className="relative h-full flex flex-col items-center justify-center p-6 md:p-8 text-center group-hover:-translate-y-2 transition-transform duration-700">
-          <div className="w-10 h-10 md:w-16 md:h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-4 md:mb-6 group-hover:bg-emerald-500/30 transition-all duration-500 backdrop-blur-sm">
+        <div className="relative h-full flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 text-center group-hover:-translate-y-2 transition-transform duration-700">
+          <div className="w-9 h-9 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-3 sm:mb-4 md:mb-6 group-hover:bg-emerald-500/30 transition-all duration-500 backdrop-blur-sm">
             <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(52,211,153,1)]" />
           </div>
-          <span className="text-emerald-400 text-[8px] md:text-[9px] font-black uppercase tracking-[0.4em] mb-2 block">
+          <span className="text-emerald-400 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] mb-2 block">
             {item.label}
           </span>
-          <h3 className="text-xl md:text-2xl font-black text-white">
+          <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">
             {item.name}
           </h3>
         </div>
       </div>
-      <p className="text-white/30 text-[10px] md:text-xs font-medium leading-relaxed pl-6 border-l border-white/5">
+      <p className="text-white/30 text-[10px] sm:text-xs font-medium leading-relaxed pl-4 sm:pl-6 border-l border-white/5">
         {item.desc}
       </p>
     </div>
@@ -507,7 +515,7 @@ function PricingTier({
       style={{ transitionDelay: `${index * 150}ms` }}
     >
       <div
-        className={`relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}
+        className={`relative p-5 sm:p-8 md:p-10 lg:p-12 rounded-[24px] sm:rounded-[32px] md:rounded-[48px] lg:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}
       >
         {tier.discounts && tier.discounts.length > 0 && (
           <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">

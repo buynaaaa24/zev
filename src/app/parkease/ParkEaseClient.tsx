@@ -742,17 +742,17 @@ function FeaturesSection() {
       <div className="max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16">
         <div ref={ref}>
           <div
-            className={`text-center mb-16 md:mb-24 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            className={`text-center mb-10 sm:mb-16 md:mb-24 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
               }`}
           >
             <p
-              className="text-[36px] sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
+              className="text-[28px] sm:text-4xl md:text-5xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
               style={{ color: YELLOW_DARK }}
             >
               {api.label}
             </p>
             <h2
-              className="text-[36px] sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
+              className="text-[28px] sm:text-4xl md:text-5xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
               style={{
                 background: "linear-gradient(135deg,#1a1a1a 0%,#3d3d3d 40%,#f6b414 100%)",
                 WebkitBackgroundClip: "text",
@@ -782,10 +782,10 @@ function FeaturesSection() {
                 <div
                   key={idx}
                   className={`
-                    group relative rounded-3xl p-6 sm:p-8 overflow-hidden border transition-all duration-700
-                    ${isLarge ? "md:col-span-2 md:row-span-2 min-h-[360px]" : ""}
-                    ${isMedium ? "md:col-span-2 min-h-[260px]" : ""}
-                    ${!isLarge && !isMedium ? "min-h-[240px]" : ""}
+                    group relative rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 overflow-hidden border transition-all duration-700
+                    ${isLarge ? "md:col-span-2 md:row-span-2 min-h-[260px] sm:min-h-[320px] md:min-h-[360px]" : ""}
+                    ${isMedium ? "md:col-span-2 min-h-[200px] sm:min-h-[240px] md:min-h-[260px]" : ""}
+                    ${!isLarge && !isMedium ? "min-h-[180px] sm:min-h-[210px] md:min-h-[240px]" : ""}
                     ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}
                     ${hasImage
                       ? "border-neutral-800 text-white bg-neutral-900"
@@ -843,9 +843,7 @@ function FeaturesSection() {
                         {item.title}
                       </h3>
                       <p
-                        className={`text-sm sm:text-base font-medium leading-relaxed
-                          \${hasImage ? "text-white/70" : "text-neutral-500"}
-                        `}
+                        className={`text-sm sm:text-base font-medium leading-relaxed ${hasImage ? "text-white/70" : "text-neutral-500"}`}
                       >
                         {item.desc}
                       </p>
@@ -926,7 +924,7 @@ function BolomjuudRow({ item, index }: { item: any; index: number }) {
       ref={ref}
       className={`flex flex-col ${
         isEven ? "md:flex-row" : "md:flex-row-reverse"
-      } items-center gap-8 md:gap-20`}
+      } items-center gap-6 sm:gap-8 md:gap-12 lg:gap-20`}
     >
       <div
         className={`flex-1 transition-all duration-1000 ${

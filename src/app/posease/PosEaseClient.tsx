@@ -309,9 +309,9 @@ export default function PosEaseClient({
       />
 
       {/* ── Hero ── */}
-      <section className="relative min-h-[100vh] flex flex-col items-center justify-center text-center px-6 pt-36 sm:pt-48 pb-20 overflow-hidden z-10">
+      <section className="relative min-h-[100vh] flex flex-col items-center justify-center text-center px-5 sm:px-8 pt-28 sm:pt-36 md:pt-48 pb-10 sm:pb-16 md:pb-20 overflow-hidden z-10">
         <div className="relative z-10 max-w-[1000px] w-full">
-          <h1 className="display-xl text-white mb-8">
+          <h1 className="display-xl text-white mb-5 sm:mb-8">
             {hero.title}
             <br />
             <span className="bg-gradient-to-r from-pink-500 via-white to-pink-500 text-transparent bg-clip-text animate-gradient">
@@ -319,18 +319,18 @@ export default function PosEaseClient({
             </span>
           </h1>
 
-          <p className="body-lg text-white/50 max-w-2xl mx-auto mb-14 leading-relaxed">
+          <p className="body-lg text-white/50 max-w-2xl mx-auto mb-8 sm:mb-14 leading-relaxed">
             {hero.desc}
           </p>
 
-          <div className="flex flex-col sm:flex-row items-center justify-center gap-6">
+          <div className="flex flex-col sm:flex-row items-center justify-center gap-4 sm:gap-6">
             <a
               href="#kholbooBarikh"
               onClick={handleScroll}
-              className="group relative px-12 py-5 rounded-full bg-[rgb(255,68,105)] text-white font-black text-lg hover:scale-[1.05] active:scale-95 transition-all duration-500 shadow-[0_10px_40px_rgba(255,68,105,0.4)] overflow-hidden"
+              className="group relative w-full sm:w-auto px-8 sm:px-12 py-4 sm:py-5 rounded-full bg-[rgb(255,68,105)] text-white font-black text-base sm:text-lg hover:scale-[1.05] active:scale-95 transition-all duration-500 shadow-[0_10px_40px_rgba(255,68,105,0.4)] overflow-hidden"
             >
               <div className="absolute inset-0 bg-gradient-to-r from-transparent via-white/20 to-transparent -translate-x-full group-hover:translate-x-full transition-transform duration-1000" />
-              <span className="relative z-10 flex items-center gap-3">
+              <span className="relative z-10 flex items-center justify-center gap-3">
                 {hero.cta}{" "}
                 <ArrowRight
                   size={20}
@@ -342,14 +342,14 @@ export default function PosEaseClient({
         </div>
 
         {/* Spline 3D scene — seamless, full screen, no frame */}
-        <div className="relative mt-10 w-full z-10" style={{ height: "100vh" }}>
+        <div className="relative mt-8 sm:mt-10 w-full z-10" style={{ height: "clamp(300px, 60vw, 100vh)" }}>
           <SplineScene />
         </div>
       </section>
 
       {/* ── Features ── */}
       {featuresItems.length > 0 && (
-        <section id="features" className="py-24 sm:py-40 relative z-10 px-6">
+        <section id="features" className="py-10 sm:py-16 md:py-24 lg:py-40 relative z-10 px-5 sm:px-8 md:px-6">
           <FeaturesContent
             title={data.features.title}
             desc={data.features.desc}
@@ -362,7 +362,7 @@ export default function PosEaseClient({
       {hardwareItems.length > 0 && (
         <section
           id="hardware"
-          className="py-24 sm:py-40 relative z-10 overflow-hidden"
+          className="py-10 sm:py-16 md:py-24 lg:py-40 relative z-10 overflow-hidden"
         >
           <HardwareContent
             title={data.hardware.title}
@@ -374,7 +374,7 @@ export default function PosEaseClient({
 
       {/* ── Pricing ── */}
       {pricingTiers.length > 0 && (
-        <section id="pricing" className="py-24 sm:py-40 relative z-10 px-6">
+        <section id="pricing" className="py-10 sm:py-16 md:py-24 lg:py-40 relative z-10 px-5 sm:px-8 md:px-6">
           <PricingContent
             title={data.pricing.title}
             tiers={pricingTiers}
@@ -416,15 +416,15 @@ function FeaturesContent({
   return (
     <div ref={ref} className="max-w-[1200px] mx-auto">
       <div
-        className={`mb-24 transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+        className={`mb-10 sm:mb-16 md:mb-24 transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
       >
-        <div className="w-20 h-1.5 bg-[rgb(255,68,105)] rounded-full mb-10 shadow-[0_0_20px_rgba(255,68,105,0.5)]" />
-        <h2 className="display-lg text-white mb-10">{title}</h2>
+        <div className="w-14 sm:w-20 h-1.5 bg-[rgb(255,68,105)] rounded-full mb-6 sm:mb-10 shadow-[0_0_20px_rgba(255,68,105,0.5)]" />
+        <h2 className="display-lg text-white mb-5 sm:mb-10">{title}</h2>
         <p className="body-lg text-white/40 max-w-3xl leading-relaxed">
           {desc}
         </p>
       </div>
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-8 sm:auto-rows-[280px]">
+      <div className="grid grid-cols-1 md:grid-cols-3 gap-3 sm:gap-6 md:gap-8 md:auto-rows-[280px]">
         {items.map((item, i) => (
           <div
             key={i}
@@ -481,19 +481,19 @@ function HardwareContent({
   return (
     <div ref={ref} className="max-w-[1200px] mx-auto px-6">
       <div
-        className={`text-center mb-24 transition-all duration-1000 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
+        className={`text-center mb-10 sm:mb-16 md:mb-24 transition-all duration-1000 ${visible ? "opacity-100 scale-100" : "opacity-0 scale-95"}`}
       >
         <h2 className="display-lg text-white mb-4">{title}</h2>
-        <div className="w-24 h-1.5 bg-[rgb(255,68,105)] mx-auto rounded-full shadow-[0_0_20px_rgba(255,68,105,0.5)]" />
+        <div className="w-16 sm:w-24 h-1.5 bg-[rgb(255,68,105)] mx-auto rounded-full shadow-[0_0_20px_rgba(255,68,105,0.5)]" />
       </div>
-      <div className={`grid ${gridClass} gap-12 sm:gap-20`}>
+      <div className={`grid ${gridClass} gap-8 sm:gap-12 md:gap-16 lg:gap-20`}>
         {items.map((item, i) => (
           <div
             key={i}
             className={`flex flex-col items-center text-center transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}`}
             style={{ transitionDelay: `${i * 200}ms` }}
           >
-            <div className="relative w-full aspect-square mb-12 group">
+            <div className="relative w-full aspect-square mb-6 sm:mb-10 md:mb-12 group">
               <div className="absolute inset-0 bg-gradient-to-tr from-[rgb(255,68,105)]/30 to-violet-500/30 rounded-[80px] blur-[60px] opacity-60 group-hover:opacity-100 group-hover:blur-[80px] transition-all duration-1000" />
               <div className="absolute inset-0 bg-[#0a0a0a]/60 backdrop-blur-3xl rounded-[60px] border border-white/10 shadow-2xl flex items-center justify-center group-hover:-translate-y-6 transition-transform duration-700 overflow-hidden">
                 {item.image ? (
@@ -503,7 +503,7 @@ function HardwareContent({
                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-[3000ms]"
                   />
                 ) : (
-                  <span className="text-[rgb(255,68,105)]/10 text-[80px] sm:text-[140px] md:text-[180px] font-black">
+                  <span className="text-[rgb(255,68,105)]/10 text-[60px] sm:text-[100px] md:text-[140px] lg:text-[180px] font-black">
                     {i + 1}
                   </span>
                 )}
@@ -514,10 +514,10 @@ function HardwareContent({
                 </span>
               </div>
             </div>
-            <h3 className="text-4xl font-black text-white mb-4 tracking-tight">
+            <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-3 sm:mb-4 tracking-tight">
               {item.name}
             </h3>
-            <p className="text-white/40 text-lg font-medium leading-relaxed max-w-xs">
+            <p className="text-white/40 text-base sm:text-lg font-medium leading-relaxed max-w-xs">
               {item.desc}
             </p>
           </div>
@@ -540,11 +540,11 @@ function PricingContent({
   return (
     <div ref={ref} className="max-w-[1200px] mx-auto text-center">
       <h2
-        className={`display-lg text-white mb-24 transition-all duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}
+        className={`display-lg text-white mb-8 sm:mb-14 md:mb-24 transition-all duration-1000 ${visible ? "opacity-100" : "opacity-0"}`}
       >
         {title}
       </h2>
-      <div className={`grid ${gridClass} gap-10`}>
+      <div className={`grid ${gridClass} gap-4 sm:gap-6 md:gap-10`}>
         {tiers.map((tier, i) => (
           <div
             key={i}
