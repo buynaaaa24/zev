@@ -80,7 +80,6 @@ export const MacbookScroll = ({
                 <div className="w-3 h-3 rounded-full bg-[#0a0a0a] ring-[1.5px] ring-[#222] shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)]" />
               </div>
               {/* Status bar earpiece line */}
-              <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 w-6 h-[2px] rounded-full bg-[#222] shadow-[0_1px_1px_rgba(0,0,0,0.5)]" />
               {/* Screen */}
               <div className="relative aspect-[9/19.5] overflow-hidden rounded-lg">
                 {badge && (
