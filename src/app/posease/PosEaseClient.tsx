@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePosEaseLang } from "@/contexts/PosEaseLangContext";
 import { GlobalContactInfo, PosEaseSections } from "@/lib/site-content-types";
 import LeadFormSection from "@/components/sections/LeadFormSection";
-import SplineScene from "@/components/spline/SplineScene";
+import Scene3D from "@/components/scene/Scene3D";
 import { resolveMediaUrl } from "@/lib/media";
 
 const PINK = "rgb(255, 68, 105)";
@@ -24,7 +24,6 @@ const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
   }
 };
 
-/* ── Fallback Defaults ───────────────────────────────────── */
 const DEFAULTS: { en: PosEaseSections; mn: PosEaseSections } = {
   en: {
     hero: {
@@ -194,7 +193,6 @@ export default function PosEaseClient({
   const { lang } = usePosEaseLang();
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  // Mount flag — SplineScene renders once and never remounts
 
   const data = lang === "mn" ? initialMn : initialEn;
   const defaults = DEFAULTS[lang];
@@ -341,9 +339,9 @@ export default function PosEaseClient({
           </div>
         </div>
 
-        {/* Spline 3D scene — seamless, full screen, no frame */}
-        <div className="relative mt-8 sm:mt-10 w-full z-10" style={{ height: "clamp(300px, 60vw, 100vh)" }}>
-          <SplineScene />
+        {/* Custom 3D scene — zero dependencies, full CSS 3D */}
+        <div className="relative -mt-10 sm:-mt-16 w-full z-10" style={{ height: "clamp(300px, 60vw, 100vh)" }}>
+          <Scene3D />
         </div>
       </section>
 
