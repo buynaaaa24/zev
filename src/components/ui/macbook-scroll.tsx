@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useRef } from "react";
 import { MotionValue, motion, useScroll, useTransform } from "motion/react";
 import { cn } from "@/lib/utils";
 import {
@@ -27,11 +27,13 @@ import { IconCaretDownFilled } from "@tabler/icons-react";
 
 export const MacbookScroll = ({
   src,
+  mobileSrc,
   showGradient,
   title,
   badge,
 }: {
   src?: string;
+  mobileSrc?: string;
   showGradient?: boolean;
   title?: string | React.ReactNode;
   badge?: React.ReactNode;
@@ -42,23 +44,15 @@ export const MacbookScroll = ({
     offset: ["start start", "end start"],
   });
 
-  const [isMobile, setIsMobile] = useState(false);
-
-  useEffect(() => {
-    if (window && window.innerWidth < 768) {
-      setIsMobile(true);
-    }
-  }, []);
-
   const scaleX = useTransform(
     scrollYProgress,
     [0, 0.3],
-    [1.2, isMobile ? 1 : 1.5],
+    [1.2, 1.5],
   );
   const scaleY = useTransform(
     scrollYProgress,
     [0, 0.3],
-    [0.6, isMobile ? 1 : 1.5],
+    [0.6, 1.5],
   );
   const translate = useTransform(scrollYProgress, [0, 1], [0, 1500]);
   const rotate = useTransform(scrollYProgress, [0.1, 0.12, 0.3], [-28, -28, 0]);
@@ -66,52 +60,129 @@ export const MacbookScroll = ({
   const textOpacity = useTransform(scrollYProgress, [0, 0.2], [1, 0]);
 
   return (
-    <div
-      ref={ref}
-      className="flex min-h-[160vh] shrink-0 scale-[0.35] transform flex-col items-center justify-start py-0 [perspective:800px] sm:scale-50 md:scale-100 md:py-20"
-    >
-      <motion.h2
-        style={{
-          translateY: textTransform,
-          opacity: textOpacity,
-        }}
-        className="mb-6 text-center text-3xl font-bold text-white"
-      >
-      
-      </motion.h2>
-      {/* Lid */}
-      <Lid
-        src={src}
-        scaleX={scaleX}
-        scaleY={scaleY}
-        rotate={rotate}
-        translate={translate}
-      />
-      {/* Base area */}
-      <div className="relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-gray-200 dark:bg-[#272729]">
-        {/* above keyboard bar */}
-        <div className="relative h-10 w-full">
-          <div className="absolute inset-x-0 mx-auto h-4 w-[80%] bg-[#050505]" />
-        </div>
-        <div className="relative flex">
-          <div className="mx-auto h-full w-[10%] overflow-hidden">
-            <SpeakerGrid />
-          </div>
-          <div className="mx-auto h-full w-[80%]">
-            <Keypad />
-          </div>
-          <div className="mx-auto h-full w-[10%] overflow-hidden">
-            <SpeakerGrid />
-          </div>
-        </div>
-        <Trackpad />
-        <div className="absolute inset-x-0 bottom-0 mx-auto h-2 w-20 rounded-tl-3xl rounded-tr-3xl bg-gradient-to-t from-[#272729] to-[#050505]" />
-        {showGradient && (
-          <div className="absolute inset-x-0 bottom-0 z-50 h-40 w-full bg-gradient-to-t from-white via-white to-transparent dark:from-black dark:via-black"></div>
+    <>
+      {/* Mobile: Samsung Galaxy frame */}
+      <div className="md:hidden flex flex-col items-center py-10 px-4">
+        {title && (
+          <h2 className="mb-6 text-center text-xl font-bold text-white">
+            {title}
+          </h2>
         )}
-        {badge && <div className="absolute bottom-4 left-4">{badge}</div>}
+        <div className="relative w-full max-w-[260px]">
+          {/* Outer metallic frame */}
+          <div className="relative rounded-xl p-[3px] bg-gradient-to-br from-[#3a3a3c] via-[#1a1a1c] to-[#0a0a0a] shadow-2xl shadow-black/70">
+            {/* Inner bezel gap */}
+            <div className="relative rounded-lg bg-[#080808] p-[2px] overflow-hidden">
+              {/* Screen inset shadow for depth */}
+              <div className="absolute inset-0 rounded-md shadow-[inset_0_0_0_1px_rgba(255,255,255,0.08)] pointer-events-none z-30" />
+              {/* Hole punch camera */}
+              <div className="absolute top-2.5 left-1/2 -translate-x-1/2 z-20">
+                <div className="w-3 h-3 rounded-full bg-[#0a0a0a] ring-[1.5px] ring-[#222] shadow-[inset_0_1px_2px_rgba(0,0,0,0.8)]" />
+              </div>
+              {/* Status bar earpiece line */}
+              <div className="absolute top-3 left-1/2 -translate-x-1/2 z-20 w-6 h-[2px] rounded-full bg-[#222] shadow-[0_1px_1px_rgba(0,0,0,0.5)]" />
+              {/* Screen */}
+              <div className="relative aspect-[9/19.5] overflow-hidden rounded-lg">
+                {badge && (
+                  <div className="absolute bottom-5 left-4 z-10">{badge}</div>
+                )}
+                <img
+                  src={mobileSrc || src}
+                  alt="screenshot"
+                  className="w-full h-full object-cover"
+                />
+              </div>
+              {/* Thin bottom gesture hint */}
+              <div className="absolute bottom-1.5 left-1/2 -translate-x-1/2 w-20 h-[2px] rounded-full bg-white/20 z-20" />
+            </div>
+            {/* Metallic edge highlight */}
+            <div className="absolute inset-0 rounded-xl pointer-events-none shadow-[inset_1px_1px_1px_rgba(255,255,255,0.15),inset_-1px_-1px_1px_rgba(0,0,0,0.4)]" />
+          </div>
+        </div>
       </div>
-    </div>
+
+      {/* Tablet: flat 2D laptop frame */}
+      <div className="hidden md:flex lg:hidden flex-col items-center py-10 px-4">
+        {title && (
+          <h2 className="mb-8 text-center text-2xl font-bold text-white">
+            {title}
+          </h2>
+        )}
+        <div className="relative w-full max-w-2xl">
+          {/* Screen bezel */}
+          <div className="relative rounded-t-2xl bg-[#1a1a1c] p-2 pb-1 shadow-xl">
+            {/* Camera notch */}
+            <div className="absolute top-1.5 left-1/2 -translate-x-1/2 w-2 h-2 rounded-full bg-[#333]" />
+            {/* Screen */}
+            <div className="relative rounded-lg overflow-hidden bg-black aspect-[16/10]">
+              {badge && (
+                <div className="absolute bottom-4 left-4 z-10">{badge}</div>
+              )}
+              <img
+                src={src}
+                alt="screenshot"
+                className="w-full h-full object-contain"
+              />
+            </div>
+          </div>
+          {/* Hinge */}
+          <div className="h-2 bg-gradient-to-b from-[#3a3a3c] to-[#2a2a2c] mx-4" />
+          {/* Base / Keyboard deck */}
+          <div className="relative rounded-b-xl bg-gradient-to-b from-[#2a2a2c] to-[#1a1a1c] h-16 flex items-start justify-center pt-3 shadow-lg">
+            {/* Trackpad */}
+            <div className="w-24 h-10 rounded-lg bg-[#151515] shadow-inner" />
+          </div>
+        </div>
+      </div>
+
+      {/* Desktop: full 3D scroll animation */}
+      <div
+        ref={ref}
+        className="hidden lg:flex min-h-[160vh] shrink-0 transform flex-col items-center justify-start py-20 [perspective:800px]"
+      >
+        <motion.h2
+          style={{
+            translateY: textTransform,
+            opacity: textOpacity,
+          }}
+          className="mb-6 text-center text-3xl font-bold text-white"
+        >
+          {title}
+        </motion.h2>
+        {/* Lid */}
+        <Lid
+          src={src}
+          scaleX={scaleX}
+          scaleY={scaleY}
+          rotate={rotate}
+          translate={translate}
+        />
+        {/* Base area */}
+        <div className="relative -z-10 h-[22rem] w-[32rem] overflow-hidden rounded-2xl bg-gray-200 dark:bg-[#272729]">
+          {/* above keyboard bar */}
+          <div className="relative h-10 w-full">
+            <div className="absolute inset-x-0 mx-auto h-4 w-[80%] bg-[#050505]" />
+          </div>
+          <div className="relative flex">
+            <div className="mx-auto h-full w-[10%] overflow-hidden">
+              <SpeakerGrid />
+            </div>
+            <div className="mx-auto h-full w-[80%]">
+              <Keypad />
+            </div>
+            <div className="mx-auto h-full w-[10%] overflow-hidden">
+              <SpeakerGrid />
+            </div>
+          </div>
+          <Trackpad />
+          <div className="absolute inset-x-0 bottom-0 mx-auto h-2 w-20 rounded-tl-3xl rounded-tr-3xl bg-gradient-to-t from-[#272729] to-[#050505]" />
+          {showGradient && (
+            <div className="absolute inset-x-0 bottom-0 z-50 h-40 w-full bg-gradient-to-t from-white via-white to-transparent dark:from-black dark:via-black"></div>
+          )}
+          {badge && <div className="absolute bottom-4 left-4">{badge}</div>}
+        </div>
+      </div>
+    </>
   );
 };
 

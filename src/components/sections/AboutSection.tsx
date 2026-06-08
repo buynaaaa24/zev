@@ -177,16 +177,16 @@ export default function AboutSection({
           <div className="mt-10">
             <div className="relative w-full overflow-hidden">
               <div className="flex partner-marquee">
-                {/* Double the array for seamless infinite scroll */}
-                {[...partners, ...partners, ...partners].map((logo, i) => (
+                {/* Quadruple the array for seamless infinite scroll */}
+                {[...partners, ...partners, ...partners, ...partners].map((logo, i) => (
                   <div
                     key={i}
-                    className="flex-shrink-0 mx-12 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 flex items-center justify-center"
+                    className="flex-shrink-0 mx-4 grayscale opacity-40 hover:grayscale-0 hover:opacity-100 transition-all duration-500 flex items-center justify-center"
                   >
                     <img
                       src={logo.src}
                       alt={logo.name}
-                      className="h-8 w-auto object-contain"
+                      className="h-8 w-auto max-w-[100px] object-contain"
                     />
                   </div>
                 ))}

@@ -207,7 +207,7 @@ html {
 
 /* ── Partner marquee ── */
 .partner-marquee {
-  animation: partnerMarquee 30s linear infinite;
+  animation: partnerMarquee 20s linear infinite;
   will-change: transform;
 }
 .partner-marquee:hover {
@@ -215,7 +215,7 @@ html {
 }
 @keyframes partnerMarquee {
   from { transform: translateX(0); }
-  to   { transform: translateX(-50%); }
+  to   { transform: translateX(-25%); }
 }
 
 /* ── Page transition ── */

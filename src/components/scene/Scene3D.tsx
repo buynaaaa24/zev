@@ -12,6 +12,7 @@ export function MacbookScrollDemo() {
           </a>
         }
         src={`/images/pos.jpg`}
+        mobileSrc={`/images/posapp.jpg`}
         showGradient={false}
       />
     </div>

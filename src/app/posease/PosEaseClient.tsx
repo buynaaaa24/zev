@@ -340,7 +340,7 @@ export default function PosEaseClient({
         </div>
 
         {/* Custom 3D scene — zero dependencies, full CSS 3D */}
-        <div className="relative -mt-10 sm:-mt-16 w-full z-10" style={{ height: "clamp(300px, 60vw, 100vh)" }}>
+        <div className="relative mt-8 lg:-mt-16 w-full z-10" style={{ height: "clamp(300px, 60vw, 100vh)" }}>
           <Scene3D />
         </div>
       </section>
