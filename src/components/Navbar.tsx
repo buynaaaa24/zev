@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useLanguage } from "@/contexts/LanguageContext";
@@ -24,10 +24,8 @@ function scrollToSection(id: string) {
 
 export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
   const [scrolled, setScrolled] = useState(false);
-  const [hidden, setHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
-  const lastScrollY = useRef(0);
   const pathname = usePathname();
   const { lang, toggle } = useLanguage();
   const base = siteId === "zevtabs" ? "" : `/${siteId}`;
@@ -36,18 +34,7 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
   useEffect(() => {
     const onScroll = () => {
       const y = window.scrollY;
-      const delta = y - lastScrollY.current;
-
       setScrolled(y > window.innerHeight - 80);
-
-      if (y > 120) {
-        if (delta > 6) setHidden(true);
-        else if (delta < -6) setHidden(false);
-      } else {
-        setHidden(false);
-      }
-
-      lastScrollY.current = y;
 
       const sectionIds = SECTIONS.filter(s => !s.isPage).map((s) => s.id);
       for (let i = sectionIds.length - 1; i >= 0; i--) {
@@ -82,7 +69,7 @@ export default function Navbar({ siteId = "zevtabs" }: { siteId?: string }) {
       <header
         className={`fixed top-0 left-0 right-0 z-[200] flex justify-center transition-all duration-500 pointer-events-none ${
           scrolled ? "pt-0" : "pt-4 sm:pt-6"
-        } ${hidden && !menuOpen ? "-translate-y-full" : "translate-y-0"}`}
+        }`}
       >
         <div
           className={`
