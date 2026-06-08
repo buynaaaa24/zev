@@ -181,6 +181,11 @@ html {
   0%   { transform: translateX(-100%); }
   100% { transform: translateX(100%); }
 }
+
+@keyframes pulse {
+  0%, 100% { opacity: 0.3; transform: scale(1); }
+  50%      { opacity: 0.5; transform: scale(1.1); }
+}
 .animate-shimmer-slide {
   animation: shimmer-slide 3s infinite;
 }
@@ -367,6 +372,11 @@ html {
 .scrollbar-none::-webkit-scrollbar {
   display: none;
 }
+@keyframes float-particle {
+  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; }
+  50%      { transform: translateY(-20px) translateX(10px); opacity: 0.5; }
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-none {
   -ms-overflow-style: none;  /* IE and Edge */
