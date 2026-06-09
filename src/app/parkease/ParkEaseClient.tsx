@@ -909,13 +909,17 @@ function FeaturesSection() {
                             color: "#1a0f00",
                           }}
                         >
-                          {FEATURE_ICONS[idx % FEATURE_ICONS.length]}
+                          {item.icon ? (
+                            <img src={resolveMediaUrl(item.icon)} alt="" className="w-full h-full object-contain" />
+                          ) : FEATURE_ICONS[idx % FEATURE_ICONS.length]}
                         </div>
                       )}
 
                       {hasImage && (
                         <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(255,255,255,0.05)]">
-                          {FEATURE_ICONS[idx % FEATURE_ICONS.length]}
+                          {item.icon ? (
+                            <img src={resolveMediaUrl(item.icon)} alt="" className="w-full h-full object-contain" />
+                          ) : FEATURE_ICONS[idx % FEATURE_ICONS.length]}
                         </div>
                       )}
                     </div>
@@ -1054,12 +1058,12 @@ function BolomjuudRow({ item, index }: { item: any; index: number }) {
           className="absolute inset-0 blur-[60px] rounded-full"
           style={{ background: `${YELLOW_GLOW}0.15)` }}
         />
-        <div className="relative aspect-[16/10] w-full rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group bg-neutral-950">
+        <div className="relative aspect-[16/10] w-full rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 bg-neutral-950">
           {item.image ? (
             <img
               src={resolveMediaUrl(item.image)}
               alt={item.title}
-              className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-105"
+              className="w-full h-full object-cover"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
