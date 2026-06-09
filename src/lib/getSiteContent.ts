@@ -254,6 +254,7 @@ export async function getPropertiesPageSections(lang: string = "mn", siteId: str
     categories: Array.isArray(patch.categories) ? (patch.categories as string[]) : [],
     items: Array.isArray(patch.items) ? (patch.items as PropertiesPageSections["items"]) : [],
     cta: { ...EMPTY_PROPERTIES_PAGE.cta, ...asRecord(patch.cta) },
+    footerText: typeof patch.footerText === "string" ? patch.footerText : undefined,
   };
 }
 
