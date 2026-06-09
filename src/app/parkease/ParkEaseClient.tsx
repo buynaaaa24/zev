@@ -4,7 +4,10 @@ import { createContext, useContext, useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useParkEaseLang } from "@/contexts/ParkEaseLangContext";
 import LeadFormSection from "@/components/sections/LeadFormSection";
-import type { GlobalContactInfo, ParkEaseSections } from "@/lib/site-content-types";
+import type {
+  GlobalContactInfo,
+  ParkEaseSections,
+} from "@/lib/site-content-types";
 import { resolveMediaUrl } from "@/lib/media";
 import { ChevronRight } from "lucide-react";
 
@@ -363,24 +366,26 @@ function HeroSection() {
           </div>
         </div>
 
-      {/* Hero image — top-right decoration, doesn't affect text layout */}
-      {api.image && (
-        <div
-          className={`absolute right-0 top-16 hidden lg:block z-[5] w-[46%] max-w-[600px] pr-6 xl:pr-10 transition-all duration-700 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
-          style={{ transitionDelay: ".5s" }}
-        >
+        {/* Hero image — top-right decoration, doesn't affect text layout */}
+        {api.image && (
           <div
-            className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl"
-            style={{ background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.6), transparent 70%)` }}
-            aria-hidden
-          />
-          <img
-            src={resolveMediaUrl(api.image)}
-            alt=""
-            className="relative z-10 w-full h-auto max-h-[80vh] object-contain object-top drop-shadow-2xl"
-          />
-        </div>
-      )}
+            className={`absolute right-0 top-16 hidden lg:block z-[5] w-[46%] max-w-[600px] pr-6 xl:pr-10 transition-all duration-700 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+            style={{ transitionDelay: ".5s" }}
+          >
+            <div
+              className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl"
+              style={{
+                background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.6), transparent 70%)`,
+              }}
+              aria-hidden
+            />
+            <img
+              src={resolveMediaUrl(api.image)}
+              alt=""
+              className="relative z-10 w-full h-auto max-h-[80vh] object-contain object-top drop-shadow-2xl"
+            />
+          </div>
+        )}
       </div>
 
       <div
@@ -701,29 +706,95 @@ function PaymentSection() {
 /* ── Features ────────────────────────────────────────────── */
 const FEATURE_ICONS = [
   // 1. Auto Barrier
-  <svg key={0} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+  <svg
+    key={0}
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"
+    />
   </svg>,
   // 2. Payments / qPay
-  <svg key={1} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+  <svg
+    key={1}
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z"
+    />
   </svg>,
   // 3. Sticker QR
-  <svg key={2} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z" />
+  <svg
+    key={2}
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M12 4v1m6 11h2m-6 0h-2v4m0-11v3m0 0h.01M12 12h4.01M16 20h4M4 12h4m12 0h.01M5 8h2a1 1 0 001-1V5a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1zm12 0h2a1 1 0 001-1V5a1 1 0 00-1-1h-2a1 1 0 00-1 1v2a1 1 0 001 1zM5 20h2a1 1 0 001-1v-2a1 1 0 00-1-1H5a1 1 0 00-1 1v2a1 1 0 001 1z"
+    />
   </svg>,
   // 4. 24/7 support
-  <svg key={3} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+  <svg
+    key={3}
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"
+    />
   </svg>,
   // 5. Analytics
-  <svg key={4} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z" />
+  <svg
+    key={4}
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 002 2h2a2 2 0 002-2z"
+    />
   </svg>,
   // 6. Automated Staff-free
-  <svg key={5} className="w-6 h-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={1.5} d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" />
-  </svg>
+  <svg
+    key={5}
+    className="w-6 h-6"
+    fill="none"
+    viewBox="0 0 24 24"
+    stroke="currentColor"
+  >
+    <path
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeWidth={1.5}
+      d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"
+    />
+  </svg>,
 ];
 
 function FeaturesSection() {
@@ -732,7 +803,7 @@ function FeaturesSection() {
   const { ref, visible } = useReveal();
 
   const features = (api.items || []).filter(
-    (item) => (item.title && item.title.trim() !== "") || item.image
+    (item) => (item.title && item.title.trim() !== "") || item.image,
   );
 
   if (features.length === 0) return null;
@@ -742,8 +813,9 @@ function FeaturesSection() {
       <div className="max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16">
         <div ref={ref}>
           <div
-            className={`text-center mb-10 sm:mb-16 md:mb-24 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-              }`}
+            className={`text-center mb-10 sm:mb-16 md:mb-24 transition-all duration-700 ${
+              visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+            }`}
           >
             <p
               className="text-[28px] sm:text-4xl md:text-5xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
@@ -754,7 +826,8 @@ function FeaturesSection() {
             <h2
               className="text-[28px] sm:text-4xl md:text-5xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
               style={{
-                background: "linear-gradient(135deg,#1a1a1a 0%,#3d3d3d 40%,#f6b414 100%)",
+                background:
+                  "linear-gradient(135deg,#1a1a1a 0%,#3d3d3d 40%,#f6b414 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -763,9 +836,18 @@ function FeaturesSection() {
               {api.title}
             </h2>
             <div className="flex items-center justify-center gap-3 mb-4 sm:mb-6">
-              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.3)" }} />
-              <div className="w-2 h-2 rounded-full" style={{ background: YELLOW }} />
-              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.3)" }} />
+              <div
+                className="h-px w-12 rounded-full"
+                style={{ background: YELLOW_GLOW + "0.3)" }}
+              />
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ background: YELLOW }}
+              />
+              <div
+                className="h-px w-12 rounded-full"
+                style={{ background: YELLOW_GLOW + "0.3)" }}
+              />
             </div>
             <p className="text-neutral-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">
               {api.desc}
@@ -787,9 +869,10 @@ function FeaturesSection() {
                     ${isMedium ? "md:col-span-2 min-h-[200px] sm:min-h-[240px] md:min-h-[260px]" : ""}
                     ${!isLarge && !isMedium ? "min-h-[180px] sm:min-h-[210px] md:min-h-[240px]" : ""}
                     ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}
-                    ${hasImage
-                      ? "border-neutral-800 text-white bg-neutral-900"
-                      : "bg-white border-neutral-150 text-neutral-800 hover:border-yellow-500/30 hover:shadow-[0_20px_50px_rgba(246,180,20,0.06)]"
+                    ${
+                      hasImage
+                        ? "border-neutral-800 text-white bg-neutral-900"
+                        : "bg-white border-neutral-150 text-neutral-800 hover:border-yellow-500/30 hover:shadow-[0_20px_50px_rgba(246,180,20,0.06)]"
                     }
                     hover:-translate-y-1.5
                   `}
@@ -825,9 +908,7 @@ function FeaturesSection() {
                       )}
 
                       {hasImage && (
-                        <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(255,255,255,0.05)]"
-                        >
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(255,255,255,0.05)]">
                           {FEATURE_ICONS[idx % FEATURE_ICONS.length]}
                         </div>
                       )}
@@ -866,7 +947,7 @@ function BolomjuudSection() {
   if (!api || !api.items || api.items.length === 0) return null;
 
   const items = api.items.filter(
-    (item) => (item.title && item.title.trim() !== "") || item.image
+    (item) => (item.title && item.title.trim() !== "") || item.image,
   );
 
   if (items.length === 0) return null;
@@ -876,7 +957,8 @@ function BolomjuudSection() {
       id="bolomjuud"
       className="py-14 sm:py-24 lg:py-32 relative z-10 px-5 sm:px-10 lg:px-16"
       style={{
-        background: "linear-gradient(140deg, #0a0800 0%, #110e02 55%, #050400 100%)",
+        background:
+          "linear-gradient(140deg, #0a0800 0%, #110e02 55%, #050400 100%)",
       }}
     >
       <div className="max-w-[1200px] mx-auto">
@@ -896,9 +978,18 @@ function BolomjuudSection() {
               {api.title}
             </h2>
             <div className="flex items-center justify-center gap-3 mb-4 sm:mb-6">
-              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.3)" }} />
-              <div className="w-2 h-2 rounded-full" style={{ background: YELLOW }} />
-              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.3)" }} />
+              <div
+                className="h-px w-12 rounded-full"
+                style={{ background: YELLOW_GLOW + "0.3)" }}
+              />
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ background: YELLOW }}
+              />
+              <div
+                className="h-px w-12 rounded-full"
+                style={{ background: YELLOW_GLOW + "0.3)" }}
+              />
             </div>
             <p className="text-white/40 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">
               {api.desc}
@@ -931,11 +1022,14 @@ function BolomjuudRow({ item, index }: { item: any; index: number }) {
           visible
             ? "opacity-100 translate-x-0"
             : isEven
-            ? "opacity-0 -translate-x-12"
-            : "opacity-0 translate-x-12"
+              ? "opacity-0 -translate-x-12"
+              : "opacity-0 translate-x-12"
         }`}
       >
-        <div className="w-10 h-1 mb-6 rounded-full" style={{ backgroundColor: YELLOW }} />
+        <div
+          className="w-10 h-1 mb-6 rounded-full"
+          style={{ backgroundColor: YELLOW }}
+        />
         <h3 className="text-xl sm:text-3xl font-black text-white tracking-tighter mb-4 leading-tight">
           {item.title}
         </h3>
@@ -945,7 +1039,9 @@ function BolomjuudRow({ item, index }: { item: any; index: number }) {
       </div>
       <div
         className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${
-          visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"
+          visible
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 translate-y-8 scale-95"
         }`}
       >
         <div
@@ -978,7 +1074,9 @@ function PricingSection() {
 
   const highlight = [false, true, false];
 
-  const hasTiers = api.tiers.length > 0 && api.tiers.some((t) => t.name?.trim() || t.slots?.trim());
+  const hasTiers =
+    api.tiers.length > 0 &&
+    api.tiers.some((t) => t.name?.trim() || t.slots?.trim());
   if (!hasTiers) return null;
 
   return (
@@ -997,7 +1095,8 @@ function PricingSection() {
             <h2
               className="text-[36px] sm:text-5xl md:text-6xl lg:text-[72px] font-black tracking-tight mb-3 sm:mb-4"
               style={{
-                background: "linear-gradient(135deg,#1a1a1a 0%,#3d3d3d 40%,#f6b414 100%)",
+                background:
+                  "linear-gradient(135deg,#1a1a1a 0%,#3d3d3d 40%,#f6b414 100%)",
                 WebkitBackgroundClip: "text",
                 WebkitTextFillColor: "transparent",
                 backgroundClip: "text",
@@ -1006,9 +1105,18 @@ function PricingSection() {
               {api.title}
             </h2>
             <div className="flex items-center justify-center gap-3 mb-4 sm:mb-6">
-              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.5)" }} />
-              <div className="w-2 h-2 rounded-full" style={{ background: YELLOW }} />
-              <div className="h-px w-12 rounded-full" style={{ background: YELLOW_GLOW + "0.5)" }} />
+              <div
+                className="h-px w-12 rounded-full"
+                style={{ background: YELLOW_GLOW + "0.5)" }}
+              />
+              <div
+                className="w-2 h-2 rounded-full"
+                style={{ background: YELLOW }}
+              />
+              <div
+                className="h-px w-12 rounded-full"
+                style={{ background: YELLOW_GLOW + "0.5)" }}
+              />
             </div>
             <p className="text-neutral-400 text-base sm:text-lg max-w-lg mx-auto leading-relaxed font-light">
               {api.desc}
@@ -1024,24 +1132,32 @@ function PricingSection() {
                   transitionDelay: visible ? `${i * 100}ms` : "0ms",
                   ...(highlight[i]
                     ? {
-                      border: `2px solid ${YELLOW_GLOW}0.45)`,
-                      boxShadow: `0 20px 60px ${YELLOW_GLOW}0.12)`,
-                    }
+                        border: `2px solid ${YELLOW_GLOW}0.45)`,
+                        boxShadow: `0 20px 60px ${YELLOW_GLOW}0.12)`,
+                      }
                     : {}),
                 }}
               >
                 {/* Discount badges — top-right corner */}
                 {tier.discounts && tier.discounts.length > 0 && (
                   <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
-                    {tier.discounts.map((d: { label: string; color?: string }, di: number) => (
-                      <div
-                        key={di}
-                        className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap"
-                        style={{ backgroundColor: d.color ? (d.color.startsWith("#") ? d.color : `#${d.color}`) : "#7c3aed" }}
-                      >
-                        {d.label}
-                      </div>
-                    ))}
+                    {tier.discounts.map(
+                      (d: { label: string; color?: string }, di: number) => (
+                        <div
+                          key={di}
+                          className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap"
+                          style={{
+                            backgroundColor: d.color
+                              ? d.color.startsWith("#")
+                                ? d.color
+                                : `#${d.color}`
+                              : "#7c3aed",
+                          }}
+                        >
+                          {d.label}
+                        </div>
+                      ),
+                    )}
                   </div>
                 )}
                 {highlight[i] && (
@@ -1058,7 +1174,7 @@ function PricingSection() {
                     </span>
                   </div>
                 )}
-                <div className="mb-5 sm:mb-6">
+                <div className="mb-5 sm:mb-6 text-center">
                   <p
                     className="text-xs font-semibold uppercase tracking-widest mb-1"
                     style={{ color: highlight[i] ? YELLOW : "#888" }}
@@ -1106,10 +1222,10 @@ function PricingSection() {
                   style={
                     highlight[i]
                       ? {
-                        background: YELLOW,
-                        color: "#1a0f00",
-                        boxShadow: `0 8px 24px ${YELLOW_GLOW}0.3)`,
-                      }
+                          background: YELLOW,
+                          color: "#1a0f00",
+                          boxShadow: `0 8px 24px ${YELLOW_GLOW}0.3)`,
+                        }
                       : {}
                   }
                 >
@@ -1247,10 +1363,10 @@ export default function ParkEaseClient({
 
   const currentSections = lang === "mn" ? initialMn : initialEn;
   const features = (currentSections.features?.items || []).filter(
-    (item) => (item.title && item.title.trim() !== "") || item.image
+    (item) => (item.title && item.title.trim() !== "") || item.image,
   );
   const bolomjuud = (currentSections.bolomjuud?.items || []).filter(
-    (item) => (item.title && item.title.trim() !== "") || item.image
+    (item) => (item.title && item.title.trim() !== "") || item.image,
   );
 
   useEffect(() => {
