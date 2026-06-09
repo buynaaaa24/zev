@@ -1,4 +1,4 @@
-export type StatItem = { value: string; label: string };
+export type StatItem = { value: string; label: string; icon?: string; color?: string };
 
 export type PartnerLogo = {
   name: string;
@@ -49,6 +49,7 @@ export type FooterSections = {
   brand: {
     desc: string;
   };
+  bottomText?: string;
 };
 
 export type ContactSections = {
@@ -118,6 +119,7 @@ export type PropertiesPageSections = {
     href: string;
     label: string;
   };
+  footerText?: string;
 };
 
 /** /sales marketing header (site page id: `sales-page`) */

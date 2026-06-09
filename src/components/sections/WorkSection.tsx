@@ -629,6 +629,13 @@ export default function WorkSection({
           onSelect={setActiveVideo}
           ctaLabel={properties.cta?.label || "Үзэх"}
         />
+
+        {/* Bottom Text */}
+        <div className="mt-16 max-w-2xl mx-auto text-center">
+          <p className="text-white/40 text-base">
+            {properties.footerText || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."}
+          </p>
+        </div>
       </div>
 
       {/* Full-Screen Lightbox Modal (FoodCity Style) */}

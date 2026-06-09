@@ -8,29 +8,19 @@ export default async function FooterWithContent({ siteId = "zevtabs" }: { siteId
   const content = await getFooterSections(lang, siteId);
   const t = translations[lang];
   let accentColor = "rgb(99, 102, 241)"; // default indigo
-  let logo = "/logo.png";
-  let brandName = "Zevtabs";
   let trialHref: string | undefined = undefined;
 
   if (siteId === "parkease") {
     accentColor = "#f6b414";
-    logo = "/images/parkease.jpg";
-    brandName = "ParkEase";
     trialHref = "/parkease/try";
   } else if (siteId === "posease") {
     accentColor = "rgb(255, 68, 105)";
-    logo = "/posease-logo.jpg";
-    brandName = "PosEase";
     trialHref = "/posease/try";
   } else if (siteId === "amarhome") {
     accentColor = "#10b981";
-    logo = "/amarhome-logo.jpg";
-    brandName = "AmarHome";
     trialHref = "/amarhome/try";
   } else if (siteId === "rently") {
     accentColor = "#10b981";
-    logo = "/images/rently.png";
-    brandName = "Rently";
     trialHref = "/rently/try";
   }
 
@@ -40,8 +30,6 @@ export default async function FooterWithContent({ siteId = "zevtabs" }: { siteId
       content={content} 
       t={t} 
       accentColor={accentColor} 
-      logo={logo} 
-      brandName={brandName} 
       trialHref={trialHref}
     />
   );

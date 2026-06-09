@@ -54,15 +54,11 @@ export default function Footer({
   content,
   t,
   accentColor = "rgb(99, 102, 241)",
-  logo = "/logo.png",
-  brandName = "Zevtabs",
   trialHref,
 }: {
   content: FooterSections;
   t: Translations;
   accentColor?: string;
-  logo?: string;
-  brandName?: string;
   trialHref?: string;
 }) {
   const year = new Date().getFullYear();
@@ -90,27 +86,8 @@ export default function Footer({
 
 
   return (
-    <footer className="bg-black border-t border-white/5 py-8 sm:py-10 relative z-10">
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
-        {/* Brand */}
-        <div className="flex items-center gap-2.5">
-          <img
-            src={logo}
-            alt={brandName}
-            className="w-6 h-6 rounded-lg object-cover"
-          />
-          <span className="text-white/60 text-sm font-medium">{brandName}</span>
-        </div>
-
-        {/* Attribution & Copyright */}
-        <p className="text-white/25 text-xs text-center">
-          {textBy}{" "}
-          <a href="/" className="text-white/40 hover:text-white/60 transition-colors">
-            Zevtabs
-          </a>{" "}
-          · © {year}
-        </p>
-
+    <footer className="bg-neutral-900 border-t border-white/10 py-8 sm:py-10 relative z-10">
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-end gap-3 sm:gap-4">
         {/* CTA */}
         {trialHref && (
           <div className="relative">
@@ -123,6 +100,11 @@ export default function Footer({
             </button>
           </div>
         )}
+
+        {/* Bottom Text */}
+        <p className="text-white/40 text-sm">
+          {content.bottomText || `Бүтээгч: Zevtabs · © ${year}`}
+        </p>
       </div>
 
       {/* Modal */}

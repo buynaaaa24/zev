@@ -166,7 +166,7 @@ export default function HeroSection({ hero }: { hero: HomeSections["hero"] }) {
             { value: "3x", label: "Faster" },
             { value: "24/7", label: "Support" }
           ]).map((stat, idx) => (
-            <div key={idx} className="group cursor-default">
+            <div key={idx} className="group cursor-default text-center">
               <div className="text-2xl sm:text-3xl font-black text-white mb-1 group-hover:text-accent-400 transition-colors duration-300">
                 {stat.value}
               </div>

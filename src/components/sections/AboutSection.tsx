@@ -2,44 +2,89 @@
 
 import { useEffect, useRef, useState } from "react";
 import { AboutSections, PartnerLogo } from "@/lib/site-content-types";
+import { Meteors } from "@/components/ui/meteor";
 
-// Features remain static for now to maintain the rich Apple iconography,
-// but titles and descriptions are mapped from the CMS about.main field.
-const FEATURES = [
+// Default features with icons that can be overridden by CMS
+const DEFAULT_FEATURES = [
   {
     title: "Modular Architecture",
     desc: "Every component composable, scalable, replaceable — your platform grows with you.",
+    color: "blue",
+    icon: "M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10",
   },
   {
     title: "Blazing Performance",
     desc: "Sub-second loads and silky 60fps animations. We obsess over milliseconds.",
+    color: "green",
+    icon: "M13 10V3L4 14h7v7l9-11h-7z",
   },
   {
     title: "Precision Design",
     desc: "Pixel-perfect interfaces with the same rigor Apple applies to hardware.",
+    color: "purple",
+    icon: "M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01",
   },
   {
     title: "Enterprise Security",
     desc: "End-to-end encryption and role-based access built into every layer.",
+    color: "orange",
+    icon: "M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z",
   },
   {
     title: "Global Ready",
     desc: "Multi-language, multi-tenant, multi-region. Scales wherever you go.",
+    color: "cyan",
+    icon: "M3.055 11H5a2 2 0 012 2v1a2 2 0 002 2 2 2 0 012 2v2.945M8 3.935V5.5A2.5 2.5 0 0010.5 8h.5a2 2 0 012 2 2 2 0 104 0 2 2 0 012-2h1.064M15 20.488V18a2 2 0 012-2h3.064M21 12a9 9 0 11-18 0 9 9 0 0118 0z",
   },
   {
     title: "Always Evolving",
     desc: "Continuous delivery — your platform improves automatically, zero downtime.",
+    color: "pink",
+    icon: "M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15",
   },
 ];
+
+const colorClasses: Record<string, { bg: string; border: string; text: string; gradient: string }> = {
+  blue: { bg: "bg-blue-100", border: "border-blue-500/30", text: "text-blue-600", gradient: "from-blue-500 to-cyan-500" },
+  green: { bg: "bg-green-100", border: "border-green-500/30", text: "text-green-600", gradient: "from-green-500 to-emerald-500" },
+  purple: { bg: "bg-purple-100", border: "border-purple-500/30", text: "text-purple-600", gradient: "from-purple-500 to-violet-500" },
+  orange: { bg: "bg-orange-100", border: "border-orange-500/30", text: "text-orange-600", gradient: "from-orange-500 to-amber-500" },
+  cyan: { bg: "bg-cyan-100", border: "border-cyan-500/30", text: "text-cyan-600", gradient: "from-cyan-500 to-teal-500" },
+  pink: { bg: "bg-pink-100", border: "border-pink-500/30", text: "text-pink-600", gradient: "from-pink-500 to-rose-500" },
+};
+
+// Helper to get color styles - supports both named colors and hex colors from admin
+function getColorStyles(color: string) {
+  // Check if it's a hex color
+  if (color?.startsWith("#")) {
+    return {
+      isHex: true,
+      bg: color,
+      border: color,
+      text: color,
+      gradient: `from-[${color}] to-[${color}]`,
+    };
+  }
+  // Named color from colorClasses
+  const c = colorClasses[color] || colorClasses.blue;
+  return {
+    isHex: false,
+    ...c,
+  };
+}
 
 function FeatureCard({
   title,
   desc,
   index,
+  icon,
+  color = "blue",
 }: {
   title: string;
   desc: string;
   index: number;
+  icon?: string;
+  color?: string;
 }) {
   const ref = useRef<HTMLDivElement>(null);
   const [vis, setVis] = useState(false);
@@ -60,6 +105,9 @@ function FeatureCard({
     return () => obs.disconnect();
   }, []);
 
+  const c = getColorStyles(color);
+  const iconPath = icon || DEFAULT_FEATURES[index % DEFAULT_FEATURES.length].icon;
+
   return (
     <div
       ref={ref}
@@ -73,19 +121,46 @@ function FeatureCard({
           ? "translateY(0) scale(1)"
           : "translateY(40px) scale(0.97)",
       }}
-      className="group bg-white rounded-3xl p-10 border border-neutral-100/80 hover:border-accent-200 hover:shadow-2xl hover:shadow-accent-500/10 cursor-default transition-all duration-500 hover:-translate-y-2"
+      className="relative w-full"
     >
-      <div className="w-12 h-12 rounded-2xl bg-neutral-50 flex items-center justify-center mb-6 group-hover:bg-accent-50 group-hover:scale-110 transition-all duration-500">
-        <div className="w-6 h-6 rounded-lg bg-accent-500/20 flex items-center justify-center">
-          <div className="w-2 h-2 rounded-full bg-accent-500" />
+      {/* Glowing gradient background */}
+      <div 
+        className={`absolute inset-0 h-64 w-full scale-[0.80] transform rounded-full blur-3xl opacity-40 group-hover:opacity-60 transition-opacity duration-500 ${!c.isHex ? `bg-gradient-to-r ${c.gradient}` : ""}`}
+        style={c.isHex ? { background: `linear-gradient(to right, ${c.bg}, ${c.bg})` } : undefined}
+      />
+      
+      {/* Card */}
+      <div className="group relative overflow-hidden bg-white rounded-3xl p-5 border border-neutral-100/80 hover:border-accent-200 hover:shadow-2xl hover:shadow-accent-500/10 cursor-default transition-all duration-500 hover:-translate-y-2 h-64">
+        {/* Icon */}
+        <div 
+          className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full border relative z-10 ${!c.isHex ? `${c.border} ${c.bg}` : ""}`}
+          style={c.isHex ? { borderColor: `${c.border}4d`, backgroundColor: `${c.bg}1a` } : undefined}
+        >
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            fill="none"
+            viewBox="0 0 24 24"
+            strokeWidth="1.5"
+            stroke="currentColor"
+            className={`h-5 w-5 ${!c.isHex ? c.text : ""}`}
+            style={c.isHex ? { color: c.text } : undefined}
+          >
+            <path strokeLinecap="round" strokeLinejoin="round" d={iconPath} />
+          </svg>
         </div>
+        
+        {/* Meteors */}
+        <div className="absolute inset-0 pointer-events-none">
+          <Meteors number={20} />
+        </div>
+        
+        <h3 className="text-neutral-900 font-bold text-xl mb-3 group-hover:text-accent-600 transition-colors duration-300 relative z-10">
+          {title}
+        </h3>
+        <p className="text-neutral-500 text-[15px] leading-relaxed font-light relative z-10">
+          {desc}
+        </p>
       </div>
-      <h3 className="text-neutral-900 font-bold text-xl mb-3 group-hover:text-accent-600 transition-colors duration-300">
-        {title}
-      </h3>
-      <p className="text-neutral-500 text-[15px] leading-relaxed font-light">
-        {desc}
-      </p>
     </div>
   );
 }
@@ -103,11 +178,13 @@ export default function AboutSection({
   // Map CMS stats to features. If no stats, use defaults.
   const displayFeatures =
     about.stats && about.stats.length > 0
-      ? about.stats.map((s) => ({
+      ? about.stats.map((s, i) => ({
           title: s.value,
           desc: s.label,
+          icon: s.icon,
+          color: s.color || DEFAULT_FEATURES[i % DEFAULT_FEATURES.length].color,
         }))
-      : FEATURES;
+      : DEFAULT_FEATURES;
 
   useEffect(() => {
     const el = headerRef.current;
@@ -163,9 +240,9 @@ export default function AboutSection({
         </div>
 
         {/* Feature grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5">
-          {displayFeatures.map((f, i) => (
-            <FeatureCard key={i} {...f} index={i} />
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {displayFeatures.map((f: { title: string; desc: string; icon?: string; color?: string }, i: number) => (
+            <FeatureCard key={i} title={f.title} desc={f.desc} icon={f.icon} color={f.color} index={i} />
           ))}
         </div>
 

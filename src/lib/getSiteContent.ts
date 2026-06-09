@@ -215,6 +215,7 @@ export async function getFooterSections(lang: string = "mn", siteId: string = "z
       items: Array.isArray(partners.items) ? (partners.items as FooterSections["partners"]["items"]) : [],
     },
     brand: { ...EMPTY_FOOTER.brand, ...asRecord(patch.brand) },
+    bottomText: patch.bottomText as string | undefined,
   };
 }
 
