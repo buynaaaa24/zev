@@ -251,6 +251,7 @@ export default function AmarHomeClient({
     titleAccent: data.hero.titleAccent || defaults.hero.titleAccent,
     desc: data.hero.desc || defaults.hero.desc,
     cta: data.hero.cta || defaults.hero.cta,
+    image: data.hero.image || undefined,
   };
 
   const features =
@@ -289,10 +290,10 @@ export default function AmarHomeClient({
       />
 
       {/* HERO */}
-      <section className="relative min-h-[90vh] flex items-center pt-20 px-5 sm:px-8 md:px-16 lg:px-24 z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-center w-full max-w-[1400px] mx-auto">
+      <section className="relative min-h-[90vh] flex items-center pt-20 z-10 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-12 lg:gap-16 items-center w-full max-w-[1200px] mx-auto px-5 sm:px-8 md:px-10 lg:px-16">
           <div
-            className={`lg:col-span-6 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}
+            className={`${hero.image ? "lg:col-span-6" : "lg:col-span-8 lg:col-start-3"} transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}
           >
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[80px] font-black text-white mb-5 sm:mb-6 leading-[1.1] tracking-tighter">
               {hero.title}
@@ -318,6 +319,23 @@ export default function AmarHomeClient({
               </a>
             </div>
           </div>
+
+          {/* Hero image */}
+          {hero.image && (
+            <div
+              className={`lg:col-span-6 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
+              style={{ transitionDelay: ".3s" }}
+            >
+              <div className="relative">
+                <div className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl bg-emerald-500" aria-hidden />
+                <img
+                  src={resolveMediaUrl(hero.image)}
+                  alt=""
+                  className="relative z-10 w-full h-auto max-h-[80vh] object-contain object-center drop-shadow-2xl"
+                />
+              </div>
+            </div>
+          )}
         </div>
       </section>
 
@@ -327,14 +345,14 @@ export default function AmarHomeClient({
         className="py-8 md:py-16 relative z-10 px-5 sm:px-8 md:px-6"
       >
         <div className="max-w-[1200px] mx-auto">
-          <div className="mb-8 md:mb-14">
+          <div className="mb-8 md:mb-14 text-center">
             <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
               Innovation
             </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[0.9]">
               {features.title}
             </h2>
-            <p className="text-white/40 text-base sm:text-lg mt-4 sm:mt-6 max-w-xl">
+            <p className="text-white/40 text-base sm:text-lg mt-4 sm:mt-6 max-w-xl mx-auto">
               {features.desc}
             </p>
           </div>

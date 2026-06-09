@@ -21,7 +21,7 @@ export default function AmarHomeLayout({
     <AmarHomeLangProvider>
       <SmoothScroll>
         <AmarHomeNavbar />
-        <div className="min-h-screen bg-[#fafafa] text-[#1a1a1a] selection:bg-[#064e3b] selection:text-white">
+        <div className="overflow-x-hidden">
           {children}
         </div>
         <FooterWithContent siteId="amarhome" />

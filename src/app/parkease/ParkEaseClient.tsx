@@ -248,8 +248,9 @@ function HeroSection() {
       />
 
       <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16 pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-44">
-        {/* Text column — limited to left half when image is present */}
-        <div className={api.image ? "lg:max-w-[55%]" : ""}>
+        <div className={`flex flex-col ${api.image ? "lg:flex-row lg:items-start lg:gap-12 xl:gap-16" : ""}`}>
+        {/* Text column */}
+        <div className={api.image ? "lg:flex-1" : ""}>
           <div
             className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[11px] sm:text-xs font-medium tracking-wider uppercase mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
           >
@@ -345,47 +346,50 @@ function HeroSection() {
             )}
           </div>
 
-          <div
-            className={`mt-12 sm:mt-20 pt-8 sm:pt-10 border-t border-white/8 grid grid-cols-2 sm:grid-cols-4 gap-6 sm:gap-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-            style={{ transitionDelay: ".6s" }}
-          >
-            {api.stats.map((stat, i) => (
-              <div key={i} className="cursor-default">
-                <div
-                  className="text-xl sm:text-2xl lg:text-3xl font-black text-white mb-1 transition-colors duration-300"
-                  onMouseEnter={(e) => (e.currentTarget.style.color = YELLOW)}
-                  onMouseLeave={(e) => (e.currentTarget.style.color = "")}
-                >
-                  {stat.value}
-                </div>
-                <div className="text-white/30 text-[11px] sm:text-xs uppercase tracking-wider font-medium">
-                  {stat.label}
-                </div>
-              </div>
-            ))}
-          </div>
         </div>
 
-        {/* Hero image — top-right decoration, doesn't affect text layout */}
+        {/* Right column — image + stats */}
         {api.image && (
           <div
-            className={`absolute right-0 top-16 hidden lg:block z-[5] w-[46%] max-w-[600px] pr-6 xl:pr-10 transition-all duration-700 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+            className={`lg:flex-1 hidden lg:flex flex-col gap-8 transition-all duration-700 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
             style={{ transitionDelay: ".5s" }}
           >
-            <div
-              className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl"
-              style={{
-                background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.6), transparent 70%)`,
-              }}
-              aria-hidden
-            />
-            <img
-              src={resolveMediaUrl(api.image)}
-              alt=""
-              className="relative z-10 w-full h-auto max-h-[80vh] object-contain object-top drop-shadow-2xl"
-            />
+            <div className="relative w-full">
+              <div
+                className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl"
+                style={{ background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.6), transparent 70%)` }}
+                aria-hidden
+              />
+              <img
+                src={resolveMediaUrl(api.image)}
+                alt=""
+                className="relative z-10 w-full h-auto max-h-[50vh] object-contain object-top drop-shadow-2xl"
+              />
+            </div>
+            {api.stats.length > 0 && (
+              <div
+                className={`pt-8 border-t border-white/8 grid grid-cols-2 gap-6 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                style={{ transitionDelay: ".7s" }}
+              >
+                {api.stats.map((stat, i) => (
+                  <div key={i} className="cursor-default text-center">
+                    <div
+                      className="text-xl sm:text-2xl lg:text-3xl font-black text-white mb-1 transition-colors duration-300"
+                      onMouseEnter={(e) => (e.currentTarget.style.color = YELLOW)}
+                      onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+                    >
+                      {stat.value}
+                    </div>
+                    <div className="text-white/30 text-[11px] sm:text-xs uppercase tracking-wider font-medium">
+                      {stat.label}
+                    </div>
+                  </div>
+                ))}
+              </div>
+            )}
           </div>
         )}
+        </div>
       </div>
 
       <div

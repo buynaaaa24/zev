@@ -223,9 +223,9 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
       <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none z-[5]" />
 
       {/* HERO */}
-      <section className="relative min-h-[90vh] flex items-center pt-20 px-5 sm:px-8 md:px-16 lg:px-24 z-10">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16 items-center w-full max-w-[1400px] mx-auto">
-          <div className={`lg:col-span-6 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}>
+      <section className="relative min-h-[90vh] flex items-center pt-20 z-10 overflow-hidden">
+        <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16 items-center w-full max-w-[1200px] mx-auto px-5 sm:px-8 md:px-10 lg:px-16">
+          <div className={`lg:col-span-5 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}>
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[80px] font-black text-white mb-5 sm:mb-6 leading-[1.1] tracking-tighter">
               {hero.title}<br />
               <span className="bg-gradient-to-r from-emerald-400 to-white text-transparent bg-clip-text italic pr-4">{hero.titleAccent}</span>
@@ -244,7 +244,7 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
             </div>
           </div>
 
-          <div className={`lg:col-span-6 relative transition-all duration-[1500ms] delay-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-20 scale-95"}`}>
+          <div className={`lg:col-span-7 relative transition-all duration-[1500ms] delay-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-20 scale-95"}`}>
             <div className="relative animate-float">
               {hero.image ? (
                 <img src={hero.image} alt="Hero" className="w-full h-auto object-contain drop-shadow-2xl" />

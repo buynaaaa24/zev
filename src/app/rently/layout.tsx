@@ -18,7 +18,7 @@ export default function RentlyLayout({
     <RentlyLangProvider>
       <SmoothScroll>
         <RentlyNavbar />
-        <div className="min-h-screen bg-slate-50 text-slate-900 selection:bg-green-600 selection:text-white">
+        <div className="overflow-x-hidden">
           {children}
         </div>
         <FooterWithContent siteId="rently" />

@@ -25,7 +25,14 @@ const NAV = {
 
 export default function ParkEaseNavbar() {
   const [menuOpen, setMenuOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
   const { lang, toggle, sections } = useParkEaseLang();
+
+  useEffect(() => {
+    const onScroll = () => setScrolled(window.scrollY > window.innerHeight - 80);
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   const links = NAV[lang].filter(
     (item) =>
@@ -40,8 +47,8 @@ export default function ParkEaseNavbar() {
 
 
   return (
-    <header className="fixed top-0 left-0 right-0 z-[200] flex justify-center pt-4 sm:pt-6 pointer-events-none">
-      <div className="flex items-center justify-between pointer-events-auto transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] w-[92%] max-w-[1200px] h-[64px] rounded-[32px] bg-white/10 backdrop-blur-[12px] border border-white/20 px-6">
+    <header className={`fixed top-0 left-0 right-0 z-[200] flex justify-center transition-all duration-500 pointer-events-none ${scrolled ? "pt-0" : "pt-4 sm:pt-6"}`}>
+      <div className={`flex items-center justify-between pointer-events-auto transition-all duration-700 ease-[cubic-bezier(0.23,1,0.32,1)] px-6 ${scrolled ? "w-full h-[60px] md:h-[68px] rounded-none bg-neutral-900/95 backdrop-blur-[24px] border-b border-white/10 shadow-sm" : "w-[92%] max-w-[1200px] h-[64px] rounded-[32px] bg-white/10 backdrop-blur-[12px] border border-white/20"}`}>
         {/* Logo */}
         <Link href="/parkease" className="flex items-center gap-3 group">
           <div
