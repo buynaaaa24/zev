@@ -93,25 +93,21 @@ export default function Footer({
           {content.bottomLeftText || ""}
         </p>
 
-        <div className="flex items-center gap-3 sm:gap-4">
-          {/* CTA */}
-          {trialHref && (
-            <div className="relative">
-              <button 
-                onClick={handleCtaClick} 
-                className="text-sm font-medium transition-colors hover:opacity-80 focus:outline-none" 
-                style={{ color: accentColor }}
-              >
-                {textTrial}
-              </button>
-            </div>
-          )}
+        {/* Bottom Right Text */}
+        <p className="text-white/40 text-sm">
+          {content.bottomRightText || `Бүтээгч: Zevtabs · © ${year}`}
+        </p>
 
-          {/* Bottom Right Text */}
-          <p className="text-white/40 text-sm">
-            {content.bottomRightText || `Бүтээгч: Zevtabs · © ${year}`}
-          </p>
-        </div>
+        {/* CTA — far right end */}
+        {trialHref && (
+          <button
+            onClick={handleCtaClick}
+            className="text-sm font-medium transition-colors hover:opacity-80 focus:outline-none shrink-0"
+            style={{ color: accentColor }}
+          >
+            {textTrial}
+          </button>
+        )}
       </div>
 
       {/* Modal */}
