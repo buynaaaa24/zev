@@ -870,7 +870,7 @@ function FeaturesSection() {
                 <div
                   key={idx}
                   className={`
-                    group relative rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 overflow-hidden border transition-all duration-700
+                    relative rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 overflow-hidden border transition-all duration-700
                     ${isLarge ? "md:col-span-2 md:row-span-2 min-h-[260px] sm:min-h-[320px] md:min-h-[360px]" : ""}
                     ${isMedium ? "md:col-span-2 min-h-[200px] sm:min-h-[240px] md:min-h-[260px]" : ""}
                     ${!isLarge && !isMedium ? "min-h-[180px] sm:min-h-[210px] md:min-h-[240px]" : ""}
@@ -878,9 +878,8 @@ function FeaturesSection() {
                     ${
                       hasImage
                         ? "border-neutral-800 text-white bg-neutral-900"
-                        : "bg-white border-neutral-150 text-neutral-800 hover:border-yellow-500/30 hover:shadow-[0_20px_50px_rgba(246,180,20,0.06)]"
+                        : "bg-white border-neutral-150 text-neutral-800"
                     }
-                    hover:-translate-y-1.5
                   `}
                   style={{ transitionDelay: `${idx * 80}ms` }}
                 >
@@ -889,21 +888,21 @@ function FeaturesSection() {
                       <img
                         src={resolveMediaUrl(item.image!)}
                         alt={item.title}
-                        className="w-full h-full object-cover opacity-60 group-hover:opacity-80 group-hover:scale-105 transition-all duration-[2000ms]"
+                        className="w-full h-full object-cover opacity-60"
                       />
                       <div className="absolute inset-0 bg-gradient-to-t from-neutral-950 via-neutral-900/60 to-transparent" />
                     </div>
                   )}
 
                   {!hasImage && (
-                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/[0.02] to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+                    <div className="absolute inset-0 bg-gradient-to-br from-yellow-500/[0.02] to-transparent" />
                   )}
 
                   <div className="relative z-10 h-full flex flex-col justify-between">
                     <div>
                       {!hasImage && (
                         <div
-                          className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 shadow-[0_4px_12px_rgba(246,180,20,0.15)]"
+                          className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 shadow-[0_4px_12px_rgba(246,180,20,0.15)]"
                           style={{
                             background: `linear-gradient(135deg, ${YELLOW}, #ffc93c)`,
                             color: "#1a0f00",
@@ -916,7 +915,7 @@ function FeaturesSection() {
                       )}
 
                       {hasImage && (
-                        <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 transition-all duration-500 group-hover:scale-110 bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(255,255,255,0.05)]">
+                        <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(255,255,255,0.05)]">
                           {item.icon ? (
                             <img src={resolveMediaUrl(item.icon)} alt="" className="w-full h-full object-contain" />
                           ) : FEATURE_ICONS[idx % FEATURE_ICONS.length]}
@@ -1058,12 +1057,12 @@ function BolomjuudRow({ item, index }: { item: any; index: number }) {
           className="absolute inset-0 blur-[60px] rounded-full"
           style={{ background: `${YELLOW_GLOW}0.15)` }}
         />
-        <div className="relative aspect-[16/10] w-full rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 bg-neutral-950">
+        <div className="relative aspect-[4/3] w-full rounded-[20px] md:rounded-[32px] overflow-hidden">
           {item.image ? (
             <img
               src={resolveMediaUrl(item.image)}
               alt={item.title}
-              className="w-full h-full object-cover"
+              className="w-full h-full object-contain"
             />
           ) : (
             <div className="w-full h-full flex items-center justify-center">
@@ -1270,6 +1269,8 @@ function FreeDriverSection() {
   const { lang } = useParkEaseLang();
   const api = useContext(AdminCtx)[lang].free;
   const { ref, visible } = useReveal();
+
+  if (api.hidden) return null;
 
   return (
     <section

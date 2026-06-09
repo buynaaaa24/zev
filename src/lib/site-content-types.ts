@@ -336,6 +336,7 @@ export type ParkEaseSections = {
     title: string;
     desc: string;
     cards: { label: string; sub: string }[];
+    hidden?: boolean;
   };
   cta: {
     title: string;

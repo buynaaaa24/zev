@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import { AboutSections, PartnerLogo } from "@/lib/site-content-types";
 import { Meteors } from "@/components/ui/meteor";
+import { resolveMediaUrl } from "@/lib/media";
 
 // Default features with icons that can be overridden by CMS
 const DEFAULT_FEATURES = [
@@ -107,6 +108,7 @@ function FeatureCard({
 
   const c = getColorStyles(color);
   const iconPath = icon || DEFAULT_FEATURES[index % DEFAULT_FEATURES.length].icon;
+  const isImageIcon = icon && (icon.startsWith("/upload/") || icon.startsWith("upload/") || icon.startsWith("http"));
 
   return (
     <div
@@ -136,17 +138,21 @@ function FeatureCard({
           className={`mb-3 flex h-10 w-10 items-center justify-center rounded-full border relative z-10 ${!c.isHex ? `${c.border} ${c.bg}` : ""}`}
           style={c.isHex ? { borderColor: `${c.border}4d`, backgroundColor: `${c.bg}1a` } : undefined}
         >
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth="1.5"
-            stroke="currentColor"
-            className={`h-5 w-5 ${!c.isHex ? c.text : ""}`}
-            style={c.isHex ? { color: c.text } : undefined}
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" d={iconPath} />
-          </svg>
+          {isImageIcon ? (
+            <img src={resolveMediaUrl(iconPath)} alt="" className="h-5 w-5 object-contain" />
+          ) : (
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              fill="none"
+              viewBox="0 0 24 24"
+              strokeWidth="1.5"
+              stroke="currentColor"
+              className={`h-5 w-5 ${!c.isHex ? c.text : ""}`}
+              style={c.isHex ? { color: c.text } : undefined}
+            >
+              <path strokeLinecap="round" strokeLinejoin="round" d={iconPath} />
+            </svg>
+          )}
         </div>
         
         {/* Meteors */}

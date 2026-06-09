@@ -1,8 +1,8 @@
 /** CMS paths like `/upload/x.jpg` are proxied to the API via Next rewrites; `/images/...` stays on this app. */
 export function resolveMediaUrl(src: string): string {
   if (!src) return "";
-  if (src.startsWith("upload/")) {
-    return `/${src}`;
+  if (src.startsWith("/upload/") || src.startsWith("upload/")) {
+    return src.startsWith("/") ? src : `/${src}`;
   }
   if (/^https?:\/\//i.test(src) || src.startsWith("/") || src.startsWith("data:")) {
     return src;
