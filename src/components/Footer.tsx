@@ -87,24 +87,31 @@ export default function Footer({
 
   return (
     <footer className="bg-neutral-900 border-t border-white/10 py-8 sm:py-10 relative z-10">
-      <div className="max-w-[1200px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-end gap-3 sm:gap-4">
-        {/* CTA */}
-        {trialHref && (
-          <div className="relative">
-            <button 
-              onClick={handleCtaClick} 
-              className="text-sm font-medium transition-colors hover:opacity-80 focus:outline-none" 
-              style={{ color: accentColor }}
-            >
-              {textTrial}
-            </button>
-          </div>
-        )}
-
-        {/* Bottom Text */}
+      <div className="max-w-[1200px] mx-auto px-5 sm:px-10 flex flex-col sm:flex-row items-center justify-between gap-3 sm:gap-4">
+        {/* Bottom Left Text */}
         <p className="text-white/40 text-sm">
-          {content.bottomText || `Бүтээгч: Zevtabs · © ${year}`}
+          {content.bottomLeftText || ""}
         </p>
+
+        <div className="flex items-center gap-3 sm:gap-4">
+          {/* CTA */}
+          {trialHref && (
+            <div className="relative">
+              <button 
+                onClick={handleCtaClick} 
+                className="text-sm font-medium transition-colors hover:opacity-80 focus:outline-none" 
+                style={{ color: accentColor }}
+              >
+                {textTrial}
+              </button>
+            </div>
+          )}
+
+          {/* Bottom Right Text */}
+          <p className="text-white/40 text-sm">
+            {content.bottomRightText || `Бүтээгч: Zevtabs · © ${year}`}
+          </p>
+        </div>
       </div>
 
       {/* Modal */}

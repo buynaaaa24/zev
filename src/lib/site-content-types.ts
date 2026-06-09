@@ -49,7 +49,8 @@ export type FooterSections = {
   brand: {
     desc: string;
   };
-  bottomText?: string;
+  bottomLeftText?: string;
+  bottomRightText?: string;
 };
 
 export type ContactSections = {
