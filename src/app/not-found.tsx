@@ -5,19 +5,6 @@ import { useRouter } from "next/navigation";
 import { ArrowLeft, Home } from "lucide-react";
 import PromoBanner from "@/components/PromoBanner";
 
-function BackButton() {
-  const router = useRouter();
-  return (
-    <button
-      onClick={() => router.back()}
-      className="inline-flex items-center justify-center gap-2 px-6 py-3 rounded-full bg-white/5 border border-white/10 text-white font-semibold text-sm hover:bg-white/10 transition-all hover:scale-[1.02] active:scale-[0.98] cursor-pointer"
-    >
-      <ArrowLeft size={16} />
-      Буцах
-    </button>
-  );
-}
-
 const PROJECTS = [
   {
     name: "PosEase",
@@ -129,7 +116,6 @@ export default function NotFound() {
             <Home size={16} />
             Нүүр хуудас
           </Link>
-          <BackButton />
         </div>
 
         {/* Project links */}

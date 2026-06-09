@@ -1080,6 +1080,7 @@ function PricingSection() {
   const { lang } = useParkEaseLang();
   const api = useContext(AdminCtx)[lang].pricing;
   const { ref, visible } = useReveal();
+  const [quoteModalOpen, setQuoteModalOpen] = useState(false);
 
   const highlight = [false, true, false];
 
@@ -1249,17 +1250,65 @@ function PricingSection() {
             style={{ transitionDelay: "0.35s" }}
           >
             {api.note}{" "}
-            <a
-              href={api.quoteLink || "#kholbooBarikh"}
-              onClick={handleAnchorScroll}
-              className="font-medium hover:underline"
+            <button
+              type="button"
+              onClick={() => setQuoteModalOpen(true)}
+              className="font-medium hover:underline focus:outline-none"
               style={{ color: YELLOW_DARK }}
             >
               {api.quoteBtn}
-            </a>
+            </button>
           </p>
         </div>
       </div>
+
+      {/* Coming Soon Modal */}
+      {quoteModalOpen && (
+        <div className="fixed inset-0 z-[9999] flex items-center justify-center p-4">
+          <div
+            className="absolute inset-0 bg-black/60 backdrop-blur-sm"
+            onClick={() => setQuoteModalOpen(false)}
+          />
+          <div className="relative bg-[#121212] border border-white/10 rounded-3xl p-8 max-w-md w-full text-center shadow-2xl z-10 animate-in fade-in zoom-in-95 duration-200">
+            <button
+              onClick={() => setQuoteModalOpen(false)}
+              className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
+              aria-label="Close"
+            >
+              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              </svg>
+            </button>
+            <div
+              className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center border"
+              style={{ backgroundColor: `${YELLOW}18`, borderColor: `${YELLOW}40` }}
+            >
+              <svg className="w-8 h-8" style={{ color: YELLOW }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
+                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              </svg>
+            </div>
+            <h3 className="text-xl font-black text-white mb-2 tracking-tight">
+              {lang === "mn" ? "Тун удахгүй" : "Coming Soon"}
+            </h3>
+            <p className="text-white/40 text-sm leading-relaxed mb-6 font-medium">
+              {lang === "mn"
+                ? "Энэхүү үйлчилгээ одоогоор хөгжүүлэлтийн шатанд байна. Бид удахгүй бэлэн болгох болно."
+                : "This service is currently under development. We will make it available very soon."}
+            </p>
+            <button
+              onClick={() => setQuoteModalOpen(false)}
+              className="w-full py-3.5 rounded-xl font-bold text-sm transition-all duration-300 hover:scale-[1.02] active:scale-[0.98]"
+              style={{
+                background: `linear-gradient(90deg, ${YELLOW}, #ffd35c)`,
+                color: "#1a0f00",
+                boxShadow: `0 4px 20px rgba(246,180,20,0.25)`,
+              }}
+            >
+              {lang === "mn" ? "Ойлголоо" : "Got it"}
+            </button>
+          </div>
+        </div>
+      )}
     </section>
   );
 }
