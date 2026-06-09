@@ -510,13 +510,15 @@ function HowItWorksSection() {
                     0{i + 1}
                   </span>
                   <div
-                    className="w-11 h-11 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6"
+                    className="w-11 h-11 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 overflow-hidden"
                     style={{
-                      background: `${YELLOW_GLOW}0.12)`,
+                      background: step.icon ? "transparent" : `${YELLOW_GLOW}0.12)`,
                       color: YELLOW_DARK,
                     }}
                   >
-                    {icons[i]}
+                    {step.icon ? (
+                      <img src={resolveMediaUrl(step.icon)} alt="" className="w-full h-full object-contain" />
+                    ) : icons[i]}
                   </div>
                   <h3 className="text-lg sm:text-xl font-bold text-neutral-900 mb-2 sm:mb-3">
                     {step.title}

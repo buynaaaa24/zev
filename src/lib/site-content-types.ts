@@ -294,7 +294,7 @@ export type ParkEaseSections = {
     label: string;
     title: string[];
     desc: string;
-    steps: { title: string; desc: string }[];
+    steps: { title: string; desc: string; icon?: string }[];
   };
   payments: {
     label: string;

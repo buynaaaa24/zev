@@ -298,8 +298,8 @@ function ThreeDCarousel({
               onClick={() => p.redirectUrl && window.open(p.redirectUrl, "_blank")}
             >
               <div
-                className={`w-full h-full relative overflow-hidden rounded-[24px]  transition-all duration-500 ${isHovered
-                  ? "scale-[1.13] -translate-y-12"
+                className={`w-full h-full relative overflow-hidden rounded-[24px] transition-all duration-500 will-change-transform ${isHovered
+                  ? "scale-[1.08] -translate-y-8"
                   : "scale-100 translate-y-0"
                   }`}
               >
@@ -309,7 +309,7 @@ function ThreeDCarousel({
                     <img
                       src={resolveMediaUrl(p.image)}
                       alt={p.title}
-                      className="w-full h-full object-cover transition-transform duration-700 hover:scale-110"
+                      className="w-full h-full object-cover"
                       loading="lazy"
                     />
                   ) : imageIsVideo ? (
@@ -333,7 +333,7 @@ function ThreeDCarousel({
                 {/* Link indicator on hover (JUMP TO WEB) */}
                 {p.redirectUrl && isHovered && (
                   <div className="absolute inset-0 z-20 flex items-center justify-center">
-                    <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center backdrop-blur-xl">
+                    <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center">
                       <ArrowUpRight className="text-white" size={16} />
                     </div>
                   </div>
@@ -341,12 +341,12 @@ function ThreeDCarousel({
 
                 {/* Info — visible on hover */}
                 <div
-                  className={`absolute bottom-0 inset-x-0 z-20 p-3 transition-all duration-500 ${isHovered
+                  className={`absolute bottom-0 inset-x-0 z-20 p-3 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-all duration-500 ${isHovered
                     ? "opacity-100 translate-y-0"
                     : "opacity-0 translate-y-3"
                     }`}
                 >
-                  <span className="inline-block px-2 py-0.5 rounded-full bg-white/10 border border-white/20 backdrop-blur-sm text-white text-[9px] font-bold uppercase tracking-wider mb-1">
+                  <span className="inline-block px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-white text-[9px] font-bold uppercase tracking-wider mb-1">
                     {p.category}
                   </span>
                   <h3 className="text-white text-sm font-black tracking-tight leading-tight mb-1">
@@ -359,7 +359,7 @@ function ThreeDCarousel({
                         target="_blank"
                         rel="noopener noreferrer"
                         onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-1 text-indigo-400 text-[10px] font-bold hover:text-white transition-colors"
+                        className="inline-flex items-center gap-1 text-white text-[10px] font-bold hover:text-indigo-300 transition-colors"
                       >
                         Үзэх <ArrowUpRight size={10} />
                       </a>
@@ -371,7 +371,7 @@ function ThreeDCarousel({
                           e.stopPropagation();
                           onSelect(p);
                         }}
-                        className="inline-flex items-center gap-1 text-indigo-400 text-[10px] font-bold hover:text-white transition-colors"
+                        className="inline-flex items-center gap-1 text-white text-[10px] font-bold hover:text-indigo-300 transition-colors"
                       >
                         Бичлэг үзэх <Play size={10} fill="currentColor" />
                       </button>
