@@ -1184,15 +1184,15 @@ function PricingSection() {
                     </span>
                   </div>
                 )}
-                <div className="mb-5 sm:mb-6 text-center">
+                <div className="mb-5 sm:mb-8 text-center">
                   <p
-                    className="text-xs font-semibold uppercase tracking-widest mb-1"
+                    className="text-sm font-black uppercase tracking-[0.3em] mb-1"
                     style={{ color: highlight[i] ? YELLOW : "#888" }}
                   >
                     {tier.name}
                   </p>
                   <p
-                    className={`text-[13px] mb-3 break-all w-full ${highlight[i] ? "text-white/40" : "text-neutral-400"}`}
+                    className={`text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-3 break-all w-full ${highlight[i] ? "text-white" : "text-neutral-800"}`}
                   >
                     {tier.slots}
                   </p>
@@ -1201,7 +1201,7 @@ function PricingSection() {
                   {tier.features.map((f, j) => (
                     <li
                       key={j}
-                      className={`flex items-start gap-2.5 text-sm sm:text-[14px] ${highlight[i] ? "text-white/70" : "text-neutral-600"}`}
+                      className={`flex items-start gap-2.5 text-sm sm:text-base ${highlight[i] ? "text-white/70" : "text-neutral-600"}`}
                     >
                       <svg
                         className="w-4 h-4 mt-0.5 shrink-0"
@@ -1226,8 +1226,8 @@ function PricingSection() {
                   onClick={handleAnchorScroll}
                   className={
                     highlight[i]
-                      ? "block text-center text-[14px] font-semibold py-3 rounded-xl sm:rounded-2xl"
-                      : "block text-center text-[14px] font-semibold py-3 rounded-xl sm:rounded-2xl bg-white border border-neutral-200 text-neutral-800 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-300"
+                      ? "block text-center text-base sm:text-lg font-black py-3 sm:py-5 rounded-2xl sm:rounded-[24px]"
+                      : "block text-center text-base sm:text-lg font-black py-3 sm:py-5 rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200 text-neutral-800 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-300"
                   }
                   style={
                     highlight[i]
