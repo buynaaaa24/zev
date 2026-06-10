@@ -1,7 +1,15 @@
 import React from "react";
 import { MacbookScroll } from "@/components/ui/macbook-scroll";
 
-export function MacbookScrollDemo() {
+export function MacbookScrollDemo({
+  src,
+  tabletSrc,
+  mobileSrc,
+}: {
+  src?: string;
+  tabletSrc?: string;
+  mobileSrc?: string;
+}) {
   return (
     <div className="w-full overflow-hidden bg-transparent">
       <MacbookScroll
@@ -11,8 +19,9 @@ export function MacbookScrollDemo() {
             <Badge className="h-10 w-10 -rotate-12 transform" />
           </a>
         }
-        src={`/images/pos.jpg`}
-        mobileSrc={`/images/posapp.jpg`}
+        src={src || `/images/pos.jpg`}
+        tabletSrc={tabletSrc}
+        mobileSrc={mobileSrc || `/images/posapp.jpg`}
         showGradient={false}
       />
     </div>

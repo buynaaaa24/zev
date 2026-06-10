@@ -122,7 +122,7 @@ const EMPTY_TEAM_PAGE: TeamPageSections = {
   cta: { title: "", subtitle: "", buttonLabel: "", buttonHref: "" },
 };
 const EMPTY_POSEASE: PosEaseSections = {
-  hero: { title: "", titleAccent: "", desc: "", cta: "" },
+  hero: { title: "", titleAccent: "", desc: "", cta: "", image: "", tabImage: "", mobileImage: "" },
   features: { title: "", desc: "", items: [] },
   hardware: { title: "", items: [] },
   pricing: { title: "", tiers: [] },

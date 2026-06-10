@@ -268,6 +268,8 @@ export default function PosEaseClient({
     desc: data.hero.desc || defaults.hero.desc,
     cta: data.hero.cta || defaults.hero.cta,
     image: data.hero.image || defaults.hero.image,
+    tabImage: data.hero.tabImage,
+    mobileImage: data.hero.mobileImage,
   };
 
   const getGridCols = (count: number) => {
@@ -341,7 +343,11 @@ export default function PosEaseClient({
 
         {/* Custom 3D scene — zero dependencies, full CSS 3D */}
         <div className="relative mt-8 lg:-mt-16 w-full z-10" style={{ height: "clamp(300px, 60vw, 100vh)" }}>
-          <Scene3D />
+          <Scene3D
+            src={hero.image ? resolveMediaUrl(hero.image) : undefined}
+            tabletSrc={hero.tabImage ? resolveMediaUrl(hero.tabImage) : undefined}
+            mobileSrc={hero.mobileImage ? resolveMediaUrl(hero.mobileImage) : undefined}
+          />
         </div>
       </section>
 
