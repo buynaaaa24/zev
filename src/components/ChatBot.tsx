@@ -2,7 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { io, type Socket } from "socket.io-client";
-import { getApiBaseUrl, getSocketBaseUrl, type ChatMessage } from "@/lib/api";
+import { getChatApiBaseUrl, getChatSocketBaseUrl, type ChatMessage } from "@/lib/api";
 import { useLanguage } from "@/contexts/LanguageContext";
 import type { Translations } from "@/lib/translations";
 
@@ -237,17 +237,17 @@ export default function ChatBot() {
     humanModeRef.current = humanMode;
   }, [humanMode]);
   const seenIds = useRef<Set<string>>(new Set());
-  const base = getApiBaseUrl();
+  const base = getChatApiBaseUrl();
 
   const loadConfig = useCallback(async () => {
     setLoadingConfig(true);
     try {
-      const res = await fetch(`${base}/api/v1/site-pages/chatbot`);
+      const res = await fetch(`${base}/v1/chat/config?project=zevtabs`);
       if (!res.ok) throw new Error(await res.text());
       const json = (await res.json()) as {
-        data?: { sections?: unknown };
+        data?: unknown;
       };
-      const next = normalizeConfig(json.data?.sections, defaultConfig);
+      const next = normalizeConfig(json.data, defaultConfig);
       setConfig(next);
       setActiveChoices(next.rootChoices);
     } catch {
@@ -264,10 +264,10 @@ export default function ChatBot() {
     let convId = localStorage.getItem(CONV_KEY);
 
     const ensureConv = async () => {
-      const res = await fetch(`${base}/api/v1/chat/conversations`, {
+      const res = await fetch(`${base}/v1/chat/conversations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ guestId }),
+        body: JSON.stringify({ guestId, project: "zevtabs" }),
       });
       if (!res.ok) throw new Error(await res.text());
       const json = (await res.json()) as { data: { id: string } };
@@ -279,7 +279,7 @@ export default function ChatBot() {
       if (!convId) await ensureConv();
       else {
         const check = await fetch(
-          `${base}/api/v1/chat/conversations/${convId}/messages?guestId=${encodeURIComponent(guestId)}`,
+          `${base}/v1/chat/conversations/${convId}/messages?guestId=${encodeURIComponent(guestId)}`,
         );
         if (!check.ok) {
           localStorage.removeItem(CONV_KEY);
@@ -290,7 +290,7 @@ export default function ChatBot() {
       const finalId = localStorage.getItem(CONV_KEY);
       if (!finalId) throw new Error("No conversation");
       const res = await fetch(
-        `${base}/api/v1/chat/conversations/${finalId}/messages?guestId=${encodeURIComponent(guestId)}`,
+        `${base}/v1/chat/conversations/${finalId}/messages?guestId=${encodeURIComponent(guestId)}`,
       );
       if (!res.ok) throw new Error(await res.text());
       const json = (await res.json()) as { data: ChatMessage[] };
@@ -332,7 +332,7 @@ export default function ChatBot() {
   useEffect(() => {
     let s: Socket;
     try {
-      const baseUrl = getSocketBaseUrl();
+      const baseUrl = getChatSocketBaseUrl();
       const isRelative = !baseUrl || baseUrl.startsWith("/");
       const socketUrl = isRelative ? window.location.origin : baseUrl;
       const socketOptions: any = {
@@ -484,7 +484,7 @@ export default function ChatBot() {
     setError(null);
     setInput("");
     try {
-      const res = await fetch(`${base}/api/v1/chat/conversations/${convId}/messages`, {
+      const res = await fetch(`${base}/v1/chat/conversations/${convId}/messages`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ text: trimmed, guestId }),

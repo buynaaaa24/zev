@@ -33,6 +33,24 @@ export function getSocketBaseUrl(): string {
 }
 
 /**
+ * Resolves the absolute backend API URL for the ChatBot (points to udirdlagaBack).
+ * Defaults to 'https://admin.zevtabs.mn/api' but can be overridden in env.
+ */
+export function getChatApiBaseUrl(): string {
+  const defaultChatApi = "https://admin.zevtabs.mn/api";
+  return (process.env.NEXT_PUBLIC_CHAT_API_URL ?? defaultChatApi).trim().replace(/\/+$/, "");
+}
+
+/**
+ * Resolves the absolute Socket.io server URL for the ChatBot (points to udirdlagaBack).
+ * Defaults to 'https://admin.zevtabs.mn' but can be overridden in env.
+ */
+export function getChatSocketBaseUrl(): string {
+  const defaultChatSocket = "https://admin.zevtabs.mn";
+  return (process.env.NEXT_PUBLIC_CHAT_SOCKET_URL ?? defaultChatSocket).trim().replace(/\/+$/, "");
+}
+
+/**
  * URL for API-hosted uploads (`/upload/…`) in `<img src>`.
  * Returns a **same-origin** path (`/upload/…`) so the browser loads the marketing site origin;
  * `next.config.mjs` rewrites that to the real API (see `UPLOAD_PROXY_ORIGIN`).
