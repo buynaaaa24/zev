@@ -352,7 +352,7 @@ export default function AmarHomeClient({
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[0.9]">
               {features.title}
             </h2>
-            <p className="text-white/40 text-base sm:text-lg mt-4 sm:mt-6 max-w-xl mx-auto">
+            <p className="text-white/40 text-base sm:text-lg mt-4 sm:mt-6 max-w-xl mx-auto whitespace-pre-wrap text-left">
               {features.desc}
             </p>
           </div>
