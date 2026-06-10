@@ -327,7 +327,10 @@ export default function AmarHomeClient({
               style={{ transitionDelay: ".3s" }}
             >
               <div className="relative">
-                <div className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl bg-emerald-500" aria-hidden />
+                <div
+                  className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl bg-emerald-500"
+                  aria-hidden
+                />
                 <img
                   src={resolveMediaUrl(hero.image)}
                   alt=""
@@ -346,9 +349,6 @@ export default function AmarHomeClient({
       >
         <div className="max-w-[1200px] mx-auto">
           <div className="mb-8 md:mb-14 text-center">
-            <span className="text-emerald-500 text-[10px] font-black uppercase tracking-[0.4em] mb-4 block">
-              Innovation
-            </span>
             <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter leading-[0.9]">
               {features.title}
             </h2>
