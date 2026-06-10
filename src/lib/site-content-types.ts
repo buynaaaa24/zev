@@ -196,8 +196,6 @@ export type PosEaseSections = {
     desc: string;
     cta: string;
     image?: string;
-    tabImage?: string;
-    mobileImage?: string;
   };
   features: {
     title: string;

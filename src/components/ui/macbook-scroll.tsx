@@ -28,14 +28,12 @@ import { IconCaretDownFilled } from "@tabler/icons-react";
 export const MacbookScroll = ({
   src,
   mobileSrc,
-  tabletSrc,
   showGradient,
   title,
   badge,
 }: {
   src?: string;
   mobileSrc?: string;
-  tabletSrc?: string;
   showGradient?: boolean;
   title?: string | React.ReactNode;
   badge?: React.ReactNode;
@@ -120,7 +118,7 @@ export const MacbookScroll = ({
                 <div className="absolute bottom-4 left-4 z-10">{badge}</div>
               )}
               <img
-                src={tabletSrc || src}
+                src={src}
                 alt="screenshot"
                 className="w-full h-full object-contain"
               />
