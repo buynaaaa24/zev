@@ -1,32 +1,37 @@
-import { NextResponse } from 'next/server';
-import type { NextRequest } from 'next/server';
+import { NextResponse } from "next/server";
+import type { NextRequest } from "next/server";
 
-const SITES = ['zevtabs', 'parkease', 'posease', 'amarhome', 'rently', 'qr'];
-const DEFAULT_SITE = 'zevtabs';
+const SITES = ["zevtabs", "parkease", "posease", "amarhome", "rently", "qr"];
+const DEFAULT_SITE = "zevtabs";
 
 export function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl;
 
   // Skip api, _next, and static files
   if (
-    pathname.startsWith('/api') ||
-    pathname.startsWith('/_next') ||
-    pathname.includes('.')
+    pathname.startsWith("/api") ||
+    pathname.startsWith("/_next") ||
+    pathname.includes(".")
   ) {
     return NextResponse.next();
   }
 
   // Root → default site
-  if (pathname === '/') {
+  if (pathname === "/") {
     const url = request.nextUrl.clone();
     url.pathname = `/${DEFAULT_SITE}`;
     return NextResponse.rewrite(url);
   }
 
-  // If first segment is a known site ID, pass through
-  const segments = pathname.split('/').filter(Boolean);
+  // If first segment is a known site ID, pass through (redirect to lowercase if case differs)
+  const segments = pathname.split("/").filter(Boolean);
   const firstSegment = segments[0]?.toLowerCase();
   if (firstSegment && SITES.includes(firstSegment)) {
+    if (segments[0] !== firstSegment) {
+      const url = request.nextUrl.clone();
+      url.pathname = "/" + [firstSegment, ...segments.slice(1)].join("/");
+      return NextResponse.redirect(url);
+    }
     return NextResponse.next();
   }
 
@@ -37,5 +42,5 @@ export function middleware(request: NextRequest) {
 }
 
 export const config = {
-  matcher: ['/((?!api|_next/static|_next/image|favicon.ico).*)'],
+  matcher: ["/((?!api|_next/static|_next/image|favicon.ico).*)"],
 };
