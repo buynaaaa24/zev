@@ -590,18 +590,20 @@ function PricingContent({
             <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">
               {tier.desc}
             </p>
-            <a
-              href="#kholbooBarikh"
-              onClick={handleScroll}
-              className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl
-                ${
-                  tiers.length === 3 && i === 1
-                    ? "bg-white text-black hover:bg-[rgb(255,68,105)] hover:text-white shadow-pink-500/20"
-                    : "bg-[rgb(255,68,105)] text-white hover:bg-white hover:text-black shadow-pink-500/30"
-                }`}
-            >
-              Get Started
-            </a>
+            {!tier.hideButton && (
+              <a
+                href="#kholbooBarikh"
+                onClick={handleScroll}
+                className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl
+                  ${
+                    tiers.length === 3 && i === 1
+                      ? "bg-white text-black hover:bg-[rgb(255,68,105)] hover:text-white shadow-pink-500/20"
+                      : "bg-[rgb(255,68,105)] text-white hover:bg-white hover:text-black shadow-pink-500/30"
+                  }`}
+              >
+                Get Started
+              </a>
+            )}
           </div>
         ))}
       </div>

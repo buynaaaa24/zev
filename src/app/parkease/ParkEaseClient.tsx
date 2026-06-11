@@ -1242,26 +1242,28 @@ function PricingSection() {
                     </li>
                   ))}
                 </ul>
-                <a
-                  href="#kholbooBarikh"
-                  onClick={handleAnchorScroll}
-                  className={
-                    highlight[i]
-                      ? "block text-center text-base sm:text-lg font-black py-3 sm:py-5 rounded-2xl sm:rounded-[24px]"
-                      : "block text-center text-base sm:text-lg font-black py-3 sm:py-5 rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200 text-neutral-800 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-300"
-                  }
-                  style={
-                    highlight[i]
-                      ? {
-                          background: YELLOW,
-                          color: "#1a0f00",
-                          boxShadow: `0 8px 24px ${YELLOW_GLOW}0.3)`,
-                        }
-                      : {}
-                  }
-                >
-                  {api.ctaBtn}
-                </a>
+                {!tier.hideButton && (
+                  <a
+                    href="#kholbooBarikh"
+                    onClick={handleAnchorScroll}
+                    className={
+                      highlight[i]
+                        ? "block text-center text-base sm:text-lg font-black py-3 sm:py-5 rounded-2xl sm:rounded-[24px]"
+                        : "block text-center text-base sm:text-lg font-black py-3 sm:py-5 rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200 text-neutral-800 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-300"
+                    }
+                    style={
+                      highlight[i]
+                        ? {
+                            background: YELLOW,
+                            color: "#1a0f00",
+                            boxShadow: `0 8px 24px ${YELLOW_GLOW}0.3)`,
+                          }
+                        : {}
+                    }
+                  >
+                    {api.ctaBtn}
+                  </a>
+                )}
               </div>
             ))}
           </div>

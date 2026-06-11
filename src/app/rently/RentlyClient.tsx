@@ -7,6 +7,7 @@ import { useRentlyLang } from "@/contexts/RentlyLangContext";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import { getApiBaseUrl } from "@/lib/api";
 import { ArrowRight, ChevronRight } from "lucide-react";
+import { resolveMediaUrl } from "@/lib/media";
 
 const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
   const href = e.currentTarget.getAttribute("href");
@@ -26,6 +27,7 @@ const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
     hero: {
       title: "Comprehensive Rent Management",
       titleAccent: "System",
+      titleAccent2: "",
       desc: "Monitor rent payments, send invoices, calculate penalties, and manage utility costs all in one place with Rently.",
       cta: "Get Started",
       secondary: "Learn More",
@@ -34,9 +36,21 @@ const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
       title: "Core Features",
       desc: "Smart solutions to simplify your rental operations.",
       items: [
-        { title: "Payment Monitoring", desc: "Track tenant payments in real-time and generate reports instantly.", size: "medium" },
-        { title: "Penalty Calculation", desc: "Automatically calculate penalties for overdue payments based on contract terms.", size: "small" },
-        { title: "Utility Costs", desc: "Accurately calculate and distribute utility costs like water, electricity, and heating based on usage.", size: "large" },
+        {
+          title: "Payment Monitoring",
+          desc: "Track tenant payments in real-time and generate reports instantly.",
+          size: "medium",
+        },
+        {
+          title: "Penalty Calculation",
+          desc: "Automatically calculate penalties for overdue payments based on contract terms.",
+          size: "small",
+        },
+        {
+          title: "Utility Costs",
+          desc: "Accurately calculate and distribute utility costs like water, electricity, and heating based on usage.",
+          size: "large",
+        },
       ],
     },
     notifications: {
@@ -54,8 +68,16 @@ const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
     pricing: {
       title: "Pricing Plans",
       tiers: [
-        { name: "Basic Plan", price: "100,000₮ / month", desc: "Designed for small properties and retail spaces. Up to 50 tenants." },
-        { name: "Business Plan", price: "250,000₮ / month", desc: "Designed for offices and large malls. Unlimited tenants, SMS service included." },
+        {
+          name: "Basic Plan",
+          price: "100,000₮ / month",
+          desc: "Designed for small properties and retail spaces. Up to 50 tenants.",
+        },
+        {
+          name: "Business Plan",
+          price: "250,000₮ / month",
+          desc: "Designed for offices and large malls. Unlimited tenants, SMS service included.",
+        },
       ],
     },
   },
@@ -63,6 +85,7 @@ const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
     hero: {
       title: "Түрээсийн удирдлагын цогц",
       titleAccent: "Систем",
+      titleAccent2: "",
       desc: "Түрээсийн төлбөрийн хяналт, нэхэмжлэх илгээх, алданги тооцох болон ашиглалтын зардлын тооцооллыг нэг дороос удирдах боломжтой систем.",
       cta: "Систем нэвтрүүлэх",
       secondary: "Дэлгэрэнгүй",
@@ -71,9 +94,21 @@ const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
       title: "Үндсэн боломжууд",
       desc: "Түрээсийн үйл ажиллагааг хөнгөвчлөх ухаалаг шийдлүүд.",
       items: [
-        { title: "Төлбөрийн хяналт", desc: "Түрээслэгчдийн төлбөр төлөлтийн байдлыг цаг алдалгүй хянах, тайлан гаргах.", size: "medium" },
-        { title: "Алданги тооцоолол", desc: "Хугацаа хэтэрсэн төлбөрт гэрээнд заасан хувиар алданги автоматаар тооцох.", size: "small" },
-        { title: "Ашиглалтын зардал", desc: "Ус, цахилгаан, дулаан зэрэг ашиглалтын зардлыг талбайн хэмжээ болон хэрэглээгээр хуваарилан тооцох.", size: "large" },
+        {
+          title: "Төлбөрийн хяналт",
+          desc: "Түрээслэгчдийн төлбөр төлөлтийн байдлыг цаг алдалгүй хянах, тайлан гаргах.",
+          size: "medium",
+        },
+        {
+          title: "Алданги тооцоолол",
+          desc: "Хугацаа хэтэрсэн төлбөрт гэрээнд заасан хувиар алданги автоматаар тооцох.",
+          size: "small",
+        },
+        {
+          title: "Ашиглалтын зардал",
+          desc: "Ус, цахилгаан, дулаан зэрэг ашиглалтын зардлыг талбайн хэмжээ болон хэрэглээгээр хуваарилан тооцох.",
+          size: "large",
+        },
       ],
     },
     notifications: {
@@ -91,25 +126,46 @@ const DEFAULTS: { en: RentlySections; mn: RentlySections } = {
     pricing: {
       title: "Үнэ тариф",
       tiers: [
-        { name: "Энгийн багц", price: "100,000₮ / сар", desc: "Жижиг обьект болон худалдааны төвд зориулагдсан багц. 50 хүртэлх түрээслэгчтэй." },
-        { name: "Бизнес багц", price: "250,000₮ / сар", desc: "Оффис болон томоохон худалдааны төвд зориулагдсан. Хязгааргүй түрээслэгчтэй, SMS үйлчилгээ багтсан." },
+        {
+          name: "Энгийн багц",
+          price: "100,000₮ / сар",
+          desc: "Жижиг обьект болон худалдааны төвд зориулагдсан багц. 50 хүртэлх түрээслэгчтэй.",
+        },
+        {
+          name: "Бизнес багц",
+          price: "250,000₮ / сар",
+          desc: "Оффис болон томоохон худалдааны төвд зориулагдсан. Хязгааргүй түрээслэгчтэй, SMS үйлчилгээ багтсан.",
+        },
       ],
     },
-  }
+  },
 };
 
 function useReveal() {
   const ref = useRef<HTMLDivElement>(null);
   const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const el = ref.current; if (!el) return;
-    const obs = new IntersectionObserver(([e]) => { if (e.isIntersecting) setVisible(true); }, { threshold: 0.1 });
-    obs.observe(el); return () => obs.disconnect();
+    const el = ref.current;
+    if (!el) return;
+    const obs = new IntersectionObserver(
+      ([e]) => {
+        if (e.isIntersecting) setVisible(true);
+      },
+      { threshold: 0.1 },
+    );
+    obs.observe(el);
+    return () => obs.disconnect();
   }, []);
   return { ref, visible };
 }
 
-export default function RentlyClient({ initialData, globalContact }: { initialData: RentlySections; globalContact?: GlobalContactInfo }) {
+export default function RentlyClient({
+  initialData,
+  globalContact,
+}: {
+  initialData: RentlySections;
+  globalContact?: GlobalContactInfo;
+}) {
   const { lang, toggle } = useRentlyLang();
   const [data, setData] = useState<RentlySections>(initialData);
   const [mounted, setMounted] = useState(false);
@@ -118,7 +174,9 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
   useEffect(() => {
     async function fetchLang() {
       try {
-        const res = await fetch(`${getApiBaseUrl()}/v1/site-pages/rently?lang=${lang}&siteId=rently`);
+        const res = await fetch(
+          `${getApiBaseUrl()}/v1/site-pages/rently?lang=${lang}&siteId=rently`,
+        );
         if (res.ok) {
           const json = await res.json();
           if (json.data?.sections) {
@@ -145,50 +203,98 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
     let animId: number;
-    const particles: { x: number; y: number; r: number; dx: number; dy: number; alpha: number }[] = [];
-    const resize = () => { canvas.width = canvas.offsetWidth; canvas.height = canvas.offsetHeight; };
+    const particles: {
+      x: number;
+      y: number;
+      r: number;
+      dx: number;
+      dy: number;
+      alpha: number;
+    }[] = [];
+    const resize = () => {
+      canvas.width = canvas.offsetWidth;
+      canvas.height = canvas.offsetHeight;
+    };
     resize();
     window.addEventListener("resize", resize);
     for (let i = 0; i < 60; i++) {
       particles.push({
-        x: Math.random() * canvas.width, y: Math.random() * canvas.height,
+        x: Math.random() * canvas.width,
+        y: Math.random() * canvas.height,
         r: Math.random() * 1.5 + 0.2,
-        dx: (Math.random() - 0.5) * 0.1, dy: -Math.random() * 0.3 - 0.05,
+        dx: (Math.random() - 0.5) * 0.1,
+        dy: -Math.random() * 0.3 - 0.05,
         alpha: Math.random() * 0.4 + 0.1,
       });
     }
     const draw = () => {
       ctx.clearRect(0, 0, canvas.width, canvas.height);
-      particles.forEach(p => {
-        ctx.beginPath(); ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
-        ctx.fillStyle = `rgba(16,185,129,${p.alpha})`; ctx.fill();
-        p.x += p.dx; p.y += p.dy;
-        if (p.y < -10) { p.y = canvas.height + 10; p.x = Math.random() * canvas.width; }
+      particles.forEach((p) => {
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = `rgba(16,185,129,${p.alpha})`;
+        ctx.fill();
+        p.x += p.dx;
+        p.y += p.dy;
+        if (p.y < -10) {
+          p.y = canvas.height + 10;
+          p.x = Math.random() * canvas.width;
+        }
       });
       animId = requestAnimationFrame(draw);
     };
     draw();
-    return () => { cancelAnimationFrame(animId); window.removeEventListener("resize", resize); };
+    return () => {
+      cancelAnimationFrame(animId);
+      window.removeEventListener("resize", resize);
+    };
   }, []);
-
 
   const defaults = DEFAULTS[lang] || DEFAULTS.mn;
 
   const hero = {
     title: data?.hero?.title || defaults.hero.title,
     titleAccent: data?.hero?.titleAccent || defaults.hero.titleAccent,
+    titleAccent2: data?.hero?.titleAccent2 || "",
     desc: data?.hero?.desc || defaults.hero.desc,
     cta: data?.hero?.cta || defaults.hero.cta,
+    secondary: data?.hero?.secondary || defaults.hero.secondary,
     image: data?.hero?.image || defaults.hero.image,
   };
 
-  const features = (data?.features?.items?.length ? data.features.items : defaults.features.items).filter(i => (i.title && i.title.trim() !== "") || i.image);
-  const pricing = (data?.pricing?.tiers?.length ? data.pricing.tiers : defaults.pricing.tiers).filter(i => i.name && i.name.trim() !== "");
+  const [accentIdx, setAccentIdx] = useState(0);
+  useEffect(() => {
+    if (!hero.titleAccent2) return;
+    const id = setInterval(() => setAccentIdx((p) => (p === 0 ? 1 : 0)), 1000);
+    return () => clearInterval(id);
+  }, [hero.titleAccent2]);
+
+  const features = (
+    data?.features?.items?.length
+      ? data.features.items
+      : defaults.features.items
+  ).filter((i) => (i.title && i.title.trim() !== "") || i.image);
+  const pricing = (
+    data?.pricing?.tiers?.length ? data.pricing.tiers : defaults.pricing.tiers
+  ).filter((i) => i.name && i.name.trim() !== "");
 
   const additionalSections = [
-    { name: data?.notifications?.title || defaults.notifications.title, desc: data?.notifications?.desc || defaults.notifications.desc, label: lang === 'mn' ? "Ухаалаг" : "Smart" },
-    { name: data?.penalties?.title || defaults.penalties.title, desc: data?.penalties?.desc || defaults.penalties.desc, label: lang === 'mn' ? "Журам" : "Rule" },
-    { name: data?.costs?.title || defaults.costs.title, desc: data?.costs?.desc || defaults.costs.desc, label: lang === 'mn' ? "Зардал" : "Cost" },
+    {
+      name: data?.notifications?.title || defaults.notifications.title,
+      desc: data?.notifications?.desc || defaults.notifications.desc,
+      label:
+        data?.notifications?.label || (lang === "mn" ? "Ухаалаг" : "Smart"),
+    },
+    {
+      name: data?.penalties?.title || defaults.penalties.title,
+      desc: data?.penalties?.desc || defaults.penalties.desc,
+      label: data?.penalties?.label || (lang === "mn" ? "Журам" : "Rule"),
+    },
+    {
+      name: data?.costs?.title || defaults.costs.title,
+      desc: data?.costs?.desc || defaults.costs.desc,
+      label: data?.costs?.label || (lang === "mn" ? "Зардал" : "Cost"),
+    },
   ];
 
   const getGridCols = (count: number) => {
@@ -199,12 +305,15 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
 
   return (
     <main className="bg-[#050505] selection:bg-emerald-600 selection:text-white min-h-screen relative overflow-hidden font-sans">
-
-
       <style jsx global>{`
         @keyframes float {
-          0%, 100% { transform: translateY(0) scale(1); }
-          50% { transform: translateY(-20px) scale(1.02); }
+          0%,
+          100% {
+            transform: translateY(0) scale(1);
+          }
+          50% {
+            transform: translateY(-20px) scale(1.02);
+          }
         }
         .animate-float {
           animation: float 6s ease-in-out infinite;
@@ -217,37 +326,76 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
         <div className="absolute top-[-20%] left-[-10%] w-[80%] h-[70%] rounded-full bg-emerald-800/50 blur-[160px] animate-pulse" />
         <div className="absolute bottom-[-10%] right-[-5%] w-[60%] h-[50%] rounded-full bg-emerald-500/15 blur-[140px]" />
         <div className="absolute top-[40%] left-[30%] w-[50%] h-[40%] rounded-full bg-emerald-700/10 blur-[120px]" />
-        <div className="absolute inset-0 z-[1]" style={{ background: "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(16,120,80,0.35) 0%, transparent 80%)" }} />
+        <div
+          className="absolute inset-0 z-[1]"
+          style={{
+            background:
+              "radial-gradient(ellipse 80% 60% at 50% 0%, rgba(16,120,80,0.35) 0%, transparent 80%)",
+          }}
+        />
       </div>
 
-      <canvas ref={canvasRef} className="fixed inset-0 w-full h-full pointer-events-none z-[5]" />
+      <canvas
+        ref={canvasRef}
+        className="fixed inset-0 w-full h-full pointer-events-none z-[5]"
+      />
 
       {/* HERO */}
       <section className="relative min-h-[90vh] flex items-center pt-20 z-10 overflow-hidden">
         <div className="grid grid-cols-1 lg:grid-cols-12 gap-8 sm:gap-10 lg:gap-16 items-center w-full max-w-[1200px] mx-auto px-5 sm:px-8 md:px-10 lg:px-16">
-          <div className={`lg:col-span-5 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}>
+          <div
+            className={`lg:col-span-5 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 -translate-x-12"}`}
+          >
             <h1 className="text-4xl sm:text-5xl md:text-6xl lg:text-[80px] font-black text-white mb-5 sm:mb-6 leading-[1.1] tracking-tighter">
-              {hero.title}<br />
-              <span className="bg-gradient-to-r from-emerald-400 to-white text-transparent bg-clip-text italic pr-4">{hero.titleAccent}</span>
+              {hero.title}
+              <br />
+              <span className="bg-gradient-to-r from-emerald-400 to-white text-transparent bg-clip-text italic pr-4 whitespace-pre-wrap transition-opacity duration-500">
+                {accentIdx === 0 || !hero.titleAccent2
+                  ? hero.titleAccent
+                  : hero.titleAccent2}
+              </span>
             </h1>
             <p className="text-base sm:text-lg md:text-xl text-white/40 max-w-lg mb-8 sm:mb-10 leading-relaxed font-medium">
               {hero.desc}
             </p>
             <div className="flex flex-wrap gap-3 sm:gap-4">
               <a
-                href="#features"
+                href="#kholbooBarikh"
                 onClick={handleScroll}
                 className="group px-6 sm:px-8 py-3 sm:py-4 rounded-full bg-emerald-600 text-white font-bold text-xs uppercase tracking-widest hover:bg-emerald-500 transition-all duration-500 shadow-2xl shadow-emerald-900/40 flex items-center gap-3"
               >
-                {hero.cta} <ArrowRight size={16} className="group-hover:translate-x-2 transition-transform" />
+                {hero.cta}{" "}
+                <ArrowRight
+                  size={16}
+                  className="group-hover:translate-x-2 transition-transform"
+                />
               </a>
+              {hero.secondary && (
+                <a
+                  href="#features"
+                  onClick={handleScroll}
+                  className="group px-6 sm:px-8 py-3 sm:py-4 rounded-full border border-white/20 text-white/70 font-bold text-xs uppercase tracking-widest hover:border-white/40 hover:text-white transition-all duration-500 flex items-center gap-3"
+                >
+                  {hero.secondary}
+                  <ChevronRight
+                    size={16}
+                    className="group-hover:translate-x-1 transition-transform"
+                  />
+                </a>
+              )}
             </div>
           </div>
 
-          <div className={`lg:col-span-7 relative transition-all duration-[1500ms] delay-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-20 scale-95"}`}>
+          <div
+            className={`lg:col-span-7 relative transition-all duration-[1500ms] delay-300 ${mounted ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-20 scale-95"}`}
+          >
             <div className="relative animate-float">
               {hero.image ? (
-                <img src={hero.image} alt="Hero" className="w-full h-auto object-contain drop-shadow-2xl" />
+                <img
+                  src={hero.image}
+                  alt="Hero"
+                  className="w-full h-auto object-contain drop-shadow-2xl"
+                />
               ) : (
                 <div className="relative aspect-square sm:aspect-video lg:aspect-[4/5] xl:aspect-square">
                   <div className="absolute inset-0 bg-emerald-500/10 rounded-[32px] sm:rounded-[48px] blur-[40px] sm:blur-[60px]" />
@@ -278,18 +426,28 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
 
       {/* FEATURES */}
       {features.length > 0 && (
-        <section id="features" className="py-8 md:py-16 relative z-10 px-5 sm:px-8 md:px-6">
+        <section
+          id="features"
+          className="py-8 md:py-16 relative z-10 px-5 sm:px-8 md:px-6"
+        >
           <div className="max-w-[1200px] mx-auto">
             <div className="text-center mb-8 md:mb-14 max-w-2xl mx-auto">
               <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter mb-4 sm:mb-6">
                 {data?.features?.title || defaults.features.title}
               </h2>
-              <p className="text-base sm:text-lg text-white/40">{data?.features?.desc || defaults.features.desc}</p>
+              <p className="text-base sm:text-lg text-white/40">
+                {data?.features?.desc || defaults.features.desc}
+              </p>
             </div>
 
-            <div className="space-y-8 sm:space-y-12 md:space-y-16">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6 lg:gap-8">
               {features.map((item, idx) => (
-                <FeatureRow key={idx} item={item} index={idx} />
+                <FeatureCard
+                  key={idx}
+                  item={item}
+                  index={idx}
+                  total={features.length}
+                />
               ))}
             </div>
           </div>
@@ -297,9 +455,14 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
       )}
 
       {/* ADDITIONAL SECTIONS (Notifications, Penalties, Costs) */}
-      <section id="additional" className="py-8 md:py-16 bg-neutral-900/10 relative z-10">
+      <section
+        id="additional"
+        className="py-8 md:py-16 bg-neutral-900/10 relative z-10"
+      >
         <div className="max-w-[1200px] mx-auto px-5 sm:px-8 md:px-6">
-          <div className={`grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 md:gap-10`}>
+          <div
+            className={`grid grid-cols-1 md:grid-cols-3 gap-5 sm:gap-6 md:gap-10`}
+          >
             {additionalSections.map((item, i) => (
               <SpotlightCard key={i} item={item} index={i} />
             ))}
@@ -309,15 +472,27 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
 
       {/* PRICING */}
       {pricing.length > 0 && (
-        <section id="pricing" className="py-8 md:py-16 relative z-10 px-5 sm:px-8 md:px-6">
+        <section
+          id="pricing"
+          className="py-8 md:py-16 relative z-10 px-5 sm:px-8 md:px-6"
+        >
           <div className="max-w-[1200px] mx-auto">
             <div className="text-center mb-8 md:mb-14">
-              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter mb-6 sm:mb-8">{data?.pricing?.title || defaults.pricing.title}</h2>
+              <h2 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black text-white tracking-tighter mb-6 sm:mb-8">
+                {data?.pricing?.title || defaults.pricing.title}
+              </h2>
               <div className="w-12 h-1 bg-emerald-500 mx-auto rounded-full" />
             </div>
-            <div className={`grid ${getGridCols(pricing.length)} gap-4 sm:gap-6 md:gap-8`}>
+            <div
+              className={`grid ${getGridCols(pricing.length)} gap-4 sm:gap-6 md:gap-8`}
+            >
               {pricing.map((tier, i) => (
-                <PricingTier key={i} tier={tier} index={i} totalCount={pricing.length} />
+                <PricingTier
+                  key={i}
+                  tier={tier}
+                  index={i}
+                  totalCount={pricing.length}
+                />
               ))}
             </div>
           </div>
@@ -336,27 +511,84 @@ export default function RentlyClient({ initialData, globalContact }: { initialDa
         location={globalContact?.location}
         locationUrl={globalContact?.locationUrl}
       />
-
     </main>
   );
 }
 
+function FeatureCard({
+  item,
+  index,
+  total,
+}: {
+  item: any;
+  index: number;
+  total: number;
+}) {
+  const { ref, visible } = useReveal();
+  return (
+    <div
+      ref={ref}
+      className={`relative transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}
+      style={{ transitionDelay: visible ? `${index * 120}ms` : "0ms" }}
+    >
+      {index < total - 1 && (
+        <div className="hidden md:block absolute top-8 left-[calc(100%-1.5rem)] w-[calc(100%-3rem)] h-px bg-gradient-to-r from-emerald-500/20 to-transparent z-0" />
+      )}
+      <div className="relative bg-white/[0.03] border border-white/5 rounded-2xl sm:rounded-3xl p-5 sm:p-8 h-full hover:border-emerald-500/20 transition-colors duration-300">
+        <span className="absolute top-5 right-5 sm:top-6 sm:right-6 text-3xl sm:text-4xl font-black text-white/5 select-none">
+          0{index + 1}
+        </span>
+        {item.image && (
+          <div className="relative w-full aspect-video rounded-xl overflow-hidden mb-4 sm:mb-6">
+            <img
+              src={resolveMediaUrl(item.image)}
+              alt={item.title}
+              className="w-full h-full object-cover"
+            />
+          </div>
+        )}
+        <div className="w-8 h-0.5 bg-emerald-500 mb-4 rounded-full" />
+        <h3 className="text-lg sm:text-xl font-black text-white tracking-tight mb-2 sm:mb-3 leading-tight">
+          {item.title}
+        </h3>
+        <p className="text-white/40 text-sm sm:text-[15px] leading-relaxed font-medium">
+          {item.desc}
+        </p>
+      </div>
+    </div>
+  );
+}
 
 function FeatureRow({ item, index }: { item: any; index: number }) {
   const { ref, visible } = useReveal();
   const isEven = index % 2 === 0;
   return (
-    <div ref={ref} className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-6 sm:gap-8 md:gap-12 lg:gap-20`}>
-      <div className={`flex-1 transition-all duration-1000 ${visible ? "opacity-100 translate-x-0" : isEven ? "opacity-0 -translate-x-12" : "opacity-0 translate-x-12"}`}>
+    <div
+      ref={ref}
+      className={`flex flex-col ${isEven ? "md:flex-row" : "md:flex-row-reverse"} items-center gap-6 sm:gap-8 md:gap-12 lg:gap-20`}
+    >
+      <div
+        className={`flex-1 transition-all duration-1000 ${visible ? "opacity-100 translate-x-0" : isEven ? "opacity-0 -translate-x-12" : "opacity-0 translate-x-12"}`}
+      >
         <div className="w-8 sm:w-10 h-1 bg-emerald-500 mb-4 sm:mb-6 rounded-full" />
-        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tighter mb-3 sm:mb-4 leading-tight">{item.title}</h3>
-        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-4 sm:mb-6">{item.desc}</p>
+        <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tighter mb-3 sm:mb-4 leading-tight">
+          {item.title}
+        </h3>
+        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-4 sm:mb-6">
+          {item.desc}
+        </p>
       </div>
-      <div className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}>
+      <div
+        className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}
+      >
         <div className="absolute inset-0 bg-emerald-500/20 blur-[60px] rounded-full" />
         <div className="relative aspect-[16/10] rounded-[16px] sm:rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group">
           {item.image ? (
-            <img src={item.image} alt={item.title} className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110" />
+            <img
+              src={item.image}
+              alt={item.title}
+              className="w-full h-full object-cover transition-transform duration-[2000ms] group-hover:scale-110"
+            />
           ) : (
             <div className="w-full h-full bg-neutral-900 flex items-center justify-center">
               <ChevronRight size={60} className="text-white/5" />
@@ -371,50 +603,107 @@ function FeatureRow({ item, index }: { item: any; index: number }) {
 function SpotlightCard({ item, index }: { item: any; index: number }) {
   const { ref, visible } = useReveal();
   return (
-    <div ref={ref} className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: `${index * 150}ms` }}>
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+      style={{ transitionDelay: `${index * 150}ms` }}
+    >
       <div className="relative aspect-[4/3] sm:aspect-square rounded-[20px] sm:rounded-[24px] md:rounded-[40px] bg-neutral-900/40 border border-white/10 mb-3 sm:mb-4 md:mb-6 overflow-hidden group">
         <div className="absolute inset-0 bg-gradient-to-br from-emerald-500/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
-        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 text-white/5 text-[24px] sm:text-[32px] md:text-[48px] font-black leading-none">0{index + 1}</div>
+        <div className="absolute top-3 left-3 sm:top-4 sm:left-4 text-white/5 text-[24px] sm:text-[32px] md:text-[48px] font-black leading-none">
+          0{index + 1}
+        </div>
         <div className="relative h-full flex flex-col items-center justify-center p-4 sm:p-6 md:p-8 text-center group-hover:-translate-y-2 transition-transform duration-700">
           <div className="w-9 h-9 sm:w-12 sm:h-12 md:w-16 md:h-16 rounded-full bg-emerald-500/10 border border-emerald-500/20 flex items-center justify-center mb-3 sm:mb-4 md:mb-6 group-hover:bg-emerald-500/30 transition-all duration-500 backdrop-blur-sm">
             <div className="w-3 h-3 rounded-full bg-emerald-400 shadow-[0_0_20px_rgba(52,211,153,1)]" />
           </div>
-          <span className="text-emerald-400 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] mb-2 block">{item.label}</span>
-          <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white">{item.name}</h3>
+          <span className="text-emerald-400 text-[9px] sm:text-[10px] font-black uppercase tracking-[0.4em] mb-2 block">
+            {item.label}
+          </span>
+          <h3 className="text-lg sm:text-xl md:text-2xl font-black text-white whitespace-pre-wrap">
+            {item.name}
+          </h3>
         </div>
       </div>
-      <p className="text-white/30 text-[10px] sm:text-xs font-medium leading-relaxed pl-4 sm:pl-6 border-l border-white/5">{item.desc}</p>
+      <p className="text-white/30 text-[10px] sm:text-xs font-medium leading-relaxed pl-4 sm:pl-6 border-l border-white/5 whitespace-pre-wrap">
+        {item.desc}
+      </p>
     </div>
   );
 }
 
-function PricingTier({ tier, index, totalCount }: { tier: any; index: number; totalCount: number }) {
+function PricingTier({
+  tier,
+  index,
+  totalCount,
+}: {
+  tier: any;
+  index: number;
+  totalCount: number;
+}) {
   const { ref, visible } = useReveal();
   const isMiddle = totalCount === 3 && index === 1;
   return (
-    <div ref={ref} className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: `${index * 150}ms` }}>
-      <div className={`relative p-6 sm:p-8 md:p-10 rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-center flex flex-col items-center h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}>
+    <div
+      ref={ref}
+      className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+      style={{ transitionDelay: `${index * 150}ms` }}
+    >
+      <div
+        className={`relative p-6 sm:p-8 md:p-10 rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}
+      >
         {tier.discounts && tier.discounts.length > 0 && (
           <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
-            {tier.discounts.map((d: { label: string; color?: string }, di: number) => (
-              <div key={di} className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap" style={{ backgroundColor: d.color ? (d.color.startsWith("#") ? d.color : `#${d.color}`) : "#7c3aed" }}>
-                {d.label}
-              </div>
-            ))}
+            {tier.discounts.map(
+              (d: { label: string; color?: string }, di: number) => (
+                <div
+                  key={di}
+                  className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap"
+                  style={{
+                    backgroundColor: d.color
+                      ? d.color.startsWith("#")
+                        ? d.color
+                        : `#${d.color}`
+                      : "#7c3aed",
+                  }}
+                >
+                  {d.label}
+                </div>
+              ),
+            )}
           </div>
         )}
-        <div className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${isMiddle ? "bg-emerald-500" : "bg-white/5 border border-white/10"}`}>
-          <span className={`text-[10px] font-black uppercase tracking-[0.3em] ${isMiddle ? "text-white" : "text-emerald-400"}`}>{tier.name}</span>
-        </div>
-        <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-8 tracking-tighter break-all w-full">{tier.price}</p>
-        <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">{tier.desc}</p>
-        <a
-          href="#kholbooBarikh"
-          onClick={handleScroll}
-          className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl ${isMiddle ? "bg-white text-black hover:bg-emerald-500 hover:text-white" : "bg-emerald-500 text-white hover:bg-white hover:text-black"}`}
+        <div
+          className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${isMiddle ? "bg-emerald-500" : "bg-white/5 border border-white/10"}`}
         >
-          Get Started
-        </a>
+          <span
+            className={`text-[10px] font-black uppercase tracking-[0.3em] ${isMiddle ? "text-white" : "text-emerald-400"}`}
+          >
+            {tier.name}
+          </span>
+        </div>
+        <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-8 tracking-tighter break-all w-full">
+          {tier.price}
+        </p>
+        <div className="text-white/40 text-[11px] sm:text-xs mb-6 sm:mb-12 font-normal leading-snug text-left space-y-0.5">
+          {(tier.desc || "").split("\n").map((line: string, i: number) => (
+            <p
+              key={i}
+              className="whitespace-nowrap overflow-hidden text-ellipsis"
+            >
+              {line || " "}
+            </p>
+          ))}
+        </div>
+        {!tier.hideButton && (
+          <a
+            href="#kholbooBarikh"
+            onClick={handleScroll}
+            className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl ${isMiddle ? "bg-white text-black hover:bg-emerald-500 hover:text-white" : "bg-emerald-500 text-white hover:bg-white hover:text-black"}`}
+          >
+            Get Started
+          </a>
+        )}
       </div>
     </div>
   );

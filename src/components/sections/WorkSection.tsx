@@ -180,25 +180,23 @@ function ThreeDCarousel({
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [lockedIdx, setLockedIdx] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
+  const [frontIdx, setFrontIdx] = useState(0);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
-  const rafRef = useRef<number>(0);
-  const lastTimeRef = useRef<number>(0);
+  const stepRef = useRef(0);
   const pausedRef = useRef(false);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
-    const animate = (time: number) => {
-      if (lastTimeRef.current === 0) lastTimeRef.current = time;
-      const delta = time - lastTimeRef.current;
-      lastTimeRef.current = time;
+    const angleStep = 360 / projects.length;
+    const id = setInterval(() => {
       if (!pausedRef.current) {
-        setRotation((prev) => prev - delta * 0.02);
+        stepRef.current += 1;
+        setRotation(-(stepRef.current * angleStep));
+        setFrontIdx(stepRef.current % projects.length);
       }
-      rafRef.current = requestAnimationFrame(animate);
-    };
-    rafRef.current = requestAnimationFrame(animate);
-    return () => cancelAnimationFrame(rafRef.current);
-  }, []);
+    }, 1800);
+    return () => clearInterval(id);
+  }, [projects.length]);
 
   const handleEnter = useCallback((idx: number, x: number, y: number) => {
     setHoveredIdx(idx);
@@ -271,12 +269,14 @@ function ThreeDCarousel({
           width: 0,
           height: 0,
           transformStyle: "preserve-3d",
-          transform: `rotateX(-23deg) rotateY(${rotation}deg)`,
+          transform: `rotateX(-20deg) rotateY(${rotation}deg)`,
+          transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
         {projects.map((p, i) => {
           const cardAngle = angleStep * i;
           const isHovered = hoveredIdx === i;
+          const isFront = i === frontIdx;
           const imageIsVideo = p.image && isDirectVideo(p.image);
 
           return (
@@ -288,20 +288,24 @@ function ThreeDCarousel({
                 height: CARD_H,
                 left: -CARD_W / 2,
                 top: -CARD_H / 2,
-                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) rotateX(23deg)`,
+                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) translateY(${isFront ? -28 : 0}px)`,
                 opacity: headerVis ? 1 : 0,
-                transition: "opacity 0.4s ease",
+                transition:
+                  "opacity 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
                 cursor: p.redirectUrl ? "pointer" : "default",
               }}
               onMouseEnter={(e) => handleEnter(i, e.clientX, e.clientY)}
               onMouseLeave={handleLeave}
-              onClick={() => p.redirectUrl && window.open(p.redirectUrl, "_blank")}
+              onClick={() =>
+                p.redirectUrl && window.open(p.redirectUrl, "_blank")
+              }
             >
               <div
-                className={`w-full h-full relative overflow-hidden rounded-[24px] transition-all duration-500 will-change-transform ${isHovered
-                  ? "scale-[1.08] -translate-y-8"
-                  : "scale-100 translate-y-0"
-                  }`}
+                className={`w-full h-full relative overflow-hidden rounded-[24px] transition-all duration-500 will-change-transform ${
+                  isHovered
+                    ? "scale-[1.08] -translate-y-8"
+                    : "scale-100 translate-y-0"
+                }`}
               >
                 {/* Static media — no hover video on card */}
                 <div className="absolute inset-0 overflow-hidden rounded-[24px]">
@@ -341,10 +345,11 @@ function ThreeDCarousel({
 
                 {/* Info — visible on hover */}
                 <div
-                  className={`absolute bottom-0 inset-x-0 z-20 p-3 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-all duration-500 ${isHovered
-                    ? "opacity-100 translate-y-0"
-                    : "opacity-0 translate-y-3"
-                    }`}
+                  className={`absolute bottom-0 inset-x-0 z-20 p-3 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-all duration-500 ${
+                    isHovered
+                      ? "opacity-100 translate-y-0"
+                      : "opacity-0 translate-y-3"
+                  }`}
                 >
                   <span className="inline-block px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-white text-[9px] font-bold uppercase tracking-wider mb-1">
                     {p.category}
@@ -503,13 +508,13 @@ export default function WorkSection({
   const displayProjects: Project[] =
     properties.items.length > 0
       ? properties.items.map((item) => ({
-        id: item.id,
-        title: item.name,
-        category: item.category,
-        image: item.image,
-        videoUrl: item.videoUrl,
-        redirectUrl: item.redirectUrl,
-      }))
+          id: item.id,
+          title: item.name,
+          category: item.category,
+          image: item.image,
+          videoUrl: item.videoUrl,
+          redirectUrl: item.redirectUrl,
+        }))
       : DEFAULT_PROJECTS;
 
   useEffect(() => {
@@ -633,7 +638,8 @@ export default function WorkSection({
         {/* Bottom Text */}
         <div className="mt-16 max-w-2xl mx-auto text-center">
           <p className="text-white/40 text-base">
-            {properties.footerText || "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."}
+            {properties.footerText ||
+              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."}
           </p>
         </div>
       </div>
@@ -658,10 +664,11 @@ export default function WorkSection({
 
             <div className="relative flex-1 animate-in zoom-in-95 duration-300 flex items-center justify-center p-4 sm:p-10 pb-32">
               <div
-                className={`relative w-full overflow-hidden bg-black rounded-[32px] shadow-[0_0_100px_rgba(0,0,0,0.8)] ring-1 ring-white/10 ${videoData.type === "youtube-short"
-                  ? "max-w-[400px] h-[80vh]"
-                  : "max-w-6xl aspect-video"
-                  }`}
+                className={`relative w-full overflow-hidden bg-black rounded-[32px] shadow-[0_0_100px_rgba(0,0,0,0.8)] ring-1 ring-white/10 ${
+                  videoData.type === "youtube-short"
+                    ? "max-w-[400px] h-[80vh]"
+                    : "max-w-6xl aspect-video"
+                }`}
                 style={{
                   transform: "translateZ(0)",
                   WebkitTransform: "translateZ(0)",

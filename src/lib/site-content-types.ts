@@ -210,7 +210,7 @@ export type PosEaseSections = {
   };
   pricing: {
     title: string;
-    tiers: { name: string; price: string; desc: string; discounts?: { label: string; color?: string }[] }[];
+    tiers: { name: string; price: string; desc: string; hideButton?: boolean; discounts?: { label: string; color?: string }[] }[];
   };
 };
 
@@ -233,7 +233,7 @@ export type AmarHomeSections = {
   };
   pricing: {
     title: string;
-    tiers: { name: string; price: string; desc: string; discounts?: { label: string; color?: string }[] }[];
+    tiers: { name: string; price: string; desc: string; hideButton?: boolean; discounts?: { label: string; color?: string }[] }[];
   };
 };
 
@@ -241,6 +241,7 @@ export type RentlySections = {
   hero: {
     title: string;
     titleAccent: string;
+    titleAccent2?: string;
     desc: string;
     cta: string;
     secondary: string;
@@ -271,7 +272,7 @@ export type RentlySections = {
   };
   pricing: {
     title: string;
-    tiers: { name: string; price: string; desc: string; discounts?: { label: string; color?: string }[] }[];
+    tiers: { name: string; price: string; desc: string; hideButton?: boolean; discounts?: { label: string; color?: string }[] }[];
   };
   cta?: {
     title?: string;
@@ -332,7 +333,7 @@ export type ParkEaseSections = {
     note: string;
     quoteBtn: string;
     quoteLink?: string;
-    tiers: { name: string; slots: string; features: string[]; discounts?: { label: string; color?: string }[] }[];
+    tiers: { name: string; slots: string; features: string[]; hideButton?: boolean; discounts?: { label: string; color?: string }[] }[];
   };
   free: {
     title: string;
