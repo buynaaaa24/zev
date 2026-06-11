@@ -248,147 +248,152 @@ function HeroSection() {
       />
 
       <div className="hero-content relative z-10 w-full max-w-[1200px] mx-auto px-5 sm:px-10 lg:px-16 pt-28 pb-16 sm:pt-36 sm:pb-24 lg:pt-44">
-        <div className={`flex flex-col ${api.image ? "lg:flex-row lg:items-start lg:gap-12 xl:gap-16" : ""}`}>
-        {/* Text column */}
-        <div className={api.image ? "lg:flex-1" : ""}>
-          <div
-            className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[11px] sm:text-xs font-medium tracking-wider uppercase mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
-          >
-            <span
-              className="w-1.5 h-1.5 rounded-full animate-pulse"
-              style={{ background: YELLOW }}
-            />
-            {api.eyebrow}
-          </div>
-
-          <h1
-            className={`font-black tracking-tight leading-[1.06] mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
-            style={{ transitionDelay: ".15s" }}
-          >
-            <span className="block text-white text-[36px] sm:text-5xl md:text-6xl lg:text-[84px]">
-              {api.title1}
-            </span>
-            <span
-              className="block text-[36px] sm:text-5xl md:text-6xl lg:text-[84px]"
-              style={{
-                background:
-                  "linear-gradient(135deg,#fff 0%,#ffe48a 45%,#f6b414 100%)",
-                WebkitBackgroundClip: "text",
-                WebkitTextFillColor: "transparent",
-                backgroundClip: "text",
-                transition: "opacity .35s ease, transform .35s ease",
-                opacity: wordVisible ? 1 : 0,
-                transform: wordVisible ? "translateY(0)" : "translateY(12px)",
-              }}
+        <div
+          className={`flex flex-col ${api.image ? "lg:flex-row lg:items-start lg:gap-12 xl:gap-16" : ""}`}
+        >
+          {/* Text column */}
+          <div className={api.image ? "lg:flex-1" : ""}>
+            <div
+              className={`inline-flex items-center gap-2 px-3.5 py-1.5 rounded-full border border-white/10 bg-white/5 text-white/50 text-[11px] sm:text-xs font-medium tracking-wider uppercase mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-4"}`}
             >
-              {words[wordIdx]}
-            </span>
-          </h1>
-
-          <p
-            className={`text-white/45 text-base sm:text-lg md:text-xl leading-relaxed max-w-xl sm:max-w-2xl mb-8 sm:mb-12 font-light transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-            style={{ transitionDelay: ".3s" }}
-          >
-            {api.desc}
-          </p>
-
-          <div
-            className={`flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-            style={{ transitionDelay: ".44s" }}
-          >
-            <a
-              href="#kholbooBarikh"
-              onClick={handleAnchorScroll}
-              className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-[15px] font-semibold active:scale-[0.97] transition-all duration-300"
-              style={{
-                background: `linear-gradient(90deg,${YELLOW},#ffc93c,${YELLOW})`,
-                backgroundSize: "200%",
-                animation: "shimmer 3s linear infinite",
-                boxShadow: `0 8px 28px ${YELLOW_GLOW}0.35)`,
-                color: "#1a0f00",
-              }}
-            >
-              {api.cta1}
-              <svg
-                className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke="currentColor"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M17 8l4 4m0 0l-4 4m4-4H3"
-                />
-              </svg>
-            </a>
-            {api.cta2Link ? (
-              <a
-                href={ensureAbsoluteUrl(api.cta2Link)}
-                target="_blank"
-                rel="noopener noreferrer"
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-white/15 text-white text-[15px] font-medium active:scale-[0.97] hover:bg-white/5 transition-all duration-300"
-              >
-                {api.cta2}
-              </a>
-            ) : (
-              <button
-                onClick={() =>
-                  document
-                    .getElementById("how-it-works")
-                    ?.scrollIntoView({ behavior: "smooth" })
-                }
-                className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-white/15 text-white text-[15px] font-medium active:scale-[0.97] hover:bg-white/5 transition-all duration-300"
-              >
-                {api.cta2}
-              </button>
-            )}
-          </div>
-
-        </div>
-
-        {/* Right column — image + stats */}
-        {api.image && (
-          <div
-            className={`lg:flex-1 hidden lg:flex flex-col gap-8 transition-all duration-700 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
-            style={{ transitionDelay: ".5s" }}
-          >
-            <div className="relative w-full">
-              <div
-                className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl"
-                style={{ background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.6), transparent 70%)` }}
-                aria-hidden
+              <span
+                className="w-1.5 h-1.5 rounded-full animate-pulse"
+                style={{ background: YELLOW }}
               />
-              <img
-                src={resolveMediaUrl(api.image)}
-                alt=""
-                className="relative z-10 w-full h-auto max-h-[50vh] object-contain object-top drop-shadow-2xl"
-              />
+              {api.eyebrow}
             </div>
-            {api.stats.length > 0 && (
-              <div
-                className={`pt-8 border-t border-white/8 grid grid-cols-2 gap-6 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
-                style={{ transitionDelay: ".7s" }}
+
+            <h1
+              className={`font-black tracking-tight leading-[1.06] mb-6 sm:mb-8 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
+              style={{ transitionDelay: ".15s" }}
+            >
+              <span className="block text-white text-[36px] sm:text-5xl md:text-6xl lg:text-[84px]">
+                {api.title1}
+              </span>
+              <span
+                className="block text-[36px] sm:text-5xl md:text-6xl lg:text-[84px]"
+                style={{
+                  background:
+                    "linear-gradient(135deg,#fff 0%,#ffe48a 45%,#f6b414 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                  transition: "opacity .35s ease, transform .35s ease",
+                  opacity: wordVisible ? 1 : 0,
+                  transform: wordVisible ? "translateY(0)" : "translateY(12px)",
+                }}
               >
-                {api.stats.map((stat, i) => (
-                  <div key={i} className="cursor-default text-center">
-                    <div
-                      className="text-xl sm:text-2xl lg:text-3xl font-black text-white mb-1 transition-colors duration-300"
-                      onMouseEnter={(e) => (e.currentTarget.style.color = YELLOW)}
-                      onMouseLeave={(e) => (e.currentTarget.style.color = "")}
-                    >
-                      {stat.value}
-                    </div>
-                    <div className="text-white/30 text-[11px] sm:text-xs uppercase tracking-wider font-medium">
-                      {stat.label}
-                    </div>
-                  </div>
-                ))}
-              </div>
-            )}
+                {words[wordIdx]}
+              </span>
+            </h1>
+
+            <p
+              className={`text-white/45 text-base sm:text-lg md:text-xl leading-relaxed max-w-xl sm:max-w-2xl mb-8 sm:mb-12 font-light transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+              style={{ transitionDelay: ".3s" }}
+            >
+              {api.desc}
+            </p>
+
+            <div
+              className={`flex flex-col sm:flex-row gap-3 sm:gap-4 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+              style={{ transitionDelay: ".44s" }}
+            >
+              <a
+                href="#kholbooBarikh"
+                onClick={handleAnchorScroll}
+                className="w-full sm:w-auto group inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full text-[15px] font-semibold active:scale-[0.97] transition-all duration-300"
+                style={{
+                  background: `linear-gradient(90deg,${YELLOW},#ffc93c,${YELLOW})`,
+                  backgroundSize: "200%",
+                  animation: "shimmer 3s linear infinite",
+                  boxShadow: `0 8px 28px ${YELLOW_GLOW}0.35)`,
+                  color: "#1a0f00",
+                }}
+              >
+                {api.cta1}
+                <svg
+                  className="w-4 h-4 group-hover:translate-x-1 transition-transform duration-300"
+                  fill="none"
+                  viewBox="0 0 24 24"
+                  stroke="currentColor"
+                >
+                  <path
+                    strokeLinecap="round"
+                    strokeLinejoin="round"
+                    strokeWidth={2}
+                    d="M17 8l4 4m0 0l-4 4m4-4H3"
+                  />
+                </svg>
+              </a>
+              {api.cta2Link ? (
+                <a
+                  href={ensureAbsoluteUrl(api.cta2Link)}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-white/15 text-white text-[15px] font-medium active:scale-[0.97] hover:bg-white/5 transition-all duration-300"
+                >
+                  {api.cta2}
+                </a>
+              ) : (
+                <button
+                  onClick={() =>
+                    document
+                      .getElementById("how-it-works")
+                      ?.scrollIntoView({ behavior: "smooth" })
+                  }
+                  className="w-full sm:w-auto inline-flex items-center justify-center gap-2 px-7 py-4 rounded-full border border-white/15 text-white text-[15px] font-medium active:scale-[0.97] hover:bg-white/5 transition-all duration-300"
+                >
+                  {api.cta2}
+                </button>
+              )}
+            </div>
           </div>
-        )}
+
+          {/* Right column — image + stats */}
+          {api.image && (
+            <div
+              className={`lg:flex-1 hidden lg:flex flex-col gap-8 transition-all duration-700 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
+              style={{ transitionDelay: ".5s" }}
+            >
+              <div className="relative w-full">
+                <div
+                  className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl"
+                  style={{
+                    background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.6), transparent 70%)`,
+                  }}
+                  aria-hidden
+                />
+                <img
+                  src={resolveMediaUrl(api.image)}
+                  alt=""
+                  className="relative z-10 w-full h-auto max-h-[50vh] object-contain object-top drop-shadow-2xl"
+                />
+              </div>
+              {api.stats.length > 0 && (
+                <div
+                  className={`pt-8 border-t border-white/8 grid grid-cols-2 gap-6 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+                  style={{ transitionDelay: ".7s" }}
+                >
+                  {api.stats.map((stat, i) => (
+                    <div key={i} className="cursor-default text-center">
+                      <div
+                        className="text-xl sm:text-2xl lg:text-3xl font-black text-white mb-1 transition-colors duration-300"
+                        onMouseEnter={(e) =>
+                          (e.currentTarget.style.color = YELLOW)
+                        }
+                        onMouseLeave={(e) => (e.currentTarget.style.color = "")}
+                      >
+                        {stat.value}
+                      </div>
+                      <div className="text-white/30 text-[11px] sm:text-xs uppercase tracking-wider font-medium">
+                        {stat.label}
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </div>
 
@@ -512,13 +517,21 @@ function HowItWorksSection() {
                   <div
                     className="w-11 h-11 rounded-xl sm:rounded-2xl flex items-center justify-center mb-4 sm:mb-6 overflow-hidden"
                     style={{
-                      background: step.icon ? "transparent" : `${YELLOW_GLOW}0.12)`,
+                      background: step.icon
+                        ? "transparent"
+                        : `${YELLOW_GLOW}0.12)`,
                       color: YELLOW_DARK,
                     }}
                   >
                     {step.icon ? (
-                      <img src={resolveMediaUrl(step.icon)} alt="" className="w-full h-full object-contain" />
-                    ) : icons[i]}
+                      <img
+                        src={resolveMediaUrl(step.icon)}
+                        alt=""
+                        className="w-full h-full object-contain"
+                      />
+                    ) : (
+                      icons[i]
+                    )}
                   </div>
                   <h3 className="text-lg sm:text-xl font-bold text-neutral-900 mb-2 sm:mb-3">
                     {step.title}
@@ -860,20 +873,16 @@ function FeaturesSection() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 md:gap-8 auto-rows-auto">
+          <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 md:gap-8">
             {features.map((item, idx) => {
               const hasImage = !!item.image;
-              const isLarge = item.size === "large";
-              const isMedium = item.size === "medium";
 
               return (
                 <div
                   key={idx}
                   className={`
                     relative rounded-2xl sm:rounded-3xl p-4 sm:p-6 md:p-8 overflow-hidden border transition-all duration-700
-                    ${isLarge ? "md:col-span-2 md:row-span-2 min-h-[260px] sm:min-h-[320px] md:min-h-[360px]" : ""}
-                    ${isMedium ? "md:col-span-2 min-h-[200px] sm:min-h-[240px] md:min-h-[260px]" : ""}
-                    ${!isLarge && !isMedium ? "min-h-[180px] sm:min-h-[210px] md:min-h-[240px]" : ""}
+                    min-h-[200px] sm:min-h-[240px] md:min-h-[280px]
                     ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}
                     ${
                       hasImage
@@ -909,16 +918,28 @@ function FeaturesSection() {
                           }}
                         >
                           {item.icon ? (
-                            <img src={resolveMediaUrl(item.icon)} alt="" className="w-full h-full object-contain" />
-                          ) : FEATURE_ICONS[idx % FEATURE_ICONS.length]}
+                            <img
+                              src={resolveMediaUrl(item.icon)}
+                              alt=""
+                              className="w-full h-full object-contain"
+                            />
+                          ) : (
+                            FEATURE_ICONS[idx % FEATURE_ICONS.length]
+                          )}
                         </div>
                       )}
 
                       {hasImage && (
                         <div className="w-12 h-12 rounded-xl flex items-center justify-center mb-6 bg-white/10 border border-white/20 backdrop-blur-md text-white shadow-[0_4px_12px_rgba(255,255,255,0.05)]">
                           {item.icon ? (
-                            <img src={resolveMediaUrl(item.icon)} alt="" className="w-full h-full object-contain" />
-                          ) : FEATURE_ICONS[idx % FEATURE_ICONS.length]}
+                            <img
+                              src={resolveMediaUrl(item.icon)}
+                              alt=""
+                              className="w-full h-full object-contain"
+                            />
+                          ) : (
+                            FEATURE_ICONS[idx % FEATURE_ICONS.length]
+                          )}
                         </div>
                       )}
                     </div>
@@ -927,7 +948,7 @@ function FeaturesSection() {
                       <h3
                         className={`font-black tracking-tight leading-snug mb-3
                           ${hasImage ? "text-white" : "text-neutral-900"}
-                          ${isLarge ? "text-2xl sm:text-3xl lg:text-4xl" : "text-xl sm:text-2xl"}
+                          text-xl sm:text-2xl
                         `}
                       >
                         {item.title}
@@ -1005,9 +1026,9 @@ function BolomjuudSection() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
+          <div className="space-y-16 md:space-y-28">
             {items.map((item, idx) => (
-              <BolomjuudCard key={idx} item={item} index={idx} visible={visible} />
+              <BolomjuudRow key={idx} item={item} index={idx} />
             ))}
           </div>
         </div>
@@ -1016,35 +1037,60 @@ function BolomjuudSection() {
   );
 }
 
-function BolomjuudCard({ item, index, visible }: { item: any; index: number; visible: boolean }) {
+function BolomjuudRow({ item, index }: { item: any; index: number }) {
+  const { ref, visible } = useReveal();
+  const isEven = index % 2 === 0;
   return (
     <div
-      className={`relative rounded-2xl sm:rounded-3xl border border-white/5 bg-white/[0.03] backdrop-blur-sm overflow-hidden transition-all duration-700 hover:-translate-y-1 hover:border-yellow-500/20 ${
-        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
-      }`}
-      style={{ transitionDelay: `${index * 80}ms` }}
+      ref={ref}
+      className={`flex flex-col ${
+        isEven ? "md:flex-row" : "md:flex-row-reverse"
+      } items-center gap-6 sm:gap-8 md:gap-12 lg:gap-20`}
     >
-      {item.image && (
-        <div className="relative w-full aspect-video overflow-hidden">
-          <div
-            className="absolute inset-0 blur-[40px]"
-            style={{ background: `${YELLOW_GLOW}0.1)` }}
-          />
-          <img
-            src={resolveMediaUrl(item.image)}
-            alt={item.title}
-            className="w-full h-full object-cover"
-          />
-        </div>
-      )}
-      <div className="p-5 sm:p-6">
-        <div className="w-8 h-0.5 mb-4 rounded-full" style={{ backgroundColor: YELLOW }} />
-        <h3 className="text-base sm:text-lg font-black text-white tracking-tight mb-2 leading-tight">
+      <div
+        className={`flex-1 transition-all duration-1000 ${
+          visible
+            ? "opacity-100 translate-x-0"
+            : isEven
+              ? "opacity-0 -translate-x-12"
+              : "opacity-0 translate-x-12"
+        }`}
+      >
+        <div
+          className="w-10 h-1 mb-6 rounded-full"
+          style={{ backgroundColor: YELLOW }}
+        />
+        <h3 className="text-xl sm:text-3xl font-black text-white tracking-tighter mb-4 leading-tight">
           {item.title}
         </h3>
-        <p className="text-white/40 text-sm font-medium leading-relaxed">
+        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-6">
           {item.desc}
         </p>
+      </div>
+      <div
+        className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${
+          visible
+            ? "opacity-100 translate-y-0 scale-100"
+            : "opacity-0 translate-y-8 scale-95"
+        }`}
+      >
+        <div
+          className="absolute inset-0 blur-[60px] rounded-full"
+          style={{ background: `${YELLOW_GLOW}0.15)` }}
+        />
+        <div className="relative aspect-[4/3] w-full rounded-[20px] md:rounded-[32px] overflow-hidden">
+          {item.image ? (
+            <img
+              src={resolveMediaUrl(item.image)}
+              alt={item.title}
+              className="w-full h-full object-contain"
+            />
+          ) : (
+            <div className="w-full h-full flex items-center justify-center">
+              <ChevronRight size={60} className="text-white/5" />
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
@@ -1250,16 +1296,40 @@ function PricingSection() {
               className="absolute top-4 right-4 text-white/40 hover:text-white transition-colors"
               aria-label="Close"
             >
-              <svg className="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={2}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M6 18L18 6M6 6l12 12" />
+              <svg
+                className="w-5 h-5"
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={2}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M6 18L18 6M6 6l12 12"
+                />
               </svg>
             </button>
             <div
               className="w-16 h-16 rounded-2xl mx-auto mb-6 flex items-center justify-center border"
-              style={{ backgroundColor: `${YELLOW}18`, borderColor: `${YELLOW}40` }}
+              style={{
+                backgroundColor: `${YELLOW}18`,
+                borderColor: `${YELLOW}40`,
+              }}
             >
-              <svg className="w-8 h-8" style={{ color: YELLOW }} fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth={1.5}>
-                <path strokeLinecap="round" strokeLinejoin="round" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+              <svg
+                className="w-8 h-8"
+                style={{ color: YELLOW }}
+                fill="none"
+                viewBox="0 0 24 24"
+                stroke="currentColor"
+                strokeWidth={1.5}
+              >
+                <path
+                  strokeLinecap="round"
+                  strokeLinejoin="round"
+                  d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"
+                />
               </svg>
             </div>
             <h3 className="text-xl font-black text-white mb-2 tracking-tight">
