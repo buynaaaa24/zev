@@ -1005,9 +1005,9 @@ function BolomjuudSection() {
             </p>
           </div>
 
-          <div className="space-y-16 md:space-y-28">
+          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-5 sm:gap-6 md:gap-8">
             {items.map((item, idx) => (
-              <BolomjuudRow key={idx} item={item} index={idx} />
+              <BolomjuudCard key={idx} item={item} index={idx} visible={visible} />
             ))}
           </div>
         </div>
@@ -1016,60 +1016,35 @@ function BolomjuudSection() {
   );
 }
 
-function BolomjuudRow({ item, index }: { item: any; index: number }) {
-  const { ref, visible } = useReveal();
-  const isEven = index % 2 === 0;
+function BolomjuudCard({ item, index, visible }: { item: any; index: number; visible: boolean }) {
   return (
     <div
-      ref={ref}
-      className={`flex flex-col ${
-        isEven ? "md:flex-row" : "md:flex-row-reverse"
-      } items-center gap-6 sm:gap-8 md:gap-12 lg:gap-20`}
+      className={`relative rounded-2xl sm:rounded-3xl border border-white/5 bg-white/[0.03] backdrop-blur-sm overflow-hidden transition-all duration-700 hover:-translate-y-1 hover:border-yellow-500/20 ${
+        visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"
+      }`}
+      style={{ transitionDelay: `${index * 80}ms` }}
     >
-      <div
-        className={`flex-1 transition-all duration-1000 ${
-          visible
-            ? "opacity-100 translate-x-0"
-            : isEven
-              ? "opacity-0 -translate-x-12"
-              : "opacity-0 translate-x-12"
-        }`}
-      >
-        <div
-          className="w-10 h-1 mb-6 rounded-full"
-          style={{ backgroundColor: YELLOW }}
-        />
-        <h3 className="text-xl sm:text-3xl font-black text-white tracking-tighter mb-4 leading-tight">
+      {item.image && (
+        <div className="relative w-full aspect-video overflow-hidden">
+          <div
+            className="absolute inset-0 blur-[40px]"
+            style={{ background: `${YELLOW_GLOW}0.1)` }}
+          />
+          <img
+            src={resolveMediaUrl(item.image)}
+            alt={item.title}
+            className="w-full h-full object-cover"
+          />
+        </div>
+      )}
+      <div className="p-5 sm:p-6">
+        <div className="w-8 h-0.5 mb-4 rounded-full" style={{ backgroundColor: YELLOW }} />
+        <h3 className="text-base sm:text-lg font-black text-white tracking-tight mb-2 leading-tight">
           {item.title}
         </h3>
-        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-6">
+        <p className="text-white/40 text-sm font-medium leading-relaxed">
           {item.desc}
         </p>
-      </div>
-      <div
-        className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${
-          visible
-            ? "opacity-100 translate-y-0 scale-100"
-            : "opacity-0 translate-y-8 scale-95"
-        }`}
-      >
-        <div
-          className="absolute inset-0 blur-[60px] rounded-full"
-          style={{ background: `${YELLOW_GLOW}0.15)` }}
-        />
-        <div className="relative aspect-[4/3] w-full rounded-[20px] md:rounded-[32px] overflow-hidden">
-          {item.image ? (
-            <img
-              src={resolveMediaUrl(item.image)}
-              alt={item.title}
-              className="w-full h-full object-contain"
-            />
-          ) : (
-            <div className="w-full h-full flex items-center justify-center">
-              <ChevronRight size={60} className="text-white/5" />
-            </div>
-          )}
-        </div>
       </div>
     </div>
   );
