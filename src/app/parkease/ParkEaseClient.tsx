@@ -10,6 +10,7 @@ import type {
 } from "@/lib/site-content-types";
 import { resolveMediaUrl } from "@/lib/media";
 import { ChevronRight } from "lucide-react";
+import { PricingCard } from "@/components/sections/PricingCard";
 
 const YELLOW = "#f6b414";
 const YELLOW_DARK = "#d99a0e";
@@ -1154,117 +1155,28 @@ function PricingSection() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-4 sm:gap-5 md:items-start">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6 sm:gap-8 md:gap-10 md:items-stretch">
             {api.tiers.map((tier, i) => (
-              <div
+              <PricingCard
                 key={i}
-                className={`relative rounded-[32px] sm:rounded-[40px] md:rounded-[48px] p-6 sm:p-8 md:p-10 transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"} ${highlight[i] ? "bg-neutral-900 md:scale-[1.03] md:-mt-2" : "bg-neutral-50 border border-neutral-150"}`}
-                style={{
-                  transitionDelay: visible ? `${i * 100}ms` : "0ms",
-                  ...(highlight[i]
-                    ? {
-                        border: `2px solid ${YELLOW_GLOW}0.45)`,
-                        boxShadow: `0 20px 60px ${YELLOW_GLOW}0.12)`,
-                      }
-                    : {}),
-                }}
-              >
-                {/* Discount badges — top-right corner */}
-                {tier.discounts && tier.discounts.length > 0 && (
-                  <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
-                    {tier.discounts.map(
-                      (d: { label: string; color?: string }, di: number) => (
-                        <div
-                          key={di}
-                          className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap"
-                          style={{
-                            backgroundColor: d.color
-                              ? d.color.startsWith("#")
-                                ? d.color
-                                : `#${d.color}`
-                              : "#7c3aed",
-                          }}
-                        >
-                          {d.label}
-                        </div>
-                      ),
-                    )}
-                  </div>
-                )}
-                {highlight[i] && (
-                  <div className="absolute -top-3 left-1/2 -translate-x-1/2">
-                    <span
-                      className="text-[11px] font-bold px-4 py-1.5 rounded-full uppercase tracking-wide"
-                      style={{
-                        background: YELLOW,
-                        color: "#1a0f00",
-                        boxShadow: `0 4px 14px ${YELLOW_GLOW}0.4)`,
-                      }}
-                    >
-                      {api.mostPopular}
-                    </span>
-                  </div>
-                )}
-                <div className="mb-5 sm:mb-8 text-center">
-                  <p
-                    className="text-sm font-black uppercase tracking-[0.3em] mb-1"
-                    style={{ color: highlight[i] ? YELLOW : "#888" }}
-                  >
-                    {tier.name}
-                  </p>
-                  <p
-                    className={`text-3xl sm:text-4xl md:text-5xl font-black tracking-tighter mb-3 break-all w-full ${highlight[i] ? "text-white" : "text-neutral-800"}`}
-                  >
-                    {tier.slots}
-                  </p>
-                </div>
-                <ul className="space-y-2.5 sm:space-y-3 mb-6 sm:mb-8">
-                  {tier.features.map((f, j) => (
-                    <li
-                      key={j}
-                      className={`flex items-start gap-2.5 text-sm sm:text-base ${highlight[i] ? "text-white/70" : "text-neutral-600"}`}
-                    >
-                      <svg
-                        className="w-4 h-4 mt-0.5 shrink-0"
-                        style={{ color: YELLOW }}
-                        fill="none"
-                        viewBox="0 0 24 24"
-                        stroke="currentColor"
-                      >
-                        <path
-                          strokeLinecap="round"
-                          strokeLinejoin="round"
-                          strokeWidth={2}
-                          d="M5 13l4 4L19 7"
-                        />
-                      </svg>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-                {!tier.hideButton && (
-                  <a
-                    href="#kholbooBarikh"
-                    onClick={handleAnchorScroll}
-                    className={
-                      highlight[i]
-                        ? "block text-center text-base sm:text-lg font-black py-3 sm:py-5 rounded-2xl sm:rounded-[24px]"
-                        : "block text-center text-base sm:text-lg font-black py-3 sm:py-5 rounded-2xl sm:rounded-[24px] bg-white border border-neutral-200 text-neutral-800 hover:bg-neutral-50 hover:border-neutral-300 transition-all duration-300"
-                    }
-                    style={
-                      highlight[i]
-                        ? {
-                            background: YELLOW,
-                            color: "#1a0f00",
-                            boxShadow: `0 8px 24px ${YELLOW_GLOW}0.3)`,
-                          }
-                        : {}
-                    }
-                  >
-                    {api.ctaBtn}
-                  </a>
-                )}
-              </div>
+                name={tier.name}
+                value={tier.slots}
+                features={tier.features}
+                discounts={tier.discounts}
+                hideButton={tier.hideButton}
+                buttonLabel={tier.buttonLabel || api.ctaBtn}
+                buttonHref={tier.buttonUrl || "#kholbooBarikh"}
+                buttonTarget={tier.buttonUrl ? "_blank" : undefined}
+                buttonRel={tier.buttonUrl ? "noopener noreferrer" : undefined}
+                onButtonClick={tier.buttonUrl ? undefined : handleAnchorScroll}
+                isMiddle={highlight[i]}
+                mostPopularLabel={api.mostPopular}
+                visible={visible}
+                delay={i * 100}
+                accent={YELLOW}
+                accentGlow={YELLOW_GLOW}
+                accentOnDark="#1a0f00"
+              />
             ))}
           </div>
 

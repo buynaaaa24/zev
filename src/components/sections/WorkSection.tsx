@@ -1,4 +1,4 @@
-"use client";
+﻿"use client";
 
 import { useEffect, useRef, useState, useCallback } from "react";
 import { createPortal } from "react-dom";
@@ -175,30 +175,75 @@ function ThreeDCarousel({
   onSelect: (p: Project) => void;
   ctaLabel: string;
 }) {
-  // hoveredIdx — visual lift effect only (follows mouse enter/leave)
-  // lockedIdx  — which card's tooltip is pinned (stays until click-outside)
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [lockedIdx, setLockedIdx] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
   const [frontIdx, setFrontIdx] = useState(0);
   const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
-  const stepRef = useRef(0);
+  const rotationRef = useRef(0);
   const pausedRef = useRef(false);
+  const isDraggingRef = useRef(false);
+  const dragStartXRef = useRef(0);
+  const rotationAtDragStartRef = useRef(0);
+  const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
+  const count = projects.length;
+  const angleStep = 360 / count;
+
+  // Auto-rotate via interval
   useEffect(() => {
-    const angleStep = 360 / projects.length;
     const id = setInterval(() => {
-      if (!pausedRef.current) {
-        stepRef.current += 1;
-        setRotation(-(stepRef.current * angleStep));
-        setFrontIdx(stepRef.current % projects.length);
+      if (!pausedRef.current && !isDraggingRef.current) {
+        rotationRef.current -= angleStep;
+        const front =
+          ((Math.round(-rotationRef.current / angleStep) % count) + count) %
+          count;
+        setRotation(rotationRef.current);
+        setFrontIdx(front);
       }
     }, 1800);
     return () => clearInterval(id);
-  }, [projects.length]);
+  }, [angleStep, count]);
+
+  // Drag helpers
+  const startDrag = useCallback((clientX: number) => {
+    isDraggingRef.current = true;
+    dragStartXRef.current = clientX;
+    rotationAtDragStartRef.current = rotationRef.current;
+    if (resumeTimerRef.current) clearTimeout(resumeTimerRef.current);
+    pausedRef.current = true;
+  }, []);
+
+  const moveDrag = useCallback(
+    (clientX: number) => {
+      if (!isDraggingRef.current) return;
+      const dx = clientX - dragStartXRef.current;
+      rotationRef.current = rotationAtDragStartRef.current + dx * 0.45;
+      const front =
+        ((Math.round(-rotationRef.current / angleStep) % count) + count) %
+        count;
+      setRotation(rotationRef.current);
+      setFrontIdx(front);
+    },
+    [angleStep, count],
+  );
+
+  const endDrag = useCallback(() => {
+    if (!isDraggingRef.current) return;
+    isDraggingRef.current = false;
+    // Snap to nearest card
+    const snapped = Math.round(rotationRef.current / angleStep) * angleStep;
+    rotationRef.current = snapped;
+    setRotation(snapped);
+    // Resume auto-rotate after 2.5s
+    resumeTimerRef.current = setTimeout(() => {
+      pausedRef.current = false;
+    }, 2500);
+  }, [angleStep]);
 
   const handleEnter = useCallback((idx: number, x: number, y: number) => {
+    if (isDraggingRef.current) return;
     setHoveredIdx(idx);
     setLockedIdx(idx);
     setTooltipPos({ x, y });
@@ -208,13 +253,13 @@ function ThreeDCarousel({
   const handleLeave = useCallback(() => {
     setHoveredIdx(null);
     setLockedIdx(null);
-    pausedRef.current = false;
+    if (!isDraggingRef.current) pausedRef.current = false;
   }, []);
 
   const closeTooltip = useCallback(() => {
     setLockedIdx(null);
     setHoveredIdx(null);
-    pausedRef.current = false;
+    if (!isDraggingRef.current) pausedRef.current = false;
   }, []);
 
   useEffect(() => {
@@ -241,8 +286,6 @@ function ThreeDCarousel({
   const isMobile = winW < 640;
   const isTablet = winW >= 640 && winW < 1024;
 
-  const count = projects.length;
-  const angleStep = 360 / count;
   const RADIUS = isMobile ? 150 : isTablet ? 220 : 300;
   const CARD_W = isMobile ? 105 : isTablet ? 135 : 165;
   const CARD_H = isMobile ? 105 : isTablet ? 135 : 165;
@@ -254,13 +297,27 @@ function ThreeDCarousel({
   return (
     <div
       ref={carouselRef}
-      className="relative w-full flex items-center justify-center"
-      style={{ height: containerH, perspective: `${perspectiveVal}px` }}
+      className="relative w-full flex items-center justify-center select-none"
+      style={{
+        height: containerH,
+        perspective: `${perspectiveVal}px`,
+        touchAction: "none",
+      }}
+      onMouseDown={(e) => startDrag(e.clientX)}
+      onMouseMove={(e) => moveDrag(e.clientX)}
+      onMouseUp={endDrag}
+      onMouseLeave={endDrag}
+      onTouchStart={(e) => startDrag(e.touches[0].clientX)}
+      onTouchMove={(e) => {
+        e.preventDefault();
+        moveDrag(e.touches[0].clientX);
+      }}
+      onTouchEnd={endDrag}
     >
       {/* Ambient center glow */}
       <div className="absolute w-56 h-56 rounded-full bg-indigo-600/15 blur-[90px] pointer-events-none" />
 
-      {/* Rotating 3D stage — all cards orbit inside this */}
+      {/* Rotating 3D stage */}
       <div
         style={{
           position: "absolute",
@@ -270,7 +327,9 @@ function ThreeDCarousel({
           height: 0,
           transformStyle: "preserve-3d",
           transform: `rotateX(-20deg) rotateY(${rotation}deg)`,
-          transition: "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
+          transition: isDraggingRef.current
+            ? "none"
+            : "transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
         }}
       >
         {projects.map((p, i) => {
@@ -288,16 +347,18 @@ function ThreeDCarousel({
                 height: CARD_H,
                 left: -CARD_W / 2,
                 top: -CARD_H / 2,
-                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) translateY(${isFront ? -28 : 0}px)`,
+                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) translateY(${isFront ? -28 : 0}px)`,
                 opacity: headerVis ? 1 : 0,
                 transition:
                   "opacity 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
-                cursor: p.redirectUrl ? "pointer" : "default",
+                cursor: p.redirectUrl ? "pointer" : "grab",
               }}
               onMouseEnter={(e) => handleEnter(i, e.clientX, e.clientY)}
               onMouseLeave={handleLeave}
               onClick={() =>
-                p.redirectUrl && window.open(p.redirectUrl, "_blank")
+                !isDraggingRef.current &&
+                p.redirectUrl &&
+                window.open(p.redirectUrl, "_blank")
               }
             >
               <div
@@ -307,7 +368,7 @@ function ThreeDCarousel({
                     : "scale-100 translate-y-0"
                 }`}
               >
-                {/* Static media — no hover video on card */}
+                {/* Static media */}
                 <div className="absolute inset-0 overflow-hidden rounded-[24px]">
                   {p.image && !imageIsVideo ? (
                     <img
@@ -334,7 +395,7 @@ function ThreeDCarousel({
                   )}
                 </div>
 
-                {/* Link indicator on hover (JUMP TO WEB) */}
+                {/* Link indicator on hover */}
                 {p.redirectUrl && isHovered && (
                   <div className="absolute inset-0 z-20 flex items-center justify-center">
                     <div className="w-10 h-10 rounded-full bg-white/20 border border-white/30 flex items-center justify-center">
@@ -345,11 +406,7 @@ function ThreeDCarousel({
 
                 {/* Info — visible on hover */}
                 <div
-                  className={`absolute bottom-0 inset-x-0 z-20 p-3 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-all duration-500 ${
-                    isHovered
-                      ? "opacity-100 translate-y-0"
-                      : "opacity-0 translate-y-3"
-                  }`}
+                  className={`absolute bottom-0 inset-x-0 z-20 p-3 bg-gradient-to-t from-black/90 via-black/60 to-transparent transition-all duration-500 ${isHovered ? "opacity-100 translate-y-0" : "opacity-0 translate-y-3"}`}
                 >
                   <span className="inline-block px-2 py-0.5 rounded-full bg-white/20 border border-white/30 text-white text-[9px] font-bold uppercase tracking-wider mb-1">
                     {p.category}
@@ -398,7 +455,7 @@ function ThreeDCarousel({
         })}
       </div>
 
-      {/* Floating video tooltip next to cursor */}
+      {/* Floating video tooltip */}
       {hoveredProject?.videoUrl &&
         typeof document !== "undefined" &&
         createPortal(
@@ -563,7 +620,7 @@ export default function WorkSection({
   return (
     <section
       id="work"
-      className="relative py-32 lg:py-48 overflow-hidden bg-black selection:bg-indigo-600 selection:text-white"
+      className="relative py-8 lg:py-12 overflow-hidden bg-black selection:bg-indigo-600 selection:text-white"
     >
       {/* Background Images (matching Hero) */}
       {bgImages.length > 0 ? (
@@ -611,9 +668,9 @@ export default function WorkSection({
       <div className="relative z-10 max-w-[1200px] mx-auto px-6 sm:px-10 lg:px-16">
         <div
           ref={headerRef}
-          className={`mb-16 text-center transition-all duration-1000 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
+          className={`mb-4 text-center transition-all duration-1000 ${headerVis ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
         >
-          <h2 className="text-5xl sm:text-7xl md:text-[88px] font-black tracking-tighter leading-[0.9] text-white mb-8">
+          <h2 className="text-5xl sm:text-7xl md:text-[88px] font-black tracking-tighter leading-[0.9] text-white mb-2">
             {properties.header.titleLine1 || "Crafting the"}
             <br />
             <span className="bg-gradient-to-r from-white via-white/80 to-indigo-500 text-transparent bg-clip-text">
@@ -634,14 +691,6 @@ export default function WorkSection({
           onSelect={setActiveVideo}
           ctaLabel={properties.cta?.label || "Үзэх"}
         />
-
-        {/* Bottom Text */}
-        <div className="mt-16 max-w-2xl mx-auto text-center">
-          <p className="text-white/40 text-base">
-            {properties.footerText ||
-              "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris."}
-          </p>
-        </div>
       </div>
 
       {/* Full-Screen Lightbox Modal (FoodCity Style) */}

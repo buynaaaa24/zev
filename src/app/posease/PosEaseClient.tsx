@@ -7,6 +7,7 @@ import { GlobalContactInfo, PosEaseSections } from "@/lib/site-content-types";
 import LeadFormSection from "@/components/sections/LeadFormSection";
 import Scene3D from "@/components/scene/Scene3D";
 import { resolveMediaUrl } from "@/lib/media";
+import { PricingCard } from "@/components/sections/PricingCard";
 
 const PINK = "rgb(255, 68, 105)";
 const PINK_GLOW = "rgba(255, 68, 105, 0.5)";
@@ -548,63 +549,27 @@ function PricingContent({
       >
         {title}
       </h2>
-      <div className={`grid ${gridClass} gap-4 sm:gap-6 md:gap-10`}>
+      <div className={`grid ${gridClass} gap-6 sm:gap-8 md:gap-10 md:items-stretch`}>
         {tiers.map((tier, i) => (
-          <div
+          <PricingCard
             key={i}
-            className={`
-              relative p-6 sm:p-10 md:p-12 rounded-[32px] sm:rounded-[48px] md:rounded-[60px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start
-              ${tiers.length === 3 && i === 1 ? "border-[rgb(255,68,105)]/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(255,68,105,0.15)]" : ""}
-              ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-20"}
-              hover:border-[rgb(255,68,105)]/30 hover:-translate-y-2 transition-all duration-500
-            `}
-            style={{ transitionDelay: `${i * 150}ms` }}
-          >
-            {tier.discounts && tier.discounts.length > 0 && (
-              <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
-                {tier.discounts.map(
-                  (d: { label: string; color?: string }, di: number) => (
-                    <div
-                      key={di}
-                      className="px-3 py-1.5 rounded-full text-white text-[11px] font-black shadow-lg uppercase whitespace-nowrap"
-                      style={{ backgroundColor: d.color ? (d.color.startsWith("#") ? d.color : `#${d.color}`) : "#7c3aed" }}
-                    >
-                      {d.label}
-                    </div>
-                  ),
-                )}
-              </div>
-            )}
-            <div
-              className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${tiers.length === 3 && i === 1 ? "bg-[rgb(255,68,105)]" : "bg-white/5 border border-white/10"}`}
-            >
-              <span
-                className={`text-[10px] font-black uppercase tracking-[0.3em] ${tiers.length === 3 && i === 1 ? "text-white" : "text-[rgb(255,68,105)]"}`}
-              >
-                {tier.name}
-              </span>
-            </div>
-            <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-8 tracking-tighter break-all w-full">
-              {tier.price}
-            </p>
-            <p className="text-white/50 text-sm sm:text-base md:text-lg mb-6 sm:mb-12 font-medium leading-relaxed">
-              {tier.desc}
-            </p>
-            {!tier.hideButton && (
-              <a
-                href="#kholbooBarikh"
-                onClick={handleScroll}
-                className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl
-                  ${
-                    tiers.length === 3 && i === 1
-                      ? "bg-white text-black hover:bg-[rgb(255,68,105)] hover:text-white shadow-pink-500/20"
-                      : "bg-[rgb(255,68,105)] text-white hover:bg-white hover:text-black shadow-pink-500/30"
-                  }`}
-              >
-                Get Started
-              </a>
-            )}
-          </div>
+            name={tier.name}
+            value={tier.price}
+            desc={tier.desc}
+            discounts={tier.discounts}
+            hideButton={tier.hideButton}
+            buttonLabel={tier.buttonLabel || "Get Started"}
+            buttonHref={tier.buttonUrl || "#kholbooBarikh"}
+            buttonTarget={tier.buttonUrl ? "_blank" : undefined}
+            buttonRel={tier.buttonUrl ? "noopener noreferrer" : undefined}
+            onButtonClick={tier.buttonUrl ? undefined : handleScroll}
+            isMiddle={tiers.length === 3 && i === 1}
+            visible={visible}
+            delay={i * 150}
+            accent={PINK}
+            accentGlow="rgba(255,68,105,"
+            dark={true}
+          />
         ))}
       </div>
     </div>

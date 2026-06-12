@@ -7,6 +7,7 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 import { useAmarHomeLang } from "@/contexts/AmarHomeLangContext";
 import LeadFormSection from "../../components/sections/LeadFormSection";
 import { resolveMediaUrl } from "@/lib/media";
+import { PricingCard } from "@/components/sections/PricingCard";
 
 const DEFAULTS: { en: AmarHomeSections; mn: AmarHomeSections } = {
   en: {
@@ -323,7 +324,7 @@ export default function AmarHomeClient({
           {/* Hero image */}
           {hero.image && (
             <div
-              className={`lg:col-span-6 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
+              className={`lg:col-span-6 my-20 transition-all duration-[1200ms] ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-12"}`}
               style={{ transitionDelay: ".3s" }}
             >
               <div className="relative">
@@ -403,7 +404,7 @@ export default function AmarHomeClient({
               <div className="w-12 h-1 bg-emerald-500 mx-auto rounded-full" />
             </div>
             <div
-              className={`grid ${getGridCols(pricing.length)} gap-4 sm:gap-6 md:gap-8`}
+              className={`grid ${getGridCols(pricing.length)} gap-6 sm:gap-8 md:gap-10 md:items-stretch`}
             >
               {pricing.map((tier, i) => (
                 <PricingTier
@@ -454,7 +455,7 @@ function FeatureRow({ item, index }: { item: any; index: number }) {
         </p>
       </div>
       <div
-        className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${visible ? "opacity-100 translate-y-0 scale-100" : "opacity-0 translate-y-8 scale-95"}`}
+        className={`flex-1 relative w-full transition-all duration-1000 delay-200 ${visible ? "opacity-100 translate-x-0" : isEven ? "opacity-0 translate-x-12" : "opacity-0 -translate-x-12"}`}
       >
         <div className="absolute inset-0 bg-emerald-500/20 blur-[60px] rounded-full" />
         <div className="relative rounded-[16px] sm:rounded-[20px] md:rounded-[32px] overflow-hidden border border-white/10 group">
@@ -527,67 +528,25 @@ function PricingTier({
   const { ref, visible } = useReveal();
   const isMiddle = totalCount === 3 && index === 1;
   return (
-    <div
-      ref={ref}
-      className={`transition-all duration-1000 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`}
-      style={{ transitionDelay: `${index * 150}ms` }}
-    >
-      <div
-        className={`relative p-6 sm:p-8 md:p-10 rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl text-left flex flex-col items-start h-full transition-all duration-700 hover:-translate-y-2 ${isMiddle ? "border-emerald-500/40 md:scale-105 bg-black/40 shadow-[0_30px_100px_rgba(16,185,129,0.15)]" : "hover:border-emerald-500/20"}`}
-      >
-        {tier.discounts && tier.discounts.length > 0 && (
-          <div className="absolute -top-3 -right-3 flex flex-col items-end gap-1.5 z-20">
-            {tier.discounts.map(
-              (d: { label: string; color?: string }, di: number) => (
-                <div
-                  key={di}
-                  className="px-3 py-1.5 rounded-full text-white text-[10px] font-black shadow-lg uppercase whitespace-nowrap"
-                  style={{
-                    backgroundColor: d.color
-                      ? d.color.startsWith("#")
-                        ? d.color
-                        : `#${d.color}`
-                      : "#7c3aed",
-                  }}
-                >
-                  {d.label}
-                </div>
-              ),
-            )}
-          </div>
-        )}
-        <div
-          className={`px-4 py-1.5 rounded-full mb-5 sm:mb-8 ${isMiddle ? "bg-emerald-500" : "bg-white/5 border border-white/10"}`}
-        >
-          <span
-            className={`text-[10px] font-black uppercase tracking-[0.3em] ${isMiddle ? "text-white" : "text-emerald-400"}`}
-          >
-            {tier.name}
-          </span>
-        </div>
-        <p className="text-white text-3xl sm:text-4xl md:text-5xl font-black mb-4 sm:mb-8 tracking-tighter break-all w-full">
-          {tier.price}
-        </p>
-        <div className="text-white/40 text-[11px] sm:text-xs mb-6 sm:mb-12 font-normal leading-snug text-left space-y-0.5">
-          {(tier.desc || "").split("\n").map((line: string, i: number) => (
-            <p
-              key={i}
-              className="whitespace-nowrap overflow-hidden text-ellipsis"
-            >
-              {line || " "}
-            </p>
-          ))}
-        </div>
-        {!tier.hideButton && (
-          <a
-            href="#kholbooBarikh"
-            onClick={handleScroll}
-            className={`mt-auto w-full py-3 sm:py-5 rounded-2xl sm:rounded-[24px] text-center font-black text-base sm:text-lg transition-all duration-500 shadow-xl ${isMiddle ? "bg-white text-black hover:bg-emerald-500 hover:text-white" : "bg-emerald-500 text-white hover:bg-white hover:text-black"}`}
-          >
-            Get Started
-          </a>
-        )}
-      </div>
+    <div ref={ref} className="h-full">
+      <PricingCard
+        name={tier.name}
+        value={tier.price}
+        desc={tier.desc}
+        discounts={tier.discounts}
+        hideButton={tier.hideButton}
+        buttonLabel={tier.buttonLabel || "Get Started"}
+        buttonHref={tier.buttonUrl || "#kholbooBarikh"}
+        buttonTarget={tier.buttonUrl ? "_blank" : undefined}
+        buttonRel={tier.buttonUrl ? "noopener noreferrer" : undefined}
+        onButtonClick={tier.buttonUrl ? undefined : handleScroll}
+        isMiddle={isMiddle}
+        visible={visible}
+        delay={index * 150}
+        accent="#10b981"
+        accentGlow="rgba(16,185,129,"
+        dark={true}
+      />
     </div>
   );
 }

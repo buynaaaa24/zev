@@ -44,7 +44,7 @@ export default function RentlyNavbar() {
           <div
             className="rounded-2xl overflow-hidden shrink-0 transition-all duration-500 w-11 h-11 shadow-[0_4px_12px_rgba(16,185,129,0.3)]"
           >
-            <img src="/images/rently.png" alt="Rently" className="w-full h-full object-contain" />
+            <img src="/images/rentt.png" alt="Rently" className="w-full h-full object-contain" />
           </div>
           <span className="font-bold tracking-tight text-white text-base">
             Rently
