@@ -289,7 +289,7 @@ function HeroSection() {
             </h1>
 
             <p
-              className={`text-white/45 text-base sm:text-lg md:text-xl leading-relaxed max-w-xl sm:max-w-2xl mb-8 sm:mb-12 font-light transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
+              className={`text-white/45 text-base sm:text-lg md:text-xl leading-relaxed max-w-xl sm:max-w-2xl mb-8 sm:mb-12 font-light whitespace-pre-wrap transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
               style={{ transitionDelay: ".3s" }}
             >
               {api.desc}
@@ -497,7 +497,7 @@ function HowItWorksSection() {
                 </>
               ) : null}
             </h2>
-            <p className="text-neutral-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">
+            <p className="text-neutral-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light whitespace-pre-wrap">
               {api.desc}
             </p>
           </div>
@@ -621,7 +621,7 @@ function PaymentSection() {
                 </>
               ) : null}
             </h2>
-            <p className="text-white/40 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">
+            <p className="text-white/40 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light whitespace-pre-wrap">
               {api.desc}
             </p>
           </div>
@@ -669,7 +669,7 @@ function PaymentSection() {
                       {card.badge}
                     </span>
                   </div>
-                  <p className="text-white/40 text-sm sm:text-[14px] leading-relaxed">
+                  <p className="text-white/40 text-sm sm:text-[14px] leading-relaxed whitespace-pre-wrap">
                     {card.desc}
                   </p>
                 </div>
@@ -869,7 +869,7 @@ function FeaturesSection() {
                 style={{ background: YELLOW_GLOW + "0.3)" }}
               />
             </div>
-            <p className="text-neutral-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">
+            <p className="text-neutral-400 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light whitespace-pre-wrap">
               {api.desc}
             </p>
           </div>
@@ -955,7 +955,7 @@ function FeaturesSection() {
                         {item.title}
                       </h3>
                       <p
-                        className={`text-sm sm:text-base font-medium leading-relaxed ${hasImage ? "text-white/70" : "text-neutral-500"}`}
+                        className={`text-sm sm:text-base font-medium leading-relaxed whitespace-pre-wrap ${hasImage ? "text-white/70" : "text-neutral-500"}`}
                       >
                         {item.desc}
                       </p>
@@ -1022,7 +1022,7 @@ function BolomjuudSection() {
                 style={{ background: YELLOW_GLOW + "0.3)" }}
               />
             </div>
-            <p className="text-white/40 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light">
+            <p className="text-white/40 text-base sm:text-lg max-w-xl mx-auto leading-relaxed font-light whitespace-pre-wrap">
               {api.desc}
             </p>
           </div>
@@ -1064,7 +1064,7 @@ function BolomjuudRow({ item, index }: { item: any; index: number }) {
         <h3 className="text-xl sm:text-3xl font-black text-white tracking-tighter mb-4 leading-tight">
           {item.title}
         </h3>
-        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-6">
+        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-6 whitespace-pre-wrap">
           {item.desc}
         </p>
       </div>
@@ -1150,7 +1150,7 @@ function PricingSection() {
                 style={{ background: YELLOW_GLOW + "0.5)" }}
               />
             </div>
-            <p className="text-neutral-400 text-base sm:text-lg max-w-lg mx-auto leading-relaxed font-light">
+            <p className="text-neutral-400 text-base sm:text-lg max-w-lg mx-auto leading-relaxed font-light whitespace-pre-wrap">
               {api.desc}
             </p>
           </div>
@@ -1318,7 +1318,7 @@ function FreeDriverSection() {
             <h2 className="text-[28px] sm:text-4xl md:text-5xl font-black tracking-tight text-white mb-4 sm:mb-6">
               {api.title}
             </h2>
-            <p className="text-white/50 text-base sm:text-lg leading-relaxed mb-8 sm:mb-10 font-light max-w-xl mx-auto">
+            <p className="text-white/50 text-base sm:text-lg leading-relaxed mb-8 sm:mb-10 font-light max-w-xl mx-auto whitespace-pre-wrap">
               {api.desc}
             </p>
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-3 sm:gap-4">

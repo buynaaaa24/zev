@@ -158,7 +158,7 @@ export default function ServicesSection({
               </span>
             </h2>
           </div>
-          <p className="text-neutral-400 text-base sm:text-lg font-light max-w-sm border-t-2 sm:border-t-0 sm:border-l-2 border-neutral-100 pt-6 sm:pt-0 sm:pl-6 italic">
+          <p className="text-neutral-400 text-base sm:text-lg font-light max-w-sm border-t-2 sm:border-t-0 sm:border-l-2 border-neutral-100 pt-6 sm:pt-0 sm:pl-6 italic whitespace-pre-wrap">
             "
             {services.header.intro ||
               "Focused, opinionated solutions built to move fast and last long."}
@@ -242,7 +242,7 @@ export default function ServicesSection({
                   transition={{ delay: 0.1, duration: 0.4 }}
                   className="absolute bottom-6 right-0 lg:-right-10 max-w-[280px] p-8 bg-white/60 backdrop-blur-3xl rounded-[32px] border border-white/20 shadow-xl z-50 hidden sm:block"
                 >
-                  <p className="text-neutral-800 text-base leading-relaxed font-bold tracking-tight">
+                  <p className="text-neutral-800 text-base leading-relaxed font-bold tracking-tight whitespace-pre-wrap">
                     {features[activeIdx].desc}
                   </p>
                 </motion.div>

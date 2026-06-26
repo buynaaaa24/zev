@@ -232,7 +232,7 @@ function FeatureCard({
         <h3 className="text-neutral-900 font-bold text-xl mb-3 group-hover:text-accent-600 transition-colors duration-300 relative z-10">
           {title}
         </h3>
-        <p className="text-neutral-500 text-[15px] leading-relaxed font-light relative z-10">
+        <p className="text-neutral-500 text-[15px] leading-relaxed font-light relative z-10 whitespace-pre-wrap">
           {desc}
         </p>
       </div>
@@ -308,7 +308,7 @@ export default function AboutSection({
               {about.h2Accent || "meets elegance."}
             </span>
           </h2>
-          <p className="text-neutral-400 text-lg leading-relaxed font-light">
+          <p className="text-neutral-400 text-lg leading-relaxed font-light whitespace-pre-wrap">
             {about.p1 ||
               "Software should feel inevitable — so natural and refined that using it feels like second nature."}
           </p>

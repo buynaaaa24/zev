@@ -137,7 +137,7 @@ export default function LeadFormSection({
                 {title.split(" ").slice(2).join(" ")}
               </span>
             </h2>
-            <p className="text-white/40 text-lg font-medium max-w-md leading-relaxed mb-10">
+            <p className="text-white/40 text-lg font-medium max-w-md leading-relaxed mb-10 whitespace-pre-wrap">
               {body}
             </p>
 

@@ -303,7 +303,7 @@ export default function AmarHomeClient({
                 {hero.titleAccent}
               </span>
             </h1>
-            <p className="text-base sm:text-lg md:text-xl text-white/40 max-w-lg mb-8 sm:mb-10 leading-relaxed font-medium">
+            <p className="text-base sm:text-lg md:text-xl text-white/40 max-w-lg mb-8 sm:mb-10 leading-relaxed font-medium whitespace-pre-wrap">
               {hero.desc}
             </p>
             <div className="flex flex-wrap gap-3 sm:gap-4">
@@ -450,7 +450,7 @@ function FeatureRow({ item, index }: { item: any; index: number }) {
         <h3 className="text-xl sm:text-2xl md:text-3xl font-black text-white tracking-tighter mb-3 sm:mb-4 leading-tight">
           {item.title}
         </h3>
-        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-4 sm:mb-6">
+        <p className="text-white/40 text-sm sm:text-base font-medium leading-relaxed mb-4 sm:mb-6 whitespace-pre-wrap">
           {item.desc}
         </p>
       </div>
@@ -509,7 +509,7 @@ function HardwareSpotlight({ item, index }: { item: any; index: number }) {
           </h3>
         </div>
       </div>
-      <p className="text-white/30 text-[10px] sm:text-xs font-medium leading-relaxed pl-4 sm:pl-6 border-l border-white/5">
+      <p className="text-white/30 text-[10px] sm:text-xs font-medium leading-relaxed pl-4 sm:pl-6 border-l border-white/5 whitespace-pre-wrap">
         {item.desc}
       </p>
     </div>

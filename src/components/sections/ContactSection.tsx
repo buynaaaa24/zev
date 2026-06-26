@@ -54,7 +54,7 @@ export default function ContactSection({ contact }: { contact: ContactSections }
               {contact.hero.h2Line1 || "Transforming ideas"}<br />
               <span className="text-neutral-200 italic">{contact.hero.h2Accent || "into reality."}</span>
             </h2>
-            <p className="text-neutral-400 text-lg sm:text-xl font-light max-w-md border-l-2 border-neutral-100 pl-8 mb-16 italic">
+            <p className="text-neutral-400 text-lg sm:text-xl font-light max-w-md border-l-2 border-neutral-100 pl-8 mb-16 italic whitespace-pre-wrap">
               "{contact.hero.intro || "Have a vision? We have the engineering and design expertise to bring it to life."}"
             </p>
 

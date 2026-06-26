@@ -320,7 +320,7 @@ export default function PosEaseClient({
             </span>
           </h1>
 
-          <p className="body-lg text-white/50 max-w-2xl mx-auto mb-8 sm:mb-14 leading-relaxed">
+          <p className="body-lg text-white/50 max-w-2xl mx-auto mb-8 sm:mb-14 leading-relaxed whitespace-pre-wrap">
             {hero.desc}
           </p>
 
@@ -425,7 +425,7 @@ function FeaturesContent({
       >
         <div className="w-14 sm:w-20 h-1.5 bg-[rgb(255,68,105)] rounded-full mb-6 sm:mb-10 shadow-[0_0_20px_rgba(255,68,105,0.5)]" />
         <h2 className="display-lg text-white mb-5 sm:mb-10">{title}</h2>
-        <p className="body-lg text-white/40 max-w-3xl leading-relaxed">
+        <p className="body-lg text-white/40 max-w-3xl leading-relaxed whitespace-pre-wrap">
           {desc}
         </p>
       </div>
@@ -462,7 +462,7 @@ function FeaturesContent({
               >
                 {item.title}
               </h3>
-              <p className="text-white/40 text-sm sm:text-base md:text-lg font-medium leading-relaxed">
+              <p className="text-white/40 text-sm sm:text-base md:text-lg font-medium leading-relaxed whitespace-pre-wrap">
                 {item.desc}
               </p>
             </div>
@@ -522,7 +522,7 @@ function HardwareContent({
             <h3 className="text-2xl sm:text-3xl md:text-4xl font-black text-white mb-3 sm:mb-4 tracking-tight">
               {item.name}
             </h3>
-            <p className="text-white/40 text-base sm:text-lg font-medium leading-relaxed max-w-xs">
+            <p className="text-white/40 text-base sm:text-lg font-medium leading-relaxed max-w-xs whitespace-pre-wrap">
               {item.desc}
             </p>
           </div>

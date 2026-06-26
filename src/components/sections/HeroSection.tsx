@@ -140,7 +140,7 @@ export default function HeroSection({ hero }: { hero: HomeSections["hero"] }) {
         </h1>
 
         {/* Description */}
-        <p className={`text-white/45 text-lg sm:text-2xl leading-relaxed max-w-2xl mb-14 font-light transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: ".45s" }}>
+        <p className={`text-white/45 text-lg sm:text-2xl leading-relaxed max-w-2xl mb-14 font-light whitespace-pre-wrap transition-all duration-1000 ease-[cubic-bezier(0.22,1,0.36,1)] ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-12"}`} style={{ transitionDelay: ".45s" }}>
           {hero.desc || "Zevtabs is a premium platform combining cutting-edge design with powerful functionality — crafted for businesses that demand excellence."}
         </p>
 

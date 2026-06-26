@@ -678,7 +678,7 @@ export default function WorkSection({
             </span>
           </h2>
           {properties.header.intro && (
-            <p className="text-white/40 text-xl font-medium max-w-2xl mx-auto leading-relaxed">
+            <p className="text-white/40 text-xl font-medium max-w-2xl mx-auto leading-relaxed whitespace-pre-wrap">
               {properties.header.intro}
             </p>
           )}
