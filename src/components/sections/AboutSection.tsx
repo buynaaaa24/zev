@@ -351,7 +351,7 @@ export default function AboutSection({
                       <img
                         src={logo.src}
                         alt={logo.name}
-                        className="h-8 w-auto max-w-[100px] object-contain"
+                        className="h-16 w-auto max-w-[200px] object-contain rounded-xl"
                       />
                     </div>
                   ),

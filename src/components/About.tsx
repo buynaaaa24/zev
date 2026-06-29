@@ -77,7 +77,7 @@ export default function About() {
                 About Zevtabs
               </span>
             </div>
-            
+
             <p className="reveal reveal-delay-3 body-lg text-neutral-500 mb-10">
               We believe software should feel inevitable — so natural and
               refined that using it feels like second nature.
@@ -90,9 +90,6 @@ export default function About() {
                 <span className="gradient-text-blue">you never notice</span>{" "}
                 because it just works.&rdquo;
               </blockquote>
-              <p className="mt-3 text-neutral-400 text-sm">
-                — Zevtabs Design Philosophy
-              </p>
             </div>
           </div>
 
@@ -100,25 +97,62 @@ export default function About() {
           <div className="xl:flex-1">
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
               {FEATURES.map((f, i) => {
-                const colorClasses: Record<string, { bg: string; border: string; text: string; gradient: string }> = {
-                  blue: { bg: "bg-blue-100", border: "border-blue-500/30", text: "text-blue-600", gradient: "from-blue-500 to-cyan-500" },
-                  green: { bg: "bg-green-100", border: "border-green-500/30", text: "text-green-600", gradient: "from-green-500 to-emerald-500" },
-                  purple: { bg: "bg-purple-100", border: "border-purple-500/30", text: "text-purple-600", gradient: "from-purple-500 to-violet-500" },
-                  orange: { bg: "bg-orange-100", border: "border-orange-500/30", text: "text-orange-600", gradient: "from-orange-500 to-amber-500" },
-                  cyan: { bg: "bg-cyan-100", border: "border-cyan-500/30", text: "text-cyan-600", gradient: "from-cyan-500 to-teal-500" },
-                  pink: { bg: "bg-pink-100", border: "border-pink-500/30", text: "text-pink-600", gradient: "from-pink-500 to-rose-500" },
+                const colorClasses: Record<
+                  string,
+                  { bg: string; border: string; text: string; gradient: string }
+                > = {
+                  blue: {
+                    bg: "bg-blue-100",
+                    border: "border-blue-500/30",
+                    text: "text-blue-600",
+                    gradient: "from-blue-500 to-cyan-500",
+                  },
+                  green: {
+                    bg: "bg-green-100",
+                    border: "border-green-500/30",
+                    text: "text-green-600",
+                    gradient: "from-green-500 to-emerald-500",
+                  },
+                  purple: {
+                    bg: "bg-purple-100",
+                    border: "border-purple-500/30",
+                    text: "text-purple-600",
+                    gradient: "from-purple-500 to-violet-500",
+                  },
+                  orange: {
+                    bg: "bg-orange-100",
+                    border: "border-orange-500/30",
+                    text: "text-orange-600",
+                    gradient: "from-orange-500 to-amber-500",
+                  },
+                  cyan: {
+                    bg: "bg-cyan-100",
+                    border: "border-cyan-500/30",
+                    text: "text-cyan-600",
+                    gradient: "from-cyan-500 to-teal-500",
+                  },
+                  pink: {
+                    bg: "bg-pink-100",
+                    border: "border-pink-500/30",
+                    text: "text-pink-600",
+                    gradient: "from-pink-500 to-rose-500",
+                  },
                 };
                 const c = colorClasses[f.color];
                 return (
                   <div key={f.title} className="relative w-full">
                     {/* Gradient blur background */}
-                    <div className={`absolute inset-0 h-full w-full scale-[0.80] transform rounded-full bg-gradient-to-r ${c.gradient} blur-3xl opacity-50`} />
+                    <div
+                      className={`absolute inset-0 h-full w-full scale-[0.80] transform rounded-full bg-gradient-to-r ${c.gradient} blur-3xl opacity-50`}
+                    />
                     {/* Card */}
                     <div
                       className={`reveal reveal-delay-${Math.min(i + 1, 6)} relative flex h-full flex-col items-start overflow-hidden rounded-2xl border border-neutral-200 bg-white px-4 py-5 shadow-xl`}
                     >
                       {/* Icon */}
-                      <div className={`mb-3 flex h-8 w-8 items-center justify-center rounded-full border ${c.border} ${c.bg}`}>
+                      <div
+                        className={`mb-3 flex h-8 w-8 items-center justify-center rounded-full border ${c.border} ${c.bg}`}
+                      >
                         <svg
                           xmlns="http://www.w3.org/2000/svg"
                           fill="none"
@@ -127,7 +161,11 @@ export default function About() {
                           stroke="currentColor"
                           className={`h-4 w-4 ${c.text}`}
                         >
-                          <path strokeLinecap="round" strokeLinejoin="round" d={f.icon} />
+                          <path
+                            strokeLinecap="round"
+                            strokeLinejoin="round"
+                            d={f.icon}
+                          />
                         </svg>
                       </div>
                       {/* Title */}
