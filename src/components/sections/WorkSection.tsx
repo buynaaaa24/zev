@@ -347,7 +347,7 @@ function ThreeDCarousel({
                 height: CARD_H,
                 left: -CARD_W / 2,
                 top: -CARD_H / 2,
-                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) translateY(${isFront ? -28 : 0}px)`,
+                transform: `rotateY(${cardAngle}deg) translateZ(${RADIUS}px) rotateY(${-(rotation + cardAngle)}deg) translateY(${isFront ? -28 : 0}px) rotateX(20deg)`,
                 opacity: headerVis ? 1 : 0,
                 transition:
                   "opacity 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
@@ -453,6 +453,16 @@ function ThreeDCarousel({
             </div>
           );
         })}
+      </div>
+
+      {/* Active project name — swipe transition, only front card shown */}
+      <div className="absolute bottom-0 sm:bottom-2 inset-x-0 flex justify-center z-30 pointer-events-none overflow-hidden px-4">
+        <span
+          key={frontIdx}
+          className="text-white text-base sm:text-xl md:text-2xl font-black tracking-tight uppercase text-center animate-in slide-in-from-right-8 fade-in duration-500 animate-title-bob"
+        >
+          {projects[frontIdx]?.title}
+        </span>
       </div>
 
       {/* Floating video tooltip */}

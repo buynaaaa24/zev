@@ -377,6 +377,14 @@ html {
   50%      { transform: translateY(-20px) translateX(10px); opacity: 0.5; }
 }
 
+@keyframes title-bob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-4px); }
+}
+.animate-title-bob {
+  animation: title-bob 2.2s ease-in-out infinite;
+}
+
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-none {
   -ms-overflow-style: none;  /* IE and Edge */
