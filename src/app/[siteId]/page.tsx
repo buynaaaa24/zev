@@ -58,9 +58,8 @@ export default async function Home({
         }
       />
       <ServicesSection services={servicesData} />
-      <WorkSection 
-        properties={propertiesData} 
-        lang={lang}
+      <WorkSection
+        properties={propertiesData}
         bgImages={homeData.hero.slideImages}
       />
       <AjluudGallery data={ajluudData} />
