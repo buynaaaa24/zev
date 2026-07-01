@@ -16,6 +16,15 @@ const YELLOW = "#f6b414";
 const YELLOW_DARK = "#d99a0e";
 const YELLOW_GLOW = "rgba(246,180,20,";
 
+function toVideoEmbed(url: string) {
+  const m = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/|live\/))([\w-]{11})/,
+  );
+  if (m)
+    return `https://www.youtube.com/embed/${m[1]}?autoplay=1&mute=1&loop=1&playlist=${m[1]}&controls=1&modestbranding=1&rel=0`;
+  return null;
+}
+
 const handleAnchorScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
   const href = e.currentTarget.getAttribute("href");
   if (href && href.startsWith("#")) {
@@ -356,20 +365,22 @@ function HeroSection() {
               className={`lg:flex-1 hidden lg:flex flex-col gap-8 transition-all duration-700 ${mounted ? "opacity-100 translate-x-0" : "opacity-0 translate-x-8"}`}
               style={{ transitionDelay: ".5s" }}
             >
-              <div className="relative w-full">
-                <div
-                  className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl"
-                  style={{
-                    background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.6), transparent 70%)`,
-                  }}
-                  aria-hidden
-                />
-                <img
-                  src={resolveMediaUrl(api.image)}
-                  alt=""
-                  className="relative z-10 w-full h-auto max-h-[50vh] object-contain object-top drop-shadow-2xl"
-                />
-              </div>
+              {api.image && (
+                <div className="relative w-full">
+                  <div
+                    className="absolute -inset-8 rounded-3xl opacity-20 blur-3xl"
+                    style={{
+                      background: `radial-gradient(ellipse at center, ${YELLOW_GLOW}0.6), transparent 70%)`,
+                    }}
+                    aria-hidden
+                  />
+                  <img
+                    src={resolveMediaUrl(api.image)}
+                    alt=""
+                    className="relative z-10 w-full h-auto max-h-[50vh] object-contain object-top drop-shadow-2xl"
+                  />
+                </div>
+              )}
               {api.stats.length > 0 && (
                 <div
                   className={`pt-8 border-t border-white/8 grid grid-cols-2 gap-6 transition-all duration-700 ${mounted ? "opacity-100 translate-y-0" : "opacity-0 translate-y-6"}`}
@@ -418,6 +429,62 @@ function HeroSection() {
             d="M19 9l-7 7-7-7"
           />
         </svg>
+      </div>
+    </section>
+  );
+}
+
+/* ── Intro Videos ────────────────────────────────────────── */
+function IntroVideoSection() {
+  const { lang } = useParkEaseLang();
+  const hero = useContext(AdminCtx)[lang].hero;
+  const vids = hero.videos?.length
+    ? hero.videos
+    : hero.videoUrl
+      ? [{ url: hero.videoUrl, bio: undefined }]
+      : null;
+  if (!vids) return null;
+  return (
+    <section className="relative z-10 px-5 sm:px-8 py-10 sm:py-16 bg-[#0a0a0a]">
+      <div className="flex flex-wrap justify-center gap-6">
+        {vids.map((v, i) => {
+          const embedUrl = toVideoEmbed(v.url);
+          return (
+            <div
+              key={i}
+              className="flex flex-col items-center gap-3 w-full max-w-[380px]"
+            >
+              <div
+                className="relative w-full rounded-3xl overflow-hidden border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.6)] bg-black/40"
+                style={{ aspectRatio: "9/16" }}
+              >
+                {embedUrl ? (
+                  <iframe
+                    src={embedUrl}
+                    className="absolute inset-0 w-full h-full"
+                    allow="autoplay; encrypted-media; fullscreen"
+                    allowFullScreen
+                  />
+                ) : (
+                  <video
+                    src={resolveMediaUrl(v.url)}
+                    className="absolute inset-0 w-full h-full object-cover"
+                    autoPlay
+                    muted
+                    loop
+                    playsInline
+                    controls
+                  />
+                )}
+              </div>
+              {v.bio && (
+                <p className="text-white/60 text-sm text-center leading-relaxed whitespace-pre-wrap px-2">
+                  {v.bio}
+                </p>
+              )}
+            </div>
+          );
+        })}
       </div>
     </section>
   );
@@ -1398,6 +1465,7 @@ export default function ParkEaseClient({
   return (
     <AdminCtx.Provider value={{ mn: initialMn, en: initialEn }}>
       <HeroSection />
+      <IntroVideoSection />
       <HowItWorksSection />
       <PaymentSection />
       <FeaturesSection />

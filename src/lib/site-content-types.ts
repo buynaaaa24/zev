@@ -106,6 +106,7 @@ export type PropertiesPageSections = {
     name: string;
     image: string;
     category: string;
+    bio?: string;
     videoUrl?: string;
     redirectUrl?: string;
     badge?: string | null;
@@ -198,6 +199,8 @@ export type PosEaseSections = {
     image?: string;
     tabImage?: string;
     mobileImage?: string;
+    videoUrl?: string;
+    videos?: { url: string; bio?: string }[];
   };
   features: {
     title: string;
@@ -221,6 +224,8 @@ export type AmarHomeSections = {
     desc: string;
     cta: string;
     image?: string;
+    videoUrl?: string;
+    videos?: { url: string; bio?: string }[];
   };
   features: {
     title: string;
@@ -247,6 +252,8 @@ export type RentlySections = {
     secondary: string;
     secondaryUrl?: string;
     image?: string;
+    videoUrl?: string;
+    videos?: { url: string; bio?: string }[];
   };
   features: {
     title: string;
@@ -258,18 +265,21 @@ export type RentlySections = {
     desc: string;
     label?: string;
     image?: string;
+    videoUrl?: string;
   };
   penalties: {
     title: string;
     desc: string;
     label?: string;
     image?: string;
+    videoUrl?: string;
   };
   costs: {
     title: string;
     desc: string;
     label?: string;
     image?: string;
+    videoUrl?: string;
   };
   pricing: {
     title: string;
@@ -292,6 +302,8 @@ export type ParkEaseSections = {
     cta2: string;
     cta2Link?: string;
     image?: string;
+    videoUrl?: string;
+    videos?: { url: string; bio?: string }[];
     stats: { value: string; label: string }[];
   };
   how: {

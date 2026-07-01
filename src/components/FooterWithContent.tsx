@@ -9,10 +9,12 @@ export default async function FooterWithContent({ siteId = "zevtabs" }: { siteId
   const t = translations[lang];
   let accentColor = "rgb(99, 102, 241)"; // default indigo
   let trialHref: string | undefined = undefined;
+  let copyrightYear: number | undefined = undefined;
 
   if (siteId === "parkease") {
     accentColor = "#f6b414";
     trialHref = "/parkease/try";
+    copyrightYear = 2023;
   } else if (siteId === "posease") {
     accentColor = "rgb(255, 68, 105)";
     trialHref = "/posease/try";
@@ -24,13 +26,13 @@ export default async function FooterWithContent({ siteId = "zevtabs" }: { siteId
     trialHref = "/rently/try";
   }
 
-
   return (
-    <Footer 
-      content={content} 
-      t={t} 
-      accentColor={accentColor} 
+    <Footer
+      content={content}
+      t={t}
+      accentColor={accentColor}
       trialHref={trialHref}
+      copyrightYear={copyrightYear}
     />
   );
 }

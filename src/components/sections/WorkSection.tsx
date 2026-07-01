@@ -11,6 +11,7 @@ type Project = {
   id: number;
   title: string;
   category: string;
+  bio?: string;
   image: string;
   videoUrl?: string;
   redirectUrl?: string;
@@ -86,22 +87,16 @@ function ModalVideoPlayer({ src }: { src: string }) {
   );
 }
 
-/* ── Video Tooltip (fixed position, appears where cursor first hovered) ── */
+/* ── Video Panel (fixed to right side of screen) ── */
 function VideoTooltip({
   project,
-  pos,
+  onMouseEnter,
+  onMouseLeave,
 }: {
   project: Project;
-  pos: { x: number; y: number };
+  onMouseEnter: () => void;
+  onMouseLeave: () => void;
 }) {
-  const TW = 380;
-  const TH = 260;
-  let tx = pos.x + 32;
-  let ty = pos.y - TH / 2;
-  if (typeof window !== "undefined") {
-    if (tx + TW > window.innerWidth - 16) tx = pos.x - TW - 32;
-    ty = Math.max(16, Math.min(ty, window.innerHeight - TH - 16));
-  }
   const embedUrl = project.videoUrl
     ? getYoutubeThumbUrl(project.videoUrl)
     : null;
@@ -109,17 +104,20 @@ function VideoTooltip({
 
   return (
     <div
+      onMouseEnter={onMouseEnter}
+      onMouseLeave={onMouseLeave}
       style={{
         position: "fixed",
-        left: tx,
-        top: ty,
-        width: TW,
+        right: 280,
+        top: "50%",
+        transform: "translateY(-50%)",
+        width: 320,
         zIndex: 99998,
-        pointerEvents: "none",
+        pointerEvents: "auto",
       }}
       className="rounded-3xl overflow-hidden border border-white/15 shadow-[0_30px_80px_rgba(0,0,0,0.95)] bg-white/5 backdrop-blur-xl animate-in fade-in duration-200"
     >
-      <div className="relative w-full" style={{ aspectRatio: "16/9" }}>
+      <div className="relative w-full" style={{ aspectRatio: "9/16" }}>
         {isDirect ? (
           <video
             src={resolveMediaUrl(project.videoUrl!)}
@@ -132,7 +130,7 @@ function VideoTooltip({
         ) : embedUrl ? (
           <iframe
             src={embedUrl}
-            className="absolute inset-0 w-full h-full pointer-events-none scale-[1.1]"
+            className="absolute inset-0 w-full h-full pointer-events-none"
             allow="autoplay; encrypted-media"
             tabIndex={-1}
             aria-hidden="true"
@@ -167,25 +165,21 @@ function VideoTooltip({
 function ThreeDCarousel({
   projects,
   headerVis,
-  onSelect,
-  ctaLabel,
 }: {
   projects: Project[];
   headerVis: boolean;
-  onSelect: (p: Project) => void;
-  ctaLabel: string;
 }) {
   const [hoveredIdx, setHoveredIdx] = useState<number | null>(null);
   const [lockedIdx, setLockedIdx] = useState<number | null>(null);
   const [rotation, setRotation] = useState(0);
   const [frontIdx, setFrontIdx] = useState(0);
-  const [tooltipPos, setTooltipPos] = useState({ x: 0, y: 0 });
   const rotationRef = useRef(0);
   const pausedRef = useRef(false);
   const isDraggingRef = useRef(false);
   const dragStartXRef = useRef(0);
   const rotationAtDragStartRef = useRef(0);
   const resumeTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const leaveTimerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const carouselRef = useRef<HTMLDivElement>(null);
 
   const count = projects.length;
@@ -242,18 +236,21 @@ function ThreeDCarousel({
     }, 2500);
   }, [angleStep]);
 
-  const handleEnter = useCallback((idx: number, x: number, y: number) => {
+  const handleEnter = useCallback((idx: number) => {
     if (isDraggingRef.current) return;
+    if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
     setHoveredIdx(idx);
     setLockedIdx(idx);
-    setTooltipPos({ x, y });
     pausedRef.current = true;
   }, []);
 
   const handleLeave = useCallback(() => {
     setHoveredIdx(null);
-    setLockedIdx(null);
-    if (!isDraggingRef.current) pausedRef.current = false;
+    if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
+    leaveTimerRef.current = setTimeout(() => {
+      setLockedIdx(null);
+      if (!isDraggingRef.current) pausedRef.current = false;
+    }, 3000);
   }, []);
 
   const closeTooltip = useCallback(() => {
@@ -336,8 +333,6 @@ function ThreeDCarousel({
           const cardAngle = angleStep * i;
           const isHovered = hoveredIdx === i;
           const isFront = i === frontIdx;
-          const imageIsVideo = p.image && isDirectVideo(p.image);
-
           return (
             <div
               key={p.id}
@@ -353,7 +348,7 @@ function ThreeDCarousel({
                   "opacity 0.4s ease, transform 0.6s cubic-bezier(0.22, 1, 0.36, 1)",
                 cursor: p.redirectUrl ? "pointer" : "grab",
               }}
-              onMouseEnter={(e) => handleEnter(i, e.clientX, e.clientY)}
+              onMouseEnter={() => handleEnter(i)}
               onMouseLeave={handleLeave}
               onClick={() =>
                 !isDraggingRef.current &&
@@ -368,23 +363,14 @@ function ThreeDCarousel({
                     : "scale-100 translate-y-0"
                 }`}
               >
-                {/* Static media */}
+                {/* Media */}
                 <div className="absolute inset-0 overflow-hidden rounded-[24px]">
-                  {p.image && !imageIsVideo ? (
+                  {p.image ? (
                     <img
                       src={resolveMediaUrl(p.image)}
                       alt={p.title}
                       className="w-full h-full object-cover"
                       loading="lazy"
-                    />
-                  ) : imageIsVideo ? (
-                    <video
-                      src={resolveMediaUrl(p.image)}
-                      muted
-                      loop
-                      playsInline
-                      autoPlay
-                      className="w-full h-full object-cover"
                     />
                   ) : (
                     <div className="w-full h-full bg-white/5 border border-white/10 flex items-center justify-center">
@@ -414,49 +400,17 @@ function ThreeDCarousel({
                   <h3 className="text-white text-sm font-black tracking-tight leading-tight mb-1">
                     {p.title}
                   </h3>
-                  <div className="flex flex-wrap gap-x-3 gap-y-1">
-                    {p.redirectUrl && (
-                      <a
-                        href={p.redirectUrl}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        onClick={(e) => e.stopPropagation()}
-                        className="inline-flex items-center gap-1 text-white text-[10px] font-bold hover:text-indigo-300 transition-colors"
-                      >
-                        Үзэх <ArrowUpRight size={10} />
-                      </a>
-                    )}
-                    {p.videoUrl && (
-                      <button
-                        type="button"
-                        onClick={(e) => {
-                          e.stopPropagation();
-                          onSelect(p);
-                        }}
-                        className="inline-flex items-center gap-1 text-white text-[10px] font-bold hover:text-indigo-300 transition-colors"
-                      >
-                        Бичлэг үзэх <Play size={10} fill="currentColor" />
-                      </button>
-                    )}
-                  </div>
                 </div>
 
-                {/* Compact title when not hovered */}
-                {!isHovered && (
-                  <div className="absolute inset-0 z-20 flex items-end justify-center pb-3">
-                    <span className="text-white text-[10px] font-bold uppercase tracking-wider opacity-80 truncate px-2 text-center">
-                      {p.title}
-                    </span>
-                  </div>
-                )}
               </div>
+
             </div>
           );
         })}
       </div>
 
-      {/* Active project name — swipe transition, only front card shown */}
-      <div className="absolute bottom-0 sm:bottom-2 inset-x-0 flex justify-center z-30 pointer-events-none overflow-hidden px-4">
+      {/* Title — fixed position, never moves */}
+      <div className="absolute bottom-6 sm:bottom-8 inset-x-0 flex justify-center z-30 pointer-events-none px-4">
         <span
           key={frontIdx}
           className="text-white text-base sm:text-xl md:text-2xl font-black tracking-tight uppercase text-center animate-in slide-in-from-right-8 fade-in duration-500 animate-title-bob"
@@ -465,11 +419,35 @@ function ThreeDCarousel({
         </span>
       </div>
 
+      {/* Bio — fixed slot below title, fades in/out independently */}
+      <div className="absolute bottom-0 sm:bottom-1 inset-x-0 flex justify-center z-30 pointer-events-none px-4 h-5 sm:h-6">
+        {projects[frontIdx]?.bio && (
+          <span
+            key={`bio-${frontIdx}`}
+            className="text-white/50 text-xs sm:text-sm font-medium text-center animate-in fade-in duration-500"
+          >
+            {projects[frontIdx].bio}
+          </span>
+        )}
+      </div>
+
       {/* Floating video tooltip */}
       {hoveredProject?.videoUrl &&
         typeof document !== "undefined" &&
         createPortal(
-          <VideoTooltip project={hoveredProject} pos={tooltipPos} />,
+          <VideoTooltip
+            project={hoveredProject}
+            onMouseEnter={() => {
+              if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
+            }}
+            onMouseLeave={() => {
+              if (leaveTimerRef.current) clearTimeout(leaveTimerRef.current);
+              leaveTimerRef.current = setTimeout(() => {
+                setLockedIdx(null);
+                if (!isDraggingRef.current) pausedRef.current = false;
+              }, 3000);
+            }}
+          />,
           document.body,
         )}
     </div>
@@ -478,11 +456,9 @@ function ThreeDCarousel({
 
 export default function WorkSection({
   properties,
-  lang = "mn",
   bgImages = [],
 }: {
   properties: PropertiesPageSections;
-  lang?: string;
   bgImages?: string[];
 }) {
   const headerRef = useRef<HTMLDivElement>(null);
@@ -578,6 +554,7 @@ export default function WorkSection({
           id: item.id,
           title: item.name,
           category: item.category,
+          bio: item.bio,
           image: item.image,
           videoUrl: item.videoUrl,
           redirectUrl: item.redirectUrl,
@@ -698,8 +675,6 @@ export default function WorkSection({
         <ThreeDCarousel
           projects={displayProjects}
           headerVis={headerVis}
-          onSelect={setActiveVideo}
-          ctaLabel={properties.cta?.label || "Үзэх"}
         />
       </div>
 

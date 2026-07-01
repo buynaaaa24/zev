@@ -9,6 +9,12 @@ import LeadFormSection from "../../components/sections/LeadFormSection";
 import { resolveMediaUrl } from "@/lib/media";
 import { PricingCard } from "@/components/sections/PricingCard";
 
+function toVideoEmbed(url: string) {
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/|live\/))([\w-]{11})/);
+  if (m) return `https://www.youtube.com/embed/${m[1]}?autoplay=1&mute=1&loop=1&playlist=${m[1]}&controls=1&modestbranding=1&rel=0`;
+  return null;
+}
+
 const DEFAULTS: { en: AmarHomeSections; mn: AmarHomeSections } = {
   en: {
     hero: {
@@ -253,6 +259,8 @@ export default function AmarHomeClient({
     desc: data.hero.desc || defaults.hero.desc,
     cta: data.hero.cta || defaults.hero.cta,
     image: data.hero.image || undefined,
+    videoUrl: data.hero.videoUrl || undefined,
+    videos: data.hero.videos?.length ? data.hero.videos : undefined,
   };
 
   const features =
@@ -342,6 +350,39 @@ export default function AmarHomeClient({
           )}
         </div>
       </section>
+
+      {/* ── Intro Videos ── */}
+      {(() => {
+        const vids = hero.videos?.length
+          ? hero.videos
+          : hero.videoUrl
+            ? [{ url: hero.videoUrl, bio: undefined }]
+            : null;
+        if (!vids) return null;
+        return (
+          <section className="relative z-10 px-5 sm:px-8 pb-10 sm:pb-16">
+            <div className="flex flex-wrap justify-center gap-6">
+              {vids.map((v, i) => {
+                const embedUrl = toVideoEmbed(v.url);
+                return (
+                  <div key={i} className="flex flex-col items-center gap-3 w-full max-w-[380px]">
+                    <div className="relative w-full rounded-3xl overflow-hidden border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.6)] bg-black/40" style={{ aspectRatio: "9/16" }}>
+                      {embedUrl ? (
+                        <iframe src={embedUrl} className="absolute inset-0 w-full h-full" allow="autoplay; encrypted-media; fullscreen" allowFullScreen />
+                      ) : (
+                        <video src={resolveMediaUrl(v.url)} className="absolute inset-0 w-full h-full object-cover" autoPlay muted loop playsInline controls />
+                      )}
+                    </div>
+                    {v.bio && (
+                      <p className="text-white/60 text-sm text-center leading-relaxed whitespace-pre-wrap px-2">{v.bio}</p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
 
       {/* FEATURES (Технологи) */}
       <section

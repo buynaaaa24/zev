@@ -3,6 +3,7 @@ import { PosEaseLangProvider } from "@/contexts/PosEaseLangContext";
 import PosEaseNavbar from "@/components/posease/PosEaseNavbar";
 import SmoothScroll from "@/components/SmoothScroll";
 import FooterWithContent from "@/components/FooterWithContent";
+import ChatBotLoader from "@/components/ChatBotLoader";
 
 export const metadata: Metadata = {
   title: "PosEase",
@@ -25,6 +26,7 @@ export default function PosEaseLayout({
         {children}
         <FooterWithContent siteId="posease" />
       </SmoothScroll>
+      <ChatBotLoader project="webposease" color="#ff4469" />
     </PosEaseLangProvider>
   );
 }

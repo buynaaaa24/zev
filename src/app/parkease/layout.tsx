@@ -3,6 +3,7 @@ import { ParkEaseLangProvider } from "@/contexts/ParkEaseLangContext";
 import ParkEaseNavbar from "@/components/parkease/ParkEaseNavbar";
 import SmoothScroll from "@/components/SmoothScroll";
 import FooterWithContent from "@/components/FooterWithContent";
+import ChatBotLoader from "@/components/ChatBotLoader";
 
 export const metadata: Metadata = {
   title: "ParkEase – Smart Automated Parking",
@@ -22,6 +23,7 @@ export default function ParkEaseLayout({
         {children}
         <FooterWithContent siteId="parkease" />
       </SmoothScroll>
+      <ChatBotLoader project="webparkease" color="#f6b414" />
     </ParkEaseLangProvider>
   );
 }

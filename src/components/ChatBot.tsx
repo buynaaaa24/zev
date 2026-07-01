@@ -19,7 +19,7 @@ type ChatbotConfig = {
 };
 
 const GUEST_KEY = "zevtabs_guest_id";
-const CONV_KEY = "zevtabs_conversation_id";
+const convKey = (project: string) => `zevtabs_conversation_id_${project}`;
 
 function getDefaultConfig(t: Translations): ChatbotConfig {
   return {
@@ -199,7 +199,7 @@ function getLocalBotFallback(
   return "";
 }
 
-export default function ChatBot() {
+export default function ChatBot({ project = "zevtabs", color }: { project?: string; color?: string }) {
   const { lang, t } = useLanguage();
   const [open, setOpen] = useState(false);
   const [messages, setMessages] = useState<ChatMessage[]>([]);
@@ -242,7 +242,7 @@ export default function ChatBot() {
   const loadConfig = useCallback(async () => {
     setLoadingConfig(true);
     try {
-      const res = await fetch(`${base}/v1/chat/config?project=zevtabs`);
+      const res = await fetch(`${base}/v1/chat/config?project=${project}`);
       if (!res.ok) throw new Error(await res.text());
       const json = (await res.json()) as {
         data?: unknown;
@@ -256,23 +256,23 @@ export default function ChatBot() {
     } finally {
       setLoadingConfig(false);
     }
-  }, [base, defaultConfig]);
+  }, [base, defaultConfig, project]);
 
   const bootstrapConversation = useCallback(async () => {
     setError(null);
     const guestId = getOrCreateGuestId();
-    let convId = localStorage.getItem(CONV_KEY);
+    let convId = localStorage.getItem(convKey(project));
 
     const ensureConv = async () => {
       const res = await fetch(`${base}/v1/chat/conversations`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ guestId, project: "zevtabs" }),
+        body: JSON.stringify({ guestId, project }),
       });
       if (!res.ok) throw new Error(await res.text());
       const json = (await res.json()) as { data: { id: string } };
       convId = json.data.id;
-      localStorage.setItem(CONV_KEY, convId!);
+      localStorage.setItem(convKey(project), convId!);
     };
 
     try {
@@ -282,12 +282,12 @@ export default function ChatBot() {
           `${base}/v1/chat/conversations/${convId}/messages?guestId=${encodeURIComponent(guestId)}`,
         );
         if (!check.ok) {
-          localStorage.removeItem(CONV_KEY);
+          localStorage.removeItem(convKey(project));
           await ensureConv();
         }
       }
 
-      const finalId = localStorage.getItem(CONV_KEY);
+      const finalId = localStorage.getItem(convKey(project));
       if (!finalId) throw new Error("No conversation");
       const res = await fetch(
         `${base}/v1/chat/conversations/${finalId}/messages?guestId=${encodeURIComponent(guestId)}`,
@@ -309,7 +309,7 @@ export default function ChatBot() {
       setError(e instanceof Error ? e.message : t.chatbot.status.error);
       setReady(false);
     }
-  }, [base, t]);
+  }, [base, t, project]);
 
   /** Preload CMS chatbot config as soon as the widget mounts (not only when the panel opens). */
   useEffect(() => {
@@ -351,7 +351,7 @@ export default function ChatBot() {
     socketRef.current = s;
 
     function emitJoin() {
-      const convId = localStorage.getItem(CONV_KEY);
+      const convId = localStorage.getItem(convKey(project));
       const guestId = getOrCreateGuestId();
       if (!convId) {
         console.warn("[ChatBot Socket] Cannot emit join: no conversationId in localStorage");
@@ -373,7 +373,7 @@ export default function ChatBot() {
 
     function onNew(payload: { conversationId?: string; message?: ChatMessage }) {
       console.log("[ChatBot Socket] Received message:new event payload:", payload);
-      const convId = localStorage.getItem(CONV_KEY);
+      const convId = localStorage.getItem(convKey(project));
       if (!payload?.message) {
         console.warn("[ChatBot Socket] Received empty message payload");
         return;
@@ -439,7 +439,7 @@ export default function ChatBot() {
     if (!open || !ready) return;
     const s = socketRef.current;
     if (!s) return;
-    const convId = localStorage.getItem(CONV_KEY);
+    const convId = localStorage.getItem(convKey(project));
     const guestId = getOrCreateGuestId();
     if (!convId) return;
     const run = () => {
@@ -477,7 +477,7 @@ export default function ChatBot() {
     const trimmed = text.trim();
     if (!trimmed || !ready) return;
     const guestId = getOrCreateGuestId();
-    const convId = localStorage.getItem(CONV_KEY);
+    const convId = localStorage.getItem(convKey(project));
     if (!convId) return;
 
     setTyping(true);
@@ -539,6 +539,10 @@ export default function ChatBot() {
     );
   }
 
+  const accentBg = color ? { backgroundColor: color } : undefined;
+  const accentCls = color ? "" : "bg-accent-500";
+  const accentHoverCls = color ? "" : "hover:bg-accent-600";
+
   return (
     <>
       <div
@@ -553,7 +557,7 @@ export default function ChatBot() {
           style={{ height: "480px" }}
         >
           <div className="bg-neutral-900 px-4 py-3 flex items-center gap-3 shrink-0">
-            <div className="w-9 h-9 bg-accent-500 rounded-lg flex items-center justify-center shrink-0">
+            <div className={`w-9 h-9 ${accentCls} rounded-lg flex items-center justify-center shrink-0`} style={accentBg}>
               <svg className="w-5 h-5 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path
                   strokeLinecap="round"
@@ -595,7 +599,7 @@ export default function ChatBot() {
                 className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
                 {msg.role !== "user" && (
-                  <div className="w-7 h-7 bg-accent-500 rounded-full flex items-center justify-center shrink-0 mr-2 mt-0.5">
+                  <div className={`w-7 h-7 ${accentCls} rounded-full flex items-center justify-center shrink-0 mr-2 mt-0.5`} style={accentBg}>
                     <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                     </svg>
@@ -604,9 +608,10 @@ export default function ChatBot() {
                 <div
                   className={`max-w-[78%] px-3.5 py-2.5 rounded-2xl text-sm leading-relaxed whitespace-pre-line ${
                     msg.role === "user"
-                      ? "bg-accent-500 text-white rounded-br-sm"
+                      ? `${accentCls} text-white rounded-br-sm`
                       : "bg-white text-neutral-900 shadow-sm border border-gray-100 rounded-bl-sm"
                   }`}
+                  style={msg.role === "user" ? accentBg : undefined}
                 >
                   {msg.text}
                 </div>
@@ -614,7 +619,7 @@ export default function ChatBot() {
             ))}
             {typing && (
               <div className="flex justify-start">
-                <div className="w-7 h-7 bg-accent-500 rounded-full flex items-center justify-center shrink-0 mr-2 mt-0.5">
+                <div className={`w-7 h-7 ${accentCls} rounded-full flex items-center justify-center shrink-0 mr-2 mt-0.5`} style={accentBg}>
                   <svg className="w-3.5 h-3.5 text-white" fill="currentColor" viewBox="0 0 24 24">
                     <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-2 15l-5-5 1.41-1.41L10 14.17l7.59-7.59L19 8l-9 9z" />
                   </svg>
@@ -668,7 +673,8 @@ export default function ChatBot() {
               type="button"
               onClick={() => void send(input)}
               disabled={!input.trim() || !ready}
-              className="w-9 h-9 bg-accent-500 hover:bg-accent-600 disabled:opacity-40 text-white rounded-full flex items-center justify-center transition-colors shrink-0"
+              className={`w-9 h-9 ${accentCls} ${accentHoverCls} disabled:opacity-40 text-white rounded-full flex items-center justify-center transition-colors shrink-0`}
+              style={accentBg}
             >
               <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2.5} d="M12 19l9 2-9-18-9 18 9-2zm0 0v-8" />
@@ -682,7 +688,8 @@ export default function ChatBot() {
         type="button"
         onClick={() => setOpen((v) => !v)}
         aria-label={t.chatbot.common.openChat}
-        className="fixed bottom-6 right-4 sm:right-6 z-50 w-14 h-14 bg-accent-500 hover:bg-accent-600 text-white rounded-full shadow-xl flex items-center justify-center transition-all duration-200 hover:scale-110"
+        className={`fixed bottom-6 right-4 sm:right-6 z-50 w-14 h-14 ${accentCls} ${accentHoverCls} text-white rounded-full shadow-xl flex items-center justify-center transition-all duration-200 hover:scale-110`}
+        style={accentBg}
       >
         {open ? (
           <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">

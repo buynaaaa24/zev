@@ -10,6 +10,15 @@ import { ArrowRight, ChevronRight } from "lucide-react";
 import { resolveMediaUrl } from "@/lib/media";
 import { PricingCard } from "@/components/sections/PricingCard";
 
+function toVideoEmbed(url: string) {
+  const m = url.match(
+    /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|v\/|shorts\/|live\/))([\w-]{11})/,
+  );
+  if (m)
+    return `https://www.youtube.com/embed/${m[1]}?autoplay=1&mute=1&loop=1&playlist=${m[1]}&controls=1&modestbranding=1&rel=0`;
+  return null;
+}
+
 const handleScroll = (e: React.MouseEvent<HTMLAnchorElement>) => {
   const href = e.currentTarget.getAttribute("href");
   if (href && href.startsWith("#")) {
@@ -262,6 +271,8 @@ export default function RentlyClient({
     secondary: data?.hero?.secondary || defaults.hero.secondary,
     secondaryUrl: data?.hero?.secondaryUrl || "",
     image: data?.hero?.image || defaults.hero.image,
+    videoUrl: data?.hero?.videoUrl || undefined,
+    videos: data?.hero?.videos?.length ? data.hero.videos : undefined,
   };
 
   const [accentIdx, setAccentIdx] = useState(0);
@@ -294,18 +305,21 @@ export default function RentlyClient({
       label:
         data?.notifications?.label || (lang === "mn" ? "Ухаалаг" : "Smart"),
       image: data?.notifications?.image || "",
+      videoUrl: data?.notifications?.videoUrl || "",
     },
     {
       name: data?.penalties?.title || defaults.penalties.title,
       desc: data?.penalties?.desc || defaults.penalties.desc,
       label: data?.penalties?.label || (lang === "mn" ? "Журам" : "Rule"),
       image: data?.penalties?.image || "",
+      videoUrl: data?.penalties?.videoUrl || "",
     },
     {
       name: data?.costs?.title || defaults.costs.title,
       desc: data?.costs?.desc || defaults.costs.desc,
       label: data?.costs?.label || (lang === "mn" ? "Зардал" : "Cost"),
       image: data?.costs?.image || "",
+      videoUrl: data?.costs?.videoUrl || "",
     },
   ];
 
@@ -447,6 +461,60 @@ export default function RentlyClient({
         </div>
       </section>
 
+      {/* ── Intro Videos ── */}
+      {(() => {
+        const vids = hero.videos?.length
+          ? hero.videos
+          : hero.videoUrl
+            ? [{ url: hero.videoUrl, bio: undefined }]
+            : null;
+        if (!vids) return null;
+        return (
+          <section className="relative z-10 px-5 sm:px-8 pb-10 sm:pb-16">
+            <div className="flex flex-wrap justify-center gap-6">
+              {vids.map((v, i) => {
+                const embedUrl = toVideoEmbed(v.url);
+                return (
+                  <div
+                    key={i}
+                    className="flex flex-col items-center gap-3 w-full max-w-[380px]"
+                  >
+                    <div
+                      className="relative w-full rounded-3xl overflow-hidden border border-white/10 shadow-[0_30px_80px_rgba(0,0,0,0.6)] bg-black/40"
+                      style={{ aspectRatio: "9/16" }}
+                    >
+                      {embedUrl ? (
+                        <iframe
+                          src={embedUrl}
+                          className="absolute inset-0 w-full h-full"
+                          allow="autoplay; encrypted-media; fullscreen"
+                          allowFullScreen
+                        />
+                      ) : (
+                        <video
+                          src={resolveMediaUrl(v.url)}
+                          className="absolute inset-0 w-full h-full object-cover"
+                          autoPlay
+                          muted
+                          loop
+                          playsInline
+                          controls
+                        />
+                      )}
+                    </div>
+                    {v.bio && (
+                      <p className="text-white/60 text-sm text-center leading-relaxed whitespace-pre-wrap px-2">
+                        {v.bio}
+                      </p>
+                    )}
+                  </div>
+                );
+              })}
+            </div>
+          </section>
+        );
+      })()}
+
       {/* FEATURES */}
       {features.length > 0 && (
         <section
@@ -582,24 +650,8 @@ function SpotlightCard({ item, index }: { item: any; index: number }) {
       className={`transition-all duration-700 ${visible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-8"}`}
       style={{ transitionDelay: `${index * 150}ms` }}
     >
-      <div
-        className="relative rounded-[32px] sm:rounded-[40px] md:rounded-[48px] border border-white/5 h-full flex flex-col overflow-hidden"
-        style={
-          item.image
-            ? {
-                backgroundImage: `url(${resolveMediaUrl(item.image)})`,
-                backgroundSize: "cover",
-                backgroundPosition: "center",
-              }
-            : {}
-        }
-      >
-        {item.image && (
-          <div className="absolute inset-0 bg-black/50 backdrop-blur-[2px]" />
-        )}
-        <div
-          className={`relative z-10 p-6 sm:p-8 md:p-10 h-full flex flex-col ${!item.image ? "bg-neutral-900/20 backdrop-blur-3xl" : ""}`}
-        >
+      <div className="relative rounded-[32px] sm:rounded-[40px] md:rounded-[48px] bg-neutral-900/20 border border-white/5 backdrop-blur-3xl h-full flex flex-col items-center overflow-hidden">
+        <div className="p-6 sm:p-8 md:p-10 flex flex-col flex-1 items-center text-center">
           <span className="text-sm font-black uppercase tracking-[0.3em] text-emerald-400 mb-4 sm:mb-6 block">
             {item.label}
           </span>
@@ -610,6 +662,43 @@ function SpotlightCard({ item, index }: { item: any; index: number }) {
             {item.desc}
           </p>
         </div>
+        {item.videoUrl ? (
+          (() => {
+            const embedUrl = toVideoEmbed(item.videoUrl);
+            return (
+              <div className="w-full px-6 sm:px-8 md:px-10 pb-6 sm:pb-8 md:pb-10">
+                <div className="relative rounded-2xl sm:rounded-3xl overflow-hidden border border-white/10 aspect-video bg-black/40">
+                  {embedUrl ? (
+                    <iframe
+                      src={embedUrl}
+                      className="absolute inset-0 w-full h-full"
+                      allow="autoplay; encrypted-media; fullscreen"
+                      allowFullScreen
+                    />
+                  ) : (
+                    <video
+                      src={resolveMediaUrl(item.videoUrl)}
+                      className="absolute inset-0 w-full h-full object-cover"
+                      autoPlay
+                      muted
+                      loop
+                      playsInline
+                      controls
+                    />
+                  )}
+                </div>
+              </div>
+            );
+          })()
+        ) : item.image ? (
+          <div className="w-full px-6 sm:px-8 md:px-10 pb-6 sm:pb-8 md:pb-10 flex justify-center">
+            <img
+              src={resolveMediaUrl(item.image)}
+              alt={item.name}
+              className="w-full max-w-xs aspect-[4/3] object-cover rounded-2xl sm:rounded-3xl border border-white/10 mx-auto"
+            />
+          </div>
+        ) : null}
       </div>
     </div>
   );

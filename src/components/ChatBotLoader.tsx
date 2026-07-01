@@ -7,9 +7,9 @@ const ChatBot = dynamic(() => import("@/components/ChatBot"), {
   loading: () => null,
 });
 
-export default function ChatBotLoader() {
+export default function ChatBotLoader({ project = "zevtabs", color }: { project?: string; color?: string }) {
   if (process.env.NEXT_PUBLIC_DISABLE_CHAT === "1") {
     return null;
   }
-  return <ChatBot />;
+  return <ChatBot project={project} color={color} />;
 }

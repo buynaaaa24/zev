@@ -3,6 +3,7 @@ import { RentlyLangProvider } from "@/contexts/RentlyLangContext";
 import RentlyNavbar from "@/components/rently/RentlyNavbar";
 import SmoothScroll from "@/components/SmoothScroll";
 import FooterWithContent from "@/components/FooterWithContent";
+import ChatBotLoader from "@/components/ChatBotLoader";
 
 export const metadata: Metadata = {
   title: "Rently",
@@ -23,6 +24,7 @@ export default function RentlyLayout({
         </div>
         <FooterWithContent siteId="rently" />
       </SmoothScroll>
+      <ChatBotLoader project="webrently" color="#10b981" />
     </RentlyLangProvider>
   );
 }

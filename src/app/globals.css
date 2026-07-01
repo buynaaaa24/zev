@@ -1,4 +1,4 @@
-@import 'lenis/dist/lenis.css';
+@import "lenis/dist/lenis.css";
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -12,7 +12,9 @@ html {
 @layer base {
   body {
     @apply antialiased bg-background text-foreground;
-    font-feature-settings: "kern" 1, "liga" 1;
+    font-feature-settings:
+      "kern" 1,
+      "liga" 1;
   }
   .theme {
     --font-heading: var(--font-sans);
@@ -97,19 +99,32 @@ html {
 .reveal {
   opacity: 0;
   transform: translateY(40px);
-  transition: opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    opacity 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    transform 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .reveal.visible {
   opacity: 1;
   transform: translateY(0);
 }
-.reveal-delay-1 { transition-delay: 0.1s; }
-.reveal-delay-2 { transition-delay: 0.2s; }
-.reveal-delay-3 { transition-delay: 0.3s; }
-.reveal-delay-4 { transition-delay: 0.4s; }
-.reveal-delay-5 { transition-delay: 0.5s; }
-.reveal-delay-6 { transition-delay: 0.6s; }
+.reveal-delay-1 {
+  transition-delay: 0.1s;
+}
+.reveal-delay-2 {
+  transition-delay: 0.2s;
+}
+.reveal-delay-3 {
+  transition-delay: 0.3s;
+}
+.reveal-delay-4 {
+  transition-delay: 0.4s;
+}
+.reveal-delay-5 {
+  transition-delay: 0.5s;
+}
+.reveal-delay-6 {
+  transition-delay: 0.6s;
+}
 
 /* ── Hero gradient animation ── */
 .hero-gradient {
@@ -145,14 +160,14 @@ html {
 
 /* ── Gradient text ── */
 .gradient-text {
-  background: linear-gradient(135deg, #ffffff 0%, #a0b4ff 50%, #0066CC 100%);
+  background: linear-gradient(135deg, #ffffff 0%, #a0b4ff 50%, #0066cc 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
 .gradient-text-blue {
-  background: linear-gradient(135deg, #0066CC 0%, #2f77e8 50%, #5592ef 100%);
+  background: linear-gradient(135deg, #0066cc 0%, #2f77e8 50%, #5592ef 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
@@ -162,29 +177,44 @@ html {
 .btn-shimmer {
   background: linear-gradient(
     90deg,
-    #0066CC 0%,
+    #0066cc 0%,
     #2f77e8 25%,
-    #0066CC 50%,
+    #0066cc 50%,
     #2f77e8 75%,
-    #0066CC 100%
+    #0066cc 100%
   );
   background-size: 200%;
   animation: shimmer 3s linear infinite;
 }
 
 @keyframes shimmer {
-  0%   { background-position: -200% center; }
-  100% { background-position:  200% center; }
+  0% {
+    background-position: -200% center;
+  }
+  100% {
+    background-position: 200% center;
+  }
 }
 
 @keyframes shimmer-slide {
-  0%   { transform: translateX(-100%); }
-  100% { transform: translateX(100%); }
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 @keyframes pulse {
-  0%, 100% { opacity: 0.3; transform: scale(1); }
-  50%      { opacity: 0.5; transform: scale(1.1); }
+  0%,
+  100% {
+    opacity: 0.3;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.5;
+    transform: scale(1.1);
+  }
 }
 .animate-shimmer-slide {
   animation: shimmer-slide 3s infinite;
@@ -197,12 +227,15 @@ html {
 
 /* ── Card hover lift ── */
 .card-hover {
-  transition: transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
-              box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  transition:
+    transform 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    box-shadow 0.4s cubic-bezier(0.25, 0.46, 0.45, 0.94);
 }
 .card-hover:hover {
   transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.12), 0 8px 32px rgba(0, 102, 204, 0.08);
+  box-shadow:
+    0 24px 80px rgba(0, 0, 0, 0.12),
+    0 8px 32px rgba(0, 102, 204, 0.08);
 }
 
 /* ── Partner marquee ── */
@@ -214,8 +247,12 @@ html {
   animation-play-state: paused;
 }
 @keyframes partnerMarquee {
-  from { transform: translateX(0); }
-  to   { transform: translateX(-25%); }
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(-25%);
+  }
 }
 
 /* ── Page transition ── */
@@ -223,13 +260,27 @@ html {
   animation: pageEnter 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94) both;
 }
 @keyframes pageEnter {
-  from { opacity: 0; transform: translateY(24px); }
-  to   { opacity: 1; transform: translateY(0); }
+  from {
+    opacity: 0;
+    transform: translateY(24px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .reveal, .page-enter, .partner-marquee { animation: none; transition: none; }
-  .reveal { opacity: 1; transform: none; }
+  .reveal,
+  .page-enter,
+  .partner-marquee {
+    animation: none;
+    transition: none;
+  }
+  .reveal {
+    opacity: 1;
+    transform: none;
+  }
 }
 
 /* ── Typography scale (Apple-like) ── */
@@ -278,7 +329,9 @@ html {
 }
 
 @media (max-width: 640px) {
-  .display-xl { @apply text-5xl; }
+  .display-xl {
+    @apply text-5xl;
+  }
 }
 
 /* -- QR Page Animations ---------------------------------- */
@@ -295,67 +348,167 @@ html {
 
 /* Left text card — gentle float */
 @keyframes float-text {
-  0%, 100% { transform: translateY(-50%) translateZ(40px) rotateY(8deg) translateY(0); }
-  50%      { transform: translateY(-50%) translateZ(52px) rotateY(5deg) translateY(-8px); }
+  0%,
+  100% {
+    transform: translateY(-50%) translateZ(40px) rotateY(8deg) translateY(0);
+  }
+  50% {
+    transform: translateY(-50%) translateZ(52px) rotateY(5deg) translateY(-8px);
+  }
 }
 
 /* Right cards — each tumbles on its own axis */
 @keyframes tumble-1 {
-  0%, 100% { transform: translateZ(80px) rotateX(-5deg) rotateY(-15deg) rotateZ(0deg) translateY(0); }
-  33%      { transform: translateZ(95px) rotateX(2deg) rotateY(-22deg) rotateZ(8deg) translateY(-12px); }
-  66%      { transform: translateZ(65px) rotateX(-10deg) rotateY(-8deg) rotateZ(-4deg) translateY(6px); }
+  0%,
+  100% {
+    transform: translateZ(80px) rotateX(-5deg) rotateY(-15deg) rotateZ(0deg)
+      translateY(0);
+  }
+  33% {
+    transform: translateZ(95px) rotateX(2deg) rotateY(-22deg) rotateZ(8deg)
+      translateY(-12px);
+  }
+  66% {
+    transform: translateZ(65px) rotateX(-10deg) rotateY(-8deg) rotateZ(-4deg)
+      translateY(6px);
+  }
 }
 @keyframes tumble-2 {
-  0%, 100% { transform: translateZ(20px) rotateX(10deg) rotateY(25deg) rotateZ(0deg) translateY(0); }
-  40%      { transform: translateZ(38px) rotateX(18deg) rotateY(32deg) rotateZ(-12deg) translateY(-10px); }
-  70%      { transform: translateZ(12px) rotateX(4deg) rotateY(18deg) rotateZ(6deg) translateY(8px); }
+  0%,
+  100% {
+    transform: translateZ(20px) rotateX(10deg) rotateY(25deg) rotateZ(0deg)
+      translateY(0);
+  }
+  40% {
+    transform: translateZ(38px) rotateX(18deg) rotateY(32deg) rotateZ(-12deg)
+      translateY(-10px);
+  }
+  70% {
+    transform: translateZ(12px) rotateX(4deg) rotateY(18deg) rotateZ(6deg)
+      translateY(8px);
+  }
 }
 @keyframes tumble-3 {
-  0%, 100% { transform: translateZ(50px) rotateX(5deg) rotateY(-20deg) rotateZ(0deg) translateY(0); }
-  25%      { transform: translateZ(68px) rotateX(12deg) rotateY(-28deg) rotateZ(10deg) translateY(-14px); }
-  75%      { transform: translateZ(32px) rotateX(-2deg) rotateY(-12deg) rotateZ(-8deg) translateY(10px); }
+  0%,
+  100% {
+    transform: translateZ(50px) rotateX(5deg) rotateY(-20deg) rotateZ(0deg)
+      translateY(0);
+  }
+  25% {
+    transform: translateZ(68px) rotateX(12deg) rotateY(-28deg) rotateZ(10deg)
+      translateY(-14px);
+  }
+  75% {
+    transform: translateZ(32px) rotateX(-2deg) rotateY(-12deg) rotateZ(-8deg)
+      translateY(10px);
+  }
 }
 @keyframes tumble-4 {
-  0%, 100% { transform: translateZ(10px) rotateX(-12deg) rotateY(45deg) rotateZ(0deg) translateY(0); }
-  50%      { transform: translateZ(28px) rotateX(-4deg) rotateY(55deg) rotateZ(-18deg) translateY(-8px); }
-  80%      { transform: translateZ(4px) rotateX(-18deg) rotateY(38deg) rotateZ(10deg) translateY(6px); }
+  0%,
+  100% {
+    transform: translateZ(10px) rotateX(-12deg) rotateY(45deg) rotateZ(0deg)
+      translateY(0);
+  }
+  50% {
+    transform: translateZ(28px) rotateX(-4deg) rotateY(55deg) rotateZ(-18deg)
+      translateY(-8px);
+  }
+  80% {
+    transform: translateZ(4px) rotateX(-18deg) rotateY(38deg) rotateZ(10deg)
+      translateY(6px);
+  }
 }
 @keyframes tumble-5 {
-  0%, 100% { transform: translateZ(30px) rotateX(8deg) rotateY(30deg) rotateZ(0deg) translateY(0); }
-  35%      { transform: translateZ(48px) rotateX(15deg) rotateY(38deg) rotateZ(14deg) translateY(-10px); }
-  65%      { transform: translateZ(16px) rotateX(2deg) rotateY(22deg) rotateZ(-10deg) translateY(12px); }
+  0%,
+  100% {
+    transform: translateZ(30px) rotateX(8deg) rotateY(30deg) rotateZ(0deg)
+      translateY(0);
+  }
+  35% {
+    transform: translateZ(48px) rotateX(15deg) rotateY(38deg) rotateZ(14deg)
+      translateY(-10px);
+  }
+  65% {
+    transform: translateZ(16px) rotateX(2deg) rotateY(22deg) rotateZ(-10deg)
+      translateY(12px);
+  }
 }
 
 /* Flat ring spin */
 @keyframes spin-flat {
-  from { transform: translateZ(60px) rotateX(70deg) rotateZ(0deg); }
-  to   { transform: translateZ(60px) rotateX(70deg) rotateZ(360deg); }
+  from {
+    transform: translateZ(60px) rotateX(70deg) rotateZ(0deg);
+  }
+  to {
+    transform: translateZ(60px) rotateX(70deg) rotateZ(360deg);
+  }
 }
 
 /* Wandering orbs */
 @keyframes orb-float {
-  0%, 100% { transform: translateZ(90px) translate(0, 0) scale(1); opacity: 0.9; }
-  25%      { transform: translateZ(110px) translate(12px, -8px) scale(1.15); opacity: 0.6; }
-  50%      { transform: translateZ(70px) translate(-6px, 10px) scale(0.85); opacity: 1; }
-  75%      { transform: translateZ(100px) translate(8px, 4px) scale(1.1); opacity: 0.7; }
+  0%,
+  100% {
+    transform: translateZ(90px) translate(0, 0) scale(1);
+    opacity: 0.9;
+  }
+  25% {
+    transform: translateZ(110px) translate(12px, -8px) scale(1.15);
+    opacity: 0.6;
+  }
+  50% {
+    transform: translateZ(70px) translate(-6px, 10px) scale(0.85);
+    opacity: 1;
+  }
+  75% {
+    transform: translateZ(100px) translate(8px, 4px) scale(1.1);
+    opacity: 0.7;
+  }
 }
 
 /* Dust particles */
 @keyframes dust-1 {
-  0%, 100% { transform: translate(0, 0); opacity: 0.15; }
-  50%      { transform: translate(8px, -14px); opacity: 0.35; }
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.15;
+  }
+  50% {
+    transform: translate(8px, -14px);
+    opacity: 0.35;
+  }
 }
 @keyframes dust-2 {
-  0%, 100% { transform: translate(0, 0); opacity: 0.2; }
-  50%      { transform: translate(-10px, 10px); opacity: 0.4; }
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate(-10px, 10px);
+    opacity: 0.4;
+  }
 }
 @keyframes dust-3 {
-  0%, 100% { transform: translate(0, 0); opacity: 0.1; }
-  50%      { transform: translate(6px, 8px); opacity: 0.3; }
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.1;
+  }
+  50% {
+    transform: translate(6px, 8px);
+    opacity: 0.3;
+  }
 }
 @keyframes dust-4 {
-  0%, 100% { transform: translate(0, 0); opacity: 0.25; }
-  50%      { transform: translate(-6px, -10px); opacity: 0.45; }
+  0%,
+  100% {
+    transform: translate(0, 0);
+    opacity: 0.25;
+  }
+  50% {
+    transform: translate(-6px, -10px);
+    opacity: 0.45;
+  }
 }
 
 @media (prefers-reduced-motion: reduce) {
@@ -373,13 +526,25 @@ html {
   display: none;
 }
 @keyframes float-particle {
-  0%, 100% { transform: translateY(0) translateX(0); opacity: 0.2; }
-  50%      { transform: translateY(-20px) translateX(10px); opacity: 0.5; }
+  0%,
+  100% {
+    transform: translateY(0) translateX(0);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translateY(-20px) translateX(10px);
+    opacity: 0.5;
+  }
 }
 
 @keyframes title-bob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-4px); }
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-4px);
+  }
 }
 .animate-title-bob {
   animation: title-bob 2.2s ease-in-out infinite;
@@ -387,8 +552,8 @@ html {
 
 /* Hide scrollbar for IE, Edge and Firefox */
 .scrollbar-none {
-  -ms-overflow-style: none;  /* IE and Edge */
-  scrollbar-width: none;  /* Firefox */
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
 
 /* ── Meteor animation ── */

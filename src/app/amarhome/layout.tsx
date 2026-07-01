@@ -3,6 +3,7 @@ import { AmarHomeLangProvider } from "@/contexts/AmarHomeLangContext";
 import AmarHomeNavbar from "@/components/amarhome/AmarHomeNavbar";
 import SmoothScroll from "@/components/SmoothScroll";
 import FooterWithContent from "@/components/FooterWithContent";
+import ChatBotLoader from "@/components/ChatBotLoader";
 
 export const metadata: Metadata = {
   title: "AmarHome",
@@ -26,6 +27,7 @@ export default function AmarHomeLayout({
         </div>
         <FooterWithContent siteId="amarhome" />
       </SmoothScroll>
+      <ChatBotLoader project="webamarhome" color="#10b981" />
     </AmarHomeLangProvider>
   );
 }
